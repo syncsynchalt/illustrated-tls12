@@ -4,6 +4,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"time"
 
@@ -32,27 +33,6 @@ func (kw *keyWriter) Write(b []byte) (n int, err error) {
 	return os.Stdout.Write(b)
 }
 
-var caCert = []byte(`-----BEGIN CERTIFICATE-----
-MIIDATCCAemgAwIBAgIBATANBgkqhkiG9w0BAQsFADAiMQswCQYDVQQGEwJVUzET
-MBEGA1UEChMKRXhhbXBsZSBDQTAeFw0xODEwMDUwMTM3NTVaFw0yODEwMDUwMTM3
-NTVaMCIxCzAJBgNVBAYTAlVTMRMwEQYDVQQKEwpFeGFtcGxlIENBMIIBIjANBgkq
-hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw3KoKthct8kUhCr6IXt303X11BWDTVOD
-Q82Y9ltNa3INXgUdg3pbFJc017d2bYsfxQ3ekcs/28P/lCn+wAc1IcJMTV0m5om3
-l7khTZevI9PwIjtWOPnU1M4jlDelp+i0QxIT/vA02pM4xF5SpjMlBnhBxmKepxBY
-RyKkCJqAKbTGYTCFvEa5Lg9lvEtROrhZ3EgnicyRDQBxeSfLxK3zZa++0TZOWEQ0
-e5HfdfHdmBotiQ/LEQ8lbSnZqLRAzGhcoIVemJ8XcYIDLhYoTk2VYbfkyy0QGhDm
-qBCIXFvWzrLm5/Ux+TUXpC3HQlEzvDTJLo/1/x4wKDVMcOYtVdQ5XwIDAQABo0Iw
-QDAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUiU/e
-W8xp4lLPPqMA37GXuB3hwUYwDQYJKoZIhvcNAQELBQADggEBAGo5sILExEsBO7If
-siOtHdz0HIi55hUDYZbkx0erO/+LHaeM3ufJoYMW+gQ+3xmJ74bqNsbibPbi2pzQ
-wxd5+5K9BYsqY4XTdLxD1F8iEELFg04I+JB4tmzGpeTXEFY/lBNNRHbsKw7bTh+c
-CkMyNfHDshAQOUJ5fTpiNF2MF96LRK1XwtLSpaffnLY1bvdKLMU0h6yKUpYaOizw
-1H+XNuC6/vjPo7q92XiuCGgfyrfWap/U6DH1dWUrk+avvfJ7nzotgjx7ddssW4nP
-z0Xbzt6dvZppaRceRTFIUyhES33qawZn1zLNdPBaprfkX3crzU7kzNpRnd+BaMBO
-irkvU+w=
------END CERTIFICATE-----
-`)
-
 // a client that connects to localhost:8443, writes "ping", and reads "pong"
 func main() {
 
@@ -67,27 +47,32 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer conn.Close()
 
 	wdata := []byte("ping")
 	n, err := conn.Write(wdata)
-	fmt.Println("\nwrote data:", string(wdata[:n]))
+	fmt.Println("\nclient wrote data:", string(wdata[:n]))
 	if err != nil {
 		panic(err)
 	}
 
 	rdata := make([]byte, 1024)
 	n, err = conn.Read(rdata)
-	fmt.Println("read data:", string(rdata[:n]))
+	fmt.Println("client read data:", string(rdata[:n]))
 	if err != nil {
 		panic(err)
 	}
 
 	n, tot := rand.Stats()
-	fmt.Printf("Used %d of %d rand bytes\n", n, tot)
+	fmt.Printf("client used %d of %d rand bytes\n", n, tot)
 }
 
 func buildCaList() *x509.CertPool {
-	caCertPem, _ := pem.Decode(caCert)
+	caCertBytes, err := ioutil.ReadFile("ca.crt")
+	if err != nil {
+		panic(err)
+	}
+	caCertPem, _ := pem.Decode(caCertBytes)
 	caCert, err := x509.ParseCertificate(caCertPem.Bytes)
 	if err != nil {
 		panic(err)
