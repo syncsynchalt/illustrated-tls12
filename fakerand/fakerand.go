@@ -5,6 +5,7 @@ package fakerand
 type FakeRand struct {
 	data  []byte
 	index int
+	numRead int
 }
 
 func min(a, b int) int {
@@ -22,12 +23,17 @@ func (block *FakeRand) Read(buf []byte) (n int, err error) {
 		copied := copy(buf, block.data[block.index:])
 		n += copied
 		block.index += copied
+		block.numRead += copied
 		if block.index == len(block.data) {
 			block.index = 0
 		}
 		buf = buf[copied:]
 	}
 	return n, nil
+}
+
+func (block *FakeRand) Stats() (read, total int) {
+	return block.numRead, len(block.data)
 }
 
 func New(data []byte) *FakeRand {
