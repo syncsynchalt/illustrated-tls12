@@ -10,6 +10,7 @@ import (
 	"crypto/rsa"
 	"crypto/subtle"
 	"crypto/x509"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -497,6 +498,14 @@ func (hs *serverHandshakeState) doFullHandshake() error {
 		return err
 	}
 	hs.masterSecret = masterFromPreMasterSecret(c.vers, hs.suite, preMasterSecret, hs.clientHello.random, hs.hello.random)
+
+	fmt.Println("")
+	fmt.Println("mastersecret:", hex.EncodeToString(hs.masterSecret))
+	fmt.Println("premastersecret:", hex.EncodeToString(preMasterSecret))
+	fmt.Println("server random:", hex.EncodeToString(hs.hello.random))
+	fmt.Println("client random:", hex.EncodeToString(hs.clientHello.random))
+	fmt.Println("")
+
 	if err := c.config.writeKeyLog(hs.clientHello.random, hs.masterSecret); err != nil {
 		c.sendAlert(alertInternalError)
 		return err

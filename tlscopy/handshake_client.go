@@ -11,6 +11,7 @@ import (
 	"crypto/rsa"
 	"crypto/subtle"
 	"crypto/x509"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -511,6 +512,14 @@ func (hs *clientHandshakeState) doFullHandshake() error {
 	}
 
 	hs.masterSecret = masterFromPreMasterSecret(c.vers, hs.suite, preMasterSecret, hs.hello.random, hs.serverHello.random)
+
+	fmt.Println("")
+	fmt.Println("mastersecret:", hex.EncodeToString(hs.masterSecret))
+	fmt.Println("premastersecret:", hex.EncodeToString(preMasterSecret))
+	fmt.Println("server random:", hex.EncodeToString(hs.serverHello.random))
+	fmt.Println("client random:", hex.EncodeToString(hs.hello.random))
+	fmt.Println("")
+
 	if err := c.config.writeKeyLog(hs.hello.random, hs.masterSecret); err != nil {
 		c.sendAlert(alertInternalError)
 		return errors.New("tls: failed to write to key log: " + err.Error())
