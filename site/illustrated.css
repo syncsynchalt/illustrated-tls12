@@ -1,0 +1,137 @@
+h1::after {
+	content: " ❧";
+}
+h1::before {
+	content: "❧ ";
+	/* content: "☙ "; */
+}
+h1,h3 {
+	text-align: center;
+	padding: 10px;
+}
+
+h3 {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+pre {
+	margin: 1em 0;
+	overflow: auto;
+	-ms-overflow-style: scrollbar;
+}
+
+.outerblock {
+	max-width: 600px;
+	margin: 1em auto;
+}
+.outerblock p {
+	text-align: center;
+}
+
+.swatch {
+	display: inline-block;
+	clear: both;
+	padding: 0.5em;
+	border-radius: 0.5em;
+}
+
+.server {
+	background-color: #D0E8F5;
+}
+
+.client {
+	background-color: #D8EDCF;
+}
+
+.record {
+	max-width: 800px;
+	margin: 0.8em auto;
+	padding: 1em;
+	border-radius: 1em;
+	border: 2px solid transparent;
+}
+
+.record-label {
+	font-size: 1.3em;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+	white-space: nowrap;
+	text-align: center;
+	width: 100%;
+	transition: all 0.3s;
+}
+
+.record.selected-record .record-label {
+	padding: 0 0 10px 0;
+	width: 0;
+}
+
+.record .bytes {
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+	display: none;
+}
+
+.record.selected-record .bytes {
+	display: block;
+}
+
+.record:hover {
+	border: 2px solid #666;
+}
+.record.selected-record:hover {
+	border: 2px solid transparent;
+}
+
+.record > .explanation {
+	display: none;
+}
+.record.selected-record > .explanation {
+	display: block;
+}
+
+.bytes {
+	position: relative;
+}
+
+.client .bytes .string.mouseover, .client .bytes .string.selected-string {
+	color: teal !important;
+}
+
+.bytes .string.selected-string {
+	font-weight: bold;
+}
+
+.bytes .string .label {
+	display: none;
+}
+.bytes .string.mouseover > .label, .bytes .string.selected-string > .label {
+	display: inline;
+	position: absolute;
+	top: -20px;
+	background-color: #FAF7DC;
+	margin: 2px 0;
+	padding: 0 5px;
+	line-height: 1.2;
+}
+
+.bytes .string.selected-string > .explanation {
+	display: block;
+	position: absolute;
+	font-weight: normal;
+	color: black;
+	font-size: 0.9em;
+	margin: 2em;
+	padding: 0.8em 1em;
+	background-color: #FAF7DC;
+	border: 2px solid orange;
+	border-radius: 1em;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.bytes .explanation {
+	display: none;
+}
