@@ -21,6 +21,19 @@ pre {
 	-ms-overflow-style: scrollbar;
 }
 
+pre code {
+	display: block;
+	color: white;
+	background-color: black;
+	padding: 0.5em;
+	border-radius: 5px;
+}
+
+ol, ul, dl {
+  margin: 1rem 0;
+}
+
+
 .outerblock {
 	max-width: 600px;
 	margin: 1em auto;
@@ -98,7 +111,11 @@ pre {
 }
 
 .client .bytes .string.mouseover, .client .bytes .string.selected-string {
-	color: teal !important;
+	color: teal;
+}
+
+.server .bytes .string.mouseover, .server .bytes .string.selected-string {
+	color: darkgreen;
 }
 
 .bytes .string.selected-string {

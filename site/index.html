@@ -5,9 +5,7 @@
 	<title>The Illustrated TLS Connection</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet"
-		href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="frombootstrap.css">
 	<link rel="stylesheet" href="illustrated.css">
 	<script src="illustrated.js"></script>
 </head>
@@ -20,9 +18,9 @@
 
 	<div class="outerblock">
 	<p>In this demonstration a client has connection to a server,
-	negotiated a TLS 1.2 session, sent the string "ping", received
-	the string "pong", and then has terminated the session. Click
-	below to begin exploring.</p>
+	negotiated a TLS 1.2 session, sent "ping", received "pong",
+	and then terminated the session. Click below to begin
+	exploring.</p>
 
 <!--
 <div class="key">
@@ -36,7 +34,6 @@ Key:
 <div class="record-label">Client Hello</div>
 <div class="explanation">
 	We begin the session by having the client say "Hello".
-	<br/><br/>
 	In this "hello" message the client will provide the following information:
 	<ul>
 	<li>protocol version
@@ -57,13 +54,14 @@ Key:
 			of data with a type, a protocol version,
 			and a length.
 			<br/><br/>
-			In this record header we see the type is 0x16
-			(handshake record), the version is 3.1 (this
-			corresponds to TLS 1.0, which was a minor revision
-			of SSL 3.0), and the size of the payload is 0x00A5 (165) bytes.
-			<br/><br/>
+			In this record header we see the following:
+			<ul>
+			<li><tt>16</tt> - type is 0x16 (handshake record)
+			<li><tt>03 01</tt> - protocol version is 3.1 (also known as TLS 1.0)
+			<li><tt>00 a5</tt> - the length of the record payload is 0x00A5 (165) bytes
+			</ul>
 			Interestingly the version is 3.1 (TLS 1.0) instead
-			of the expected 3.3 (TLS 1.2).  Inspecting the
+			of the expected 3.3 (TLS 1.2).  Looking through the
 			golang crypto/tls library we find the following
 			comment:
 <pre><code>if vers == 0 {
@@ -77,19 +75,30 @@ Key:
 
 	<span class="string">
 		<span class="label">handshake hdr</span>
-		01 00 00 a1 03 03
+		01 00 00 a1
 		<span class="explanation">
-			Each handshake message has its own internal structure
-			but they all begin with the same subheader of type,
-			length, and protocol version which we see here.
+			Each handshake message will start with a type and a length.
 			<br/><br/>
-			The type of this handshake message is 0x01 (client
-			hello).  This is followed by 3 bytes giving the
-			length of the payload (0x0000A1, or 161 bytes).
-			Next we see the protocol version of 0x0303 (3.3),
-			which corresponds to the protocol version TLS 1.2.
-			<br/><br/>
+			In this message we see:
+			<ul>
+			<li><tt>01</tt> - handshake message type 0x01 (client hello)
+			<li><tt>00 00 a1</tt> - payload length of 0xA1 (161) bytes
+			</ul>
 			All data following this header is the payload for this message.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">client version</span>
+		03 03
+		<span class="explanation">
+			The protocol version of 3.3 (TLS 1.2) is given.
+			<br/><br/>
+			The reason for this version number (3.3
+			rather than 1.2) is that TLS 1.0 was a minor
+			revision of the SSL 3.0 protocol created
+			by Netscape, therefore it was assigned
+			version 3.1.
 		</span>
 	</span>
 
@@ -97,10 +106,10 @@ Key:
 		<span class="label">client random</span>
 		00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 		<span class="explanation">
-			The client provides 32 bytes of cryptographically-secure random data.
+			The client provides 32 bytes of cryptographically secure random data.
 			In this example we've made the random data predictable to make it easier to recognize.
 			<br/><br/>
-			The TLS1.2 spec says that the first 4 bytes
+			The TLS 1.2 spec says that the first 4 bytes
 			should be the current time in seconds-since-1970
 			but this is now recommended against as it enables
 			fingerprinting of hosts and servers.
@@ -111,7 +120,7 @@ Key:
 			(if the OS provides sufficient randomness
 			guarantees), or it may use a hardware random
 			number generator, or as a fallback it may
-			implement its own random number generator
+			implement its own random number function
 			which is seeded from the OS-provided source.
 		</span>
 	</span>
@@ -219,22 +228,24 @@ Key:
 		<span class="label">ext - server name</span>
 		00 00 00 18 00 16 00 00 13 65 78 61 6d 70 6c 65 2e 75 6c 66 68 65 69 6d 2e 6e 65 74
 		<span class="explanation">
-			The first extension provided is type 0x0000: "server name", also known as SNI (Server Name Indication).
+			The client has provided the name of the
+			server it is contacting, also known as SNI
+			(Server Name Indication).
 			<br/><br/>
 			Without this extension a HTTPS server would
 			not be able to provide service for multiple
-			hostnames (virtual hosts) on a single IP address because
-			it could not know which hostname was requested
-			until after the session was negotiated.
-			<br/><br/>
-			The data presented is as follows:
+			hostnames on a single IP address (virtual
+			hosts) because it couldn't know which
+			hostname's certificate to send until
+			after the TLS session was negotiated and the
+			HTTP request was made.
 			<ul>
-				<li>00 00 - extension "server name"
-				<li>00 18 - 0x18 (24) bytes of extension data follows
-				<li>00 16 - 0x16 (22) bytes of first (and only) list entry follows
-				<li>00 - list entry is type 0x00 "DNS hostname"
-				<li>00 13 - 0x13 (19) bytes of hostname follows
-				<li>65 78 61 ... 6e 65 74 - "example.ulfheim.net"
+				<li><tt>00 00</tt> - extension "server name"
+				<li><tt>00 18</tt> - 0x18 (24) bytes of extension data follows
+				<li><tt>00 16</tt> - 0x16 (22) bytes of first (and only) list entry follows
+				<li><tt>00</tt> - list entry is type 0x00 "DNS hostname"
+				<li><tt>00 13</tt> - 0x13 (19) bytes of hostname follows
+				<li><tt>65 78 61 ... 6e 65 74</tt> - "example.ulfheim.net"
 			</ul>
 		</span>
 	</span>
@@ -256,13 +267,11 @@ Key:
 			client to send an empty form of the extension,
 			and the server to reply with a populated
 			extension.
-			<br/><br/>
-			The data presented is as follows:
 			<ul>
-				<li>00 05 - extension "status request"
-				<li>00 05 - 0x0005 (5) bytes of extension data follows
-				<li>00 00 - 0x0 (0) bytes of responderID information
-				<li>00 00 - 0x0 (0) bytes of request extension information
+				<li><tt>00 05</tt> - extension "status request"
+				<li><tt>00 05</tt> - 0x0005 (5) bytes of extension data follows
+				<li><tt>00 00</tt> - 0x0 (0) bytes of responderID information
+				<li><tt>00 00</tt> - 0x0 (0) bytes of request extension information
 			</ul>
 		</span>
 	</span>
@@ -277,16 +286,14 @@ Key:
 			other cryptography types it now calls these
 			"supported groups" instead of "supported
 			curves".
-			<br/><br/>
-			The data presented is as follows:
 			<ul>
-				<li>00 0a - extension "supported groups"
-				<li>00 0a - 0x000A (10) bytes of extension data follows
-				<li>00 08 - 0x0008 (8) bytes of data are in the curves list
-				<li>00 1d - reserved value indicates the curve "x25519"
-				<li>00 17 - reserved value indicates the curve "secp256r1"
-				<li>00 18 - reserved value indicates the curve "secp384r1"
-				<li>00 19 - reserved value indicates the curve "secp521r1"
+				<li><tt>00 0a</tt> - extension "supported groups"
+				<li><tt>00 0a</tt> - 0x000A (10) bytes of extension data follows
+				<li><tt>00 08</tt> - 0x0008 (8) bytes of data are in the curves list
+				<li><tt>00 1d</tt> - reserved value indicates the curve "x25519"
+				<li><tt>00 17</tt> - reserved value indicates the curve "secp256r1"
+				<li><tt>00 18</tt> - reserved value indicates the curve "secp384r1"
+				<li><tt>00 19</tt> - reserved value indicates the curve "secp521r1"
 			</ul>
 		</span>
 	</span>
@@ -306,13 +313,11 @@ Key:
 			negotiate points does not exist (instead a
 			single point is pre-selected for each curve),
 			so this extension would not be sent.
-			<br/><br/>
-			The data presented is as follows:
 			<ul>
-				<li>00 0b - extension "EC points format"
-				<li>00 02 - 0x0002 (2) bytes of extension data follows
-				<li>00 01 - 0x0001 (1) bytes of data are in the supported formats list
-				<li>00 - reserved value indicating that uncompressed form is supported
+				<li><tt>00 0b</tt> - extension "EC points format"
+				<li><tt>00 02</tt> - 0x0002 (2) bytes of extension data follows
+				<li><tt>00 01</tt> - 0x0001 (1) bytes of data are in the supported formats list
+				<li><tt>00</tt> - reserved value indicating that uncompressed form is supported
 			</ul>
 		</span>
 	</span>
@@ -328,20 +333,18 @@ Key:
 			This extension indicates which of these
 			stronger algorithms the client is capable
 			of using.
-			<br/><br/>
-			The data presented is as follows:
 			<ul>
-				<li>00 0d - extension "Signature Algorithms"
-				<li>00 12 - 0x0012 (18) bytes of extension data follows
-				<li>00 10 - 0x0010 (16) bytes of data are in the following list of algorithms
-				<li>04 01 - reserved value for RSA/PKCS1/SHA256
-				<li>04 03 - reserved value for ECDSA/SECP256r1/SHA256
-				<li>05 01 - reserved value for RSA/PKCS1/SHA386
-				<li>05 03 - reserved value for ECDSA/SECP384r1/SHA384
-				<li>06 01 - reserved value for RSA/PKCS1/SHA512
-				<li>06 03 - reserved value for ECDSA/SECP521r1/SHA512
-				<li>02 01 - reserved value for RSA/PKCS1/SHA1
-				<li>02 03 - reserved value for ECDSA/SHA1
+				<li><tt>00 0d</tt> - extension "Signature Algorithms"
+				<li><tt>00 12</tt> - 0x0012 (18) bytes of extension data follows
+				<li><tt>00 10</tt> - 0x0010 (16) bytes of data are in the following list of algorithms
+				<li><tt>04 01</tt> - reserved value for RSA/PKCS1/SHA256
+				<li><tt>04 03</tt> - reserved value for ECDSA/SECP256r1/SHA256
+				<li><tt>05 01</tt> - reserved value for RSA/PKCS1/SHA386
+				<li><tt>05 03</tt> - reserved value for ECDSA/SECP384r1/SHA384
+				<li><tt>06 01</tt> - reserved value for RSA/PKCS1/SHA512
+				<li><tt>06 03</tt> - reserved value for ECDSA/SECP521r1/SHA512
+				<li><tt>02 01</tt> - reserved value for RSA/PKCS1/SHA1
+				<li><tt>02 03</tt> - reserved value for ECDSA/SHA1
 			</ul>
 		</span>
 	</span>
@@ -353,13 +356,11 @@ Key:
 			The presence of this extension prevents a type of attack performed with TLS renegotation.
 			<br/><br/>
 			The ability to renegotiate a connection has been removed from the next version of this
-			protocol (TLS 1.3).
-			<br/><br/>
-			The data presented is as follows:
+			protocol (TLS 1.3) so this will no longer be necessary.
 			<ul>
-				<li>ff 01 - extension "Renegotiation Info"
-				<li>00 01 - 0x0001 (1) bytes of extension data follows
-				<li>00 - length of renegotation data is zero, because this is a new connection
+				<li><tt>ff 01</tt> - extension "Renegotiation Info"
+				<li><tt>00 01</tt> - 0x0001 (1) bytes of extension data follows
+				<li><tt>00</tt> - length of renegotation data is zero, because this is a new connection
 			</ul>
 		</span>
 	</span>
@@ -379,11 +380,9 @@ Key:
 			client to send an empty form of the extension,
 			and the server to reply with a populated
 			extension.
-			<br/><br/>
-			The data presented is as follows:
 			<ul>
-				<li>00 12 - extension "signed certificate timestamp"
-				<li>00 00 - 0x0000 (0) bytes of extension data follows
+				<li><tt>00 12</tt> - extension "signed certificate timestamp"
+				<li><tt>00 00</tt> - 0x0000 (0) bytes of extension data follows
 			</ul>
 		</span>
 	</span>
@@ -393,69 +392,288 @@ Key:
 
 <div class="record server">
 <div class="record-label">Server Hello</div>
+<div class="explanation">
+	The session continues with the server saying "hello" back.
+	In this "hello" message the server will provide the following information:
+	<ul>
+	<li>protocol version
+	<li>server random data (used later in the handshake)
+	<li>a session id
+	<li>a selected cipher suite
+	<li>a selected compression method
+	<li>a list of extensions
+	</ul>
+</div>
 <span class="bytes">
-16 03 03 00 31 02 00 00 2d 03 03 70 71 72 73 74
-75 76 77 78 79 7a 7b 7c 7d 7e 7f 80 81 82 83 84
-85 86 87 88 89 8a 8b 8c 8d 8e 8f 00 cc a8 00 00
-05 ff 01 00 01 00
+	<span class="string">
+		<span class="label">record header</span>
+		16 03 03 00 31
+		<span class="explanation">
+			TLS sessions are broken into the sending
+			and receiving of "records", which are blocks
+			of data with a type, a protocol version,
+			and a length.
+			<br/><br/>
+			In this record header we see the following:
+			<ul>
+			<li><tt>16</tt> - type is 0x16 (handshake record)
+			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
+			<li><tt>00 31</tt> - the length of the record payload is 0x0031 (49) bytes
+			</ul>
+			All data following this header is the payload for this record.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">handshake hdr</span>
+		02 00 00 2d
+		<span class="explanation">
+			Each handshake message will start with a type and a length.
+			<br/><br/>
+			In this message we see:
+			<ul>
+			<li><tt>02</tt> - handshake message type 0x02 (server hello)
+			<li><tt>00 00 2d</tt> - payload length of 0x2D (45) bytes
+			</ul>
+			All data following this header is the payload for this message.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">server version</span>
+		03 03
+		<span class="explanation">
+			The protocol version of 3.3 (TLS 1.2) is given.
+			<br/><br/>
+			The reason for this version number (3.3
+			rather than 1.2) is that TLS 1.0 was a minor
+			revision of the SSL 3.0 protocol created
+			by Netscape, therefore it was assigned
+			version 3.1.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">server random</span>
+		70 71 72 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f
+		80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f
+		<span class="explanation">
+			The server provides 32 bytes of cryptographically secure random data.
+			In this example we've made the random data predictable to make it easier to recognize.
+			<br/><br/>
+			The TLS 1.2 spec says that the first 4 bytes
+			should be the current time in seconds-since-1970
+			but this is now recommended against as it enables
+			fingerprinting of hosts and servers.
+			<br/><br/>
+			To produce data that is sufficiently random
+			the TLS library may read random data from
+			an OS-provided source such as /dev/random
+			(if the OS provides sufficient randomness
+			guarantees), or it may use a hardware random
+			number generator, or as a fallback it may
+			implement its own random number function
+			which is seeded from the OS-provided source.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">session id</span>
+		00
+		<span class="explanation">
+			The server can provide an ID for this session
+			which a client can provide on a later session
+			negotiation in an attempt to re-use the key
+			data and skip most of the TLS negotiation
+			process.  For this to work both the server
+			and client will store key information from
+			the previous connection in memory.  Resuming
+			a connection saves a lot of computation and
+			network round-trip time so it is performed
+			whenever possible.
+			<br/><br/>
+			In this case the server is not configured
+			to store session information, so it provides
+			no session ID.  It indicates this with a
+			length byte of 0x00 (zero).
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">cipher suite</span>
+		cc a8
+		<span class="explanation">
+			The server has selected cipher suite 0xCCA8
+			(ECDHE-RSA-CHACHA20-POLY1305-SHA256) from the
+			list of options given by the client.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">compression method</span>
+		00
+		<span class="explanation">
+			The server has selected compression method
+			0x00 ("Null" compression, or no compression)
+			from the list of options given by the client.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">extensions</span>
+		00 05
+		<span class="explanation">
+			The server has returned a list of optional extensions to the client.  Because the server is forbidden from replying with an extension that the client did not send in its hello message, the server knows that the client will support all extensions listed.
+			<br/><br/>
+			In this case, the extensions data takes
+			0x0005 (5) bytes.  Each extension will be
+			presented in its own following section.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">ext - renegotiation info</span>
+		ff 01 00 01 00
+		<span class="explanation">
+			The presence of this extension prevents a type of attack performed with TLS renegotation.
+			<br/><br/>
+			The ability to renegotiate a connection has been removed from the next version of this
+			protocol (TLS 1.3) so this will no longer be necessary.
+			<ul>
+				<li><tt>ff 01</tt> - extension "Renegotiation Info"
+				<li><tt>00 01</tt> - 0x0001 (1) bytes of extension data follows
+				<li><tt>00</tt> - length of renegotation data is zero, because this is a new connection
+			</ul>
+		</span>
+	</span>
 </span>
 </div>
 
 <div class="record server">
 <div class="record-label">Server Certificate</div>
 <span class="bytes">
-16 03 03 03 2f 0b 00 03 2b 00
-03 28 00 03 25 30 82 03 21 30 82 02 09 a0 03 02
-01 02 02 08 15 5a 92 ad c2 04 8f 90 30 0d 06 09
-2a 86 48 86 f7 0d 01 01 0b 05 00 30 22 31 0b 30
-09 06 03 55 04 06 13 02 55 53 31 13 30 11 06 03
-55 04 0a 13 0a 45 78 61 6d 70 6c 65 20 43 41 30
-1e 17 0d 31 38 31 30 30 35 30 31 33 38 31 37 5a
-17 0d 31 39 31 30 30 35 30 31 33 38 31 37 5a 30
-2b 31 0b 30 09 06 03 55 04 06 13 02 55 53 31 1c
-30 1a 06 03 55 04 03 13 13 65 78 61 6d 70 6c 65
-2e 75 6c 66 68 65 69 6d 2e 6e 65 74 30 82 01 22
-30 0d 06 09 2a 86 48 86 f7 0d 01 01 01 05 00 03
-82 01 0f 00 30 82 01 0a 02 82 01 01 00 c4 80 36
-06 ba e7 47 6b 08 94 04 ec a7 b6 91 04 3f f7 92
-bc 19 ee fb 7d 74 d7 a8 0d 00 1e 7b 4b 3a 4a e6
-0f e8 c0 71 fc 73 e7 02 4c 0d bc f4 bd d1 1d 39
-6b ba 70 46 4a 13 e9 4a f8 3d f3 e1 09 59 54 7b
-c9 55 fb 41 2d a3 76 52 11 e1 f3 dc 77 6c aa 53
-37 6e ca 3a ec be c3 aa b7 3b 31 d5 6c b6 52 9c
-80 98 bc c9 e0 28 18 e2 0b f7 f8 a0 3a fd 17 04
-50 9e ce 79 bd 9f 39 f1 ea 69 ec 47 97 2e 83 0f
-b5 ca 95 de 95 a1 e6 04 22 d5 ee be 52 79 54 a1
-e7 bf 8a 86 f6 46 6d 0d 9f 16 95 1a 4c f7 a0 46
-92 59 5c 13 52 f2 54 9e 5a fb 4e bf d7 7a 37 95
-01 44 e4 c0 26 87 4c 65 3e 40 7d 7d 23 07 44 01
-f4 84 ff d0 8f 7a 1f a0 52 10 d1 f4 f0 d5 ce 79
-70 29 32 e2 ca be 70 1f df ad 6b 4b b7 11 01 f4
-4b ad 66 6a 11 13 0f e2 ee 82 9e 4d 02 9d c9 1c
-dd 67 16 db b9 06 18 86 ed c1 ba 94 21 02 03 01
-00 01 a3 52 30 50 30 0e 06 03 55 1d 0f 01 01 ff
-04 04 03 02 05 a0 30 1d 06 03 55 1d 25 04 16 30
-14 06 08 2b 06 01 05 05 07 03 02 06 08 2b 06 01
-05 05 07 03 01 30 1f 06 03 55 1d 23 04 18 30 16
-80 14 89 4f de 5b cc 69 e2 52 cf 3e a3 00 df b1
-97 b8 1d e1 c1 46 30 0d 06 09 2a 86 48 86 f7 0d
-01 01 0b 05 00 03 82 01 01 00 59 16 45 a6 9a 2e
-37 79 e4 f6 dd 27 1a ba 1c 0b fd 6c d7 55 99 b5
-e7 c3 6e 53 3e ff 36 59 08 43 24 c9 e7 a5 04 07
-9d 39 e0 d4 29 87 ff e3 eb dd 09 c1 cf 1d 91 44
-55 87 0b 57 1d d1 9b df 1d 24 f8 bb 9a 11 fe 80
-fd 59 2b a0 39 8c de 11 e2 65 1e 61 8c e5 98 fa
-96 e5 37 2e ef 3d 24 8a fd e1 74 63 eb bf ab b8
-e4 d1 ab 50 2a 54 ec 00 64 e9 2f 78 19 66 0d 3f
-27 cf 20 9e 66 7f ce 5a e2 e4 ac 99 c7 c9 38 18
-f8 b2 51 07 22 df ed 97 f3 2e 3e 93 49 d4 c6 6c
-9e a6 39 6d 74 44 62 a0 6b 42 c6 d5 ba 68 8e ac
-3a 01 7b dd fc 8e 2c fc ad 27 cb 69 d3 cc dc a2
-80 41 44 65 d3 ae 34 8c e0 f3 4a b2 fb 9c 61 83
-71 31 2b 19 10 41 64 1c 23 7f 11 a5 d6 5c 84 4f
-04 04 84 99 38 71 2b 95 9e d6 85 bc 5c 5d d6 45
-ed 19 90 94 73 40 29 26 dc b4 0e 34 69 a1 59 41
-e8 e2 cc a8 4b b6 08 46 36 a0
+<div class="explanation">
+	The server provides a certificate containing items including the following:
+	<ul>
+	<li>the public key used by this server
+	<li>the hostname of the server
+	<li>proof from a trusted third party that the owner of this server holds this public key
+	</ul>
+</div>
+	<span class="string">
+		<span class="label">record header</span>
+		16 03 03 03 2f
+		<span class="explanation">
+			TLS sessions are broken into the sending
+			and receiving of "records", which are blocks
+			of data with a type, a protocol version,
+			and a length.
+			<br/><br/>
+			In this record header we see the following:
+			<ul>
+			<li><tt>16</tt> - type is 0x16 (handshake record)
+			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
+			<li><tt>03 2f</tt> - the length of the record payload is 0x032f (815) bytes
+			</ul>
+			All data following this header is the payload for this record.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">handshake hdr</span>
+		0b 00 03 2b
+		<span class="explanation">
+			Each handshake message will start with a type and a length.
+			<br/><br/>
+			In this message we see:
+			<ul>
+			<li><tt>0b</tt> - handshake message type 0x0B (certificate)
+			<li><tt>00 03 2b</tt> - payload length of 0x32B (811) bytes
+			</ul>
+			All data following this header is the payload for this message.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">certificate length</span>
+		00 03 25
+		<span class="explanation">
+			The certificate message begins with the
+			certificate length (0x325 or 805 bytes) and
+			will be followed by the certificate.
+		</span>
+	</span>
+
+	<span class="string">
+		<span class="label">certificate</span>
+		30 82 03 21 30 82 02 09 a0 03 02
+		01 02 02 08 15 5a 92 ad c2 04 8f 90 30 0d 06 09
+		2a 86 48 86 f7 0d 01 01 0b 05 00 30 22 31 0b 30
+		09 06 03 55 04 06 13 02 55 53 31 13 30 11 06 03
+		55 04 0a 13 0a 45 78 61 6d 70 6c 65 20 43 41 30
+		1e 17 0d 31 38 31 30 30 35 30 31 33 38 31 37 5a
+		17 0d 31 39 31 30 30 35 30 31 33 38 31 37 5a 30
+		2b 31 0b 30 09 06 03 55 04 06 13 02 55 53 31 1c
+		30 1a 06 03 55 04 03 13 13 65 78 61 6d 70 6c 65
+		2e 75 6c 66 68 65 69 6d 2e 6e 65 74 30 82 01 22
+		30 0d 06 09 2a 86 48 86 f7 0d 01 01 01 05 00 03
+		82 01 0f 00 30 82 01 0a 02 82 01 01 00 c4 80 36
+		06 ba e7 47 6b 08 94 04 ec a7 b6 91 04 3f f7 92
+		bc 19 ee fb 7d 74 d7 a8 0d 00 1e 7b 4b 3a 4a e6
+		0f e8 c0 71 fc 73 e7 02 4c 0d bc f4 bd d1 1d 39
+		6b ba 70 46 4a 13 e9 4a f8 3d f3 e1 09 59 54 7b
+		c9 55 fb 41 2d a3 76 52 11 e1 f3 dc 77 6c aa 53
+		37 6e ca 3a ec be c3 aa b7 3b 31 d5 6c b6 52 9c
+		80 98 bc c9 e0 28 18 e2 0b f7 f8 a0 3a fd 17 04
+		50 9e ce 79 bd 9f 39 f1 ea 69 ec 47 97 2e 83 0f
+		b5 ca 95 de 95 a1 e6 04 22 d5 ee be 52 79 54 a1
+		e7 bf 8a 86 f6 46 6d 0d 9f 16 95 1a 4c f7 a0 46
+		92 59 5c 13 52 f2 54 9e 5a fb 4e bf d7 7a 37 95
+		01 44 e4 c0 26 87 4c 65 3e 40 7d 7d 23 07 44 01
+		f4 84 ff d0 8f 7a 1f a0 52 10 d1 f4 f0 d5 ce 79
+		70 29 32 e2 ca be 70 1f df ad 6b 4b b7 11 01 f4
+		4b ad 66 6a 11 13 0f e2 ee 82 9e 4d 02 9d c9 1c
+		dd 67 16 db b9 06 18 86 ed c1 ba 94 21 02 03 01
+		00 01 a3 52 30 50 30 0e 06 03 55 1d 0f 01 01 ff
+		04 04 03 02 05 a0 30 1d 06 03 55 1d 25 04 16 30
+		14 06 08 2b 06 01 05 05 07 03 02 06 08 2b 06 01
+		05 05 07 03 01 30 1f 06 03 55 1d 23 04 18 30 16
+		80 14 89 4f de 5b cc 69 e2 52 cf 3e a3 00 df b1
+		97 b8 1d e1 c1 46 30 0d 06 09 2a 86 48 86 f7 0d
+		01 01 0b 05 00 03 82 01 01 00 59 16 45 a6 9a 2e
+		37 79 e4 f6 dd 27 1a ba 1c 0b fd 6c d7 55 99 b5
+		e7 c3 6e 53 3e ff 36 59 08 43 24 c9 e7 a5 04 07
+		9d 39 e0 d4 29 87 ff e3 eb dd 09 c1 cf 1d 91 44
+		55 87 0b 57 1d d1 9b df 1d 24 f8 bb 9a 11 fe 80
+		fd 59 2b a0 39 8c de 11 e2 65 1e 61 8c e5 98 fa
+		96 e5 37 2e ef 3d 24 8a fd e1 74 63 eb bf ab b8
+		e4 d1 ab 50 2a 54 ec 00 64 e9 2f 78 19 66 0d 3f
+		27 cf 20 9e 66 7f ce 5a e2 e4 ac 99 c7 c9 38 18
+		f8 b2 51 07 22 df ed 97 f3 2e 3e 93 49 d4 c6 6c
+		9e a6 39 6d 74 44 62 a0 6b 42 c6 d5 ba 68 8e ac
+		3a 01 7b dd fc 8e 2c fc ad 27 cb 69 d3 cc dc a2
+		80 41 44 65 d3 ae 34 8c e0 f3 4a b2 fb 9c 61 83
+		71 31 2b 19 10 41 64 1c 23 7f 11 a5 d6 5c 84 4f
+		04 04 84 99 38 71 2b 95 9e d6 85 bc 5c 5d d6 45
+		ed 19 90 94 73 40 29 26 dc b4 0e 34 69 a1 59 41
+		e8 e2 cc a8 4b b6 08 46 36 a0
+		<span class="explanation">
+			The certificate is encoded in ASN.1 DER
+			encoding.  The details of this format and
+			the content of this binary payload are
+			documented <a href="xxx">on another page</a>.
+			<a href="server.crt">The certificate</a>
+			(which is usually kept in a non-binary format called PEM)
+			can be converted to the binary data in this message
+			using the following command:
+<pre><code>$ openssl x509 -outform der < server.crt | hexdump | head
+0000000 30 82 03 21 30 82 02 09 a0 03 02 01 02 02 08 15
+0000010 5a 92 ad c2 04 8f 90 30 0d 06 09 2a 86 48 86 f7
+... snip ...
+</code></pre>
+			(this binary data is the result of base64 decoding of the PEM contents).
+		</span>
+	</span>
 </span>
 </div>
 
@@ -556,7 +774,7 @@ df 91 21 38 38 51 ed 21 a2 8e 3b 75 e9 65 d0 d2 cd 16 62 54
 	</div>
 
 	<div class="outerblock">
-	<p>If you found this page useful or interesting let me know
+	<p>If you found this page useful or interesting let me know via Twitter
 	<a href="https://twitter.com/xargsnotbombs">@XargsNotBombs</a>.</p>
 	</div>
 

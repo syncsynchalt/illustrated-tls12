@@ -22,9 +22,11 @@ ill = {
 	},
 
 	selectString: function(element, event) {
+		var selected = element.classList.contains("selected-string");
 		ill.unselectAllStrings();
-		element.classList.add("selected-string");
-		element.classList.remove("mouseover");
+		if (!selected) {
+			element.classList.add("selected-string");
+		}
 		event && event.stopPropagation();
 	},
 
