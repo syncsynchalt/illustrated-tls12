@@ -11,7 +11,9 @@ import (
 	"crypto/rsa"
 	"crypto/sha1"
 	"crypto/x509"
+	"encoding/hex"
 	"errors"
+	"fmt"
 	"io"
 	"math/big"
 
@@ -184,7 +186,9 @@ NextCandidate:
 
 		curve25519.ScalarBaseMult(&public, &scalar)
 		ka.privateKey = scalar[:]
+		fmt.Println("server private key", hex.EncodeToString(ka.privateKey))
 		ecdhePublic = public[:]
+		fmt.Println("server public key", hex.EncodeToString(ecdhePublic))
 	} else {
 		curve, ok := curveForCurveID(ka.curveid)
 		if !ok {
@@ -368,10 +372,12 @@ func (ka *ecdheKeyAgreement) generateClientKeyExchange(config *Config, clientHel
 		if _, err := io.ReadFull(config.rand(), scalar[:]); err != nil {
 			return nil, nil, err
 		}
+		fmt.Println("client private key", hex.EncodeToString(scalar[:]))
 
 		copy(theirPublic[:], ka.publicKey)
 		curve25519.ScalarBaseMult(&ourPublic, &scalar)
 		curve25519.ScalarMult(&sharedKey, &scalar, &theirPublic)
+		fmt.Println("client public key", hex.EncodeToString(ourPublic[:]))
 		serialized = ourPublic[:]
 		preMasterSecret = sharedKey[:]
 	} else {

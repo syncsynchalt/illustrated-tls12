@@ -1,49 +1,38 @@
 ill = {
 	unselectAllRecords: function() {
-		var el = document.getElementsByClassName("selected-record"),
-			i;
-		for (i = 0; i < el.length; i++) {
-			el[i].classList.remove("selected-record");
-		}
+		[].forEach.call(document.querySelectorAll(".record.selected, .calculation.selected"), function(el) {
+			el.classList.remove("selected");
+		});
 	},
 
 	unselectAllStrings: function() {
-		var el = document.getElementsByClassName("selected-string"),
-			i;
-		for (i = 0; i < el.length; i++) {
-			el[i].classList.remove("selected-string");
+		[].forEach.call(document.querySelectorAll(".string.selected"), function(el) {
+			el.classList.remove("selected");
+		});
+	},
+
+	toggleRecord: function(element, event) {
+		var selected = element.classList.contains("selected");
+		ill.unselectAllRecords();
+		if (!selected) {
+			element.classList.add("selected");
 		}
+		event && event.stopPropagation();
 	},
 
 	selectRecord: function(element, event) {
 		ill.unselectAllRecords();
-		ill.unselectAllStrings();
-		element.classList.add("selected-record");
+		element.classList.add("selected");
+		event && event.stopPropagation();
 	},
 
-	selectString: function(element, event) {
-		var selected = element.classList.contains("selected-string");
+	toggleString: function(element, event) {
+		var selected = element.classList.contains("selected");
 		ill.unselectAllStrings();
 		if (!selected) {
-			element.classList.add("selected-string");
+			element.classList.add("selected");
 		}
 		event && event.stopPropagation();
-	},
-
-	mouseString: function(element, event) {
-		ill.unmouseAllStrings();
-		element.classList.add("mouseover");
-		event && event.stopPropagation();
-	},
-
-	unmouseString: function(element, event) {
-		ill.unmouseAllStrings();
-	},
-
-	unmouseAllStrings() {
-		[].forEach.call(document.getElementsByClassName("mouseover"), function(el) {
-			el.classList.contains("string") && el.classList.remove("mouseover");
-		});
 	},
 
 	cancel: function(event) {
@@ -52,25 +41,24 @@ ill = {
 };
 
 window.onload = function() {
-	[].forEach.call(document.getElementsByClassName("record"), function(el) {
+	[].forEach.call(document.querySelectorAll(".record, .calculation"), function(el) {
 		el.onclick = function(event) {
-			ill.selectRecord(this, event);
+			ill.selectRecord(el, event);
 		};
 	});
-	[].forEach.call(document.getElementsByClassName("string"), function(el) {
+	[].forEach.call(document.querySelectorAll(".record > .label, .calculation > .label"), function(el) {
 		el.onclick = function(event) {
-			ill.selectString(this, event);
-		};
-		el.onmouseover = function(event) {
-			ill.mouseString(this, event);
-		};
-		el.onmouseout = function(event) {
-			ill.unmouseString(this, event);
+			ill.toggleRecord(el.parentNode, event);
 		};
 	});
-	[].forEach.call(document.getElementsByClassName("explanation"), function(el) {
+	[].forEach.call(document.querySelectorAll(".string"), function(el) {
+		el.onclick = function(event) {
+			ill.toggleString(el, event);
+		};
+	});
+	[].forEach.call(document.querySelectorAll(".record > .explanation"), function(el) {
 		el.onclick = function(event) {
 			ill.cancel(event);
 		};
 	});
-}
+};

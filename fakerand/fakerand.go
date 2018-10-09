@@ -3,8 +3,8 @@ package fakerand
 
 // FakeRand is an io.Reader that supplies the same repeated 'random' bytes on Read().
 type FakeRand struct {
-	data  []byte
-	index int
+	data    []byte
+	index   int
 	numRead int
 }
 

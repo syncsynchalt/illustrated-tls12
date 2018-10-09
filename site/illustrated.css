@@ -57,7 +57,9 @@ ol, ul, dl {
 	background-color: #D8EDCF;
 }
 
-.record {
+/***** .record and .calculation *****/
+
+.record, .calculation {
 	max-width: 800px;
 	margin: 0.8em auto;
 	padding: 1em;
@@ -65,7 +67,17 @@ ol, ul, dl {
 	border: 2px solid transparent;
 }
 
-.record-label {
+.server.record > .label::before {
+	content: "⇉ ";
+}
+.client.record > .label::before {
+	content: "⇇ ";
+}
+.calculation > .label::before {
+	content: "÷ ";
+}
+
+.record > .label, .calculation > .label {
 	font-size: 1.3em;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -78,54 +90,51 @@ ol, ul, dl {
 	transition: all 0.3s;
 }
 
-.record.selected-record .record-label {
+.record.selected > .label, .calculation.selected > .label {
 	padding: 0 0 10px 0;
 	width: 0;
 }
+.record.selected > .label::after, .calculation.selected > .label::after {
+	content: " ×";
+}
 
-.record .bytes {
+.record .record-data {
 	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 	display: none;
-}
-
-.record.selected-record .bytes {
-	display: block;
-}
-
-.record:hover {
-	border: 2px solid #666;
-}
-.record.selected-record:hover {
-	border: 2px solid transparent;
-}
-
-.record > .explanation {
-	display: none;
-}
-.record.selected-record > .explanation {
-	display: block;
-}
-
-.bytes {
 	position: relative;
 }
 
-.client .bytes .string.mouseover, .client .bytes .string.selected-string {
-	color: teal;
+.record.selected .record-data, .calculation.selected .explanation {
+	display: block;
 }
 
-.server .bytes .string.mouseover, .server .bytes .string.selected-string {
+.record:hover, .calculation:hover {
+	border: 2px solid #666;
+}
+.record.selected:hover, .calculation.selected:hover {
+	border: 2px solid transparent;
+}
+
+.record > .explanation, .calculation > .explanation {
+	display: none;
+}
+.record.selected > .explanation, .calculation.selected > .explanation{
+	display: block;
+}
+
+/***** .record-data *****/
+
+.client .record-data .string:hover, .client .record-data .string.selected {
+	color: teal;
+}
+.server .record-data .string:hover, .server .record-data .string.selected {
 	color: darkgreen;
 }
 
-.bytes .string.selected-string {
-	font-weight: bold;
-}
-
-.bytes .string .label {
+.record-data .string .label {
 	display: none;
 }
-.bytes .string.mouseover > .label, .bytes .string.selected-string > .label {
+.record-data .string:hover > .label, .record-data .string.selected > .label {
 	display: inline;
 	position: absolute;
 	top: -20px;
@@ -135,7 +144,11 @@ ol, ul, dl {
 	line-height: 1.2;
 }
 
-.bytes .string.selected-string > .explanation {
+.record-data .string.selected {
+	font-weight: bold;
+}
+
+.record-data .string.selected > .explanation {
 	display: block;
 	position: absolute;
 	font-weight: normal;
@@ -149,6 +162,6 @@ ol, ul, dl {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.bytes .explanation {
+.record-data .explanation {
 	display: none;
 }
