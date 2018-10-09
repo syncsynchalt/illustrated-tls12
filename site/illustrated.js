@@ -18,14 +18,14 @@ ill = {
 			element.classList.add("selected");
 		}
 		ill.calculateStringPositions(element);
-		event && event.stopPropagation();
+		if (event) { event.stopPropagation(); }
 	},
 
 	selectRecord: function(element, event) {
 		ill.unselectAllRecords();
 		element.classList.add("selected");
 		ill.calculateStringPositions(element);
-		event && event.stopPropagation();
+		if (event) { event.stopPropagation(); }
 	},
 
 	toggleString: function(element, event) {
@@ -34,11 +34,11 @@ ill = {
 		if (!selected) {
 			element.classList.add("selected");
 		}
-		event && event.stopPropagation();
+		if (event) { event.stopPropagation(); }
 	},
 
 	cancel: function(event) {
-		event && event.stopPropagation();
+		if (event) { event.stopPropagation(); }
 	},
 
 	addCloseButton: function(el) {
