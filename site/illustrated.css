@@ -7,9 +7,6 @@ h1:before {
 h1,h3 {
 	text-align: center;
 	padding: 10px;
-}
-
-h3 {
 	max-width: 800px;
 	margin: 0 auto;
 }
@@ -164,8 +161,10 @@ ol, ul, dl {
 	content: "";
 	position: absolute;
 	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
-	-moz-transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
 	transform: rotate 45deg;
 	bottom: -3px;
 	left: 10px;
@@ -190,7 +189,7 @@ ol, ul, dl {
 	border: 2px solid orange;
 	border-radius: 1em;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	box-shadow: 0px 0px 5px 1px #ccc;
+	box-shadow: 0 0 5px 1px #ccc;
 	z-index: 1;
 }
 
@@ -199,7 +198,7 @@ ol, ul, dl {
 }
 
 .string .explanation .close {
-	display: inline-block;
+	display: block;
 	cursor: pointer;
 	float: right;
 	font-size: 1.8em;
