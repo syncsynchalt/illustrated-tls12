@@ -47,8 +47,10 @@ Key:
 <span class="record-data">
 	<span class="string">
 		<span class="label">record header</span>
-		16 03 01 00 a5
-		<span class="explanation">
+		<span class="bytes">
+			16 03 01 00 a5
+		</span>
+		<div class="explanation">
 			TLS sessions are broken into the sending
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
@@ -70,13 +72,15 @@ Key:
     vers = VersionTLS10
 }</code></pre>
 			All data following this header is the payload for this record.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">handshake header</span>
-		01 00 00 a1
-		<span class="explanation">
+		<span class="bytes">
+			01 00 00 a1
+		</span>
+		<div class="explanation">
 			Each handshake message will start with a type and a length.
 			<br/><br/>
 			In this message we see:
@@ -85,26 +89,30 @@ Key:
 			<li><tt>00 00 a1</tt> - payload length of 0xA1 (161) bytes
 			</ul>
 			All data following this header is the payload for this message.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">client version</span>
-		03 03
-		<span class="explanation">
+		<span class="bytes">
+			03 03
+		</span>
+		<div class="explanation">
 			The protocol version of 3.3 (meaning TLS 1.2) is given.
 			<br/><br/>
 			This choice of version number (3.3 rather
 			than 1.2) is due to TLS 1.0 being a minor
 			revision of the SSL 3.0 protocol, thus being
 			assigned version 3.1.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">client random</span>
-		00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
-		<span class="explanation">
+		<span class="bytes">
+			00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+		</span>
+		<div class="explanation">
 			The client provides 32 bytes of cryptographically secure random data.
 			In this example we've made the random data predictable to make it easier to recognize.
 			<br/><br/>
@@ -112,13 +120,15 @@ Key:
 			should be the current time in seconds-since-1970
 			but this is now recommended against as it enables
 			fingerprinting of hosts and servers.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">session id</span>
-		00
-		<span class="explanation">
+		<span class="bytes">
+			00
+		</span>
+		<div class="explanation">
 			The client can provide the ID of a previous
 			TLS session against this server which it
 			is able to resume.  For this to work both
@@ -130,15 +140,17 @@ Key:
 			<ul>
 			<li><tt>00</tt> - length of zero (no session id is provided)
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">cipher suites</span>
-		00 20 cc a8
-		cc a9 c0 2f c0 30 c0 2b c0 2c c0 13 c0 09 c0 14
-		c0 0a 00 9c 00 9d 00 2f 00 35 c0 12 00 0a
-		<span class="explanation">
+		<span class="bytes">
+			00 20 cc a8
+			cc a9 c0 2f c0 30 c0 2b c0 2c c0 13 c0 09 c0 14
+			c0 0a 00 9c 00 9d 00 2f 00 35 c0 12 00 0a
+		</span>
+		<div class="explanation">
 			The client provides an ordered list of which
 			cryptographic methods it will support for
 			key exchange, encryption with that exchanged
@@ -147,30 +159,32 @@ Key:
 			client, with highest preference first.
 			<ul>
 			<li><tt>00 20</tt> - 0x20 (32) bytes of cipher suite data
-			<li><tt>cc a8</tt> - assigned value for ECDHE-RSA-CHACHA20-POLY1305-SHA256
-			<li><tt>cc a9</tt> - assigned value for ECDHE-ECDSA-CHACHA20-POLY1305-SHA256
-			<li><tt>c0 2f</tt> - assigned value for ECDHE-RSA-AES128-GCM-SHA256
-			<li><tt>c0 30</tt> - assigned value for ECDHE-RSA-AES256-GCM-SHA384
-			<li><tt>c0 2b</tt> - assigned value for ECDHE-ECDSA-AES128-GCM-SHA256
-			<li><tt>c0 2c</tt> - assigned value for ECDHE-ECDSA-AES256-GCM-SHA384
-			<li><tt>c0 13</tt> - assigned value for ECDHE-RSA-AES128-SHA
-			<li><tt>c0 09</tt> - assigned value for ECDHE-ECDSA-AES128-SHA
-			<li><tt>c0 14</tt> - assigned value for ECDHE-RSA-AES256-SHA
-			<li><tt>c0 0a</tt> - assigned value for ECDHE-ECDSA-AES256-SHA
-			<li><tt>00 9c</tt> - assigned value for RSA-AES128-GCM-SHA256
-			<li><tt>00 9d</tt> - assigned value for RSA-AES256-GCM-SHA384
-			<li><tt>00 2f</tt> - assigned value for RSA-AES128-SHA
-			<li><tt>00 35</tt> - assigned value for RSA-AES256-SHA
-			<li><tt>c0 12</tt> - assigned value for ECDHE-RSA-3DES-EDE-SHA
-			<li><tt>00 0a</tt> - assigned value for RSA-3DES-EDE-SHA
+			<li><tt>cc a8</tt> - assigned value for <tt>ECDHE-RSA-CHACHA20-POLY1305-SHA256</tt>
+			<li><tt>cc a9</tt> - assigned value for <tt>ECDHE-ECDSA-CHACHA20-POLY1305-SHA256</tt>
+			<li><tt>c0 2f</tt> - assigned value for <tt>ECDHE-RSA-AES128-GCM-SHA256</tt>
+			<li><tt>c0 30</tt> - assigned value for <tt>ECDHE-RSA-AES256-GCM-SHA384</tt>
+			<li><tt>c0 2b</tt> - assigned value for <tt>ECDHE-ECDSA-AES128-GCM-SHA256</tt>
+			<li><tt>c0 2c</tt> - assigned value for <tt>ECDHE-ECDSA-AES256-GCM-SHA384</tt>
+			<li><tt>c0 13</tt> - assigned value for <tt>ECDHE-RSA-AES128-SHA</tt>
+			<li><tt>c0 09</tt> - assigned value for <tt>ECDHE-ECDSA-AES128-SHA</tt>
+			<li><tt>c0 14</tt> - assigned value for <tt>ECDHE-RSA-AES256-SHA</tt>
+			<li><tt>c0 0a</tt> - assigned value for <tt>ECDHE-ECDSA-AES256-SHA</tt>
+			<li><tt>00 9c</tt> - assigned value for <tt>RSA-AES128-GCM-SHA256</tt>
+			<li><tt>00 9d</tt> - assigned value for <tt>RSA-AES256-GCM-SHA384</tt>
+			<li><tt>00 2f</tt> - assigned value for <tt>RSA-AES128-SHA</tt>
+			<li><tt>00 35</tt> - assigned value for <tt>RSA-AES256-SHA</tt>
+			<li><tt>c0 12</tt> - assigned value for <tt>ECDHE-RSA-3DES-EDE-SHA</tt>
+			<li><tt>00 0a</tt> - assigned value for <tt>RSA-3DES-EDE-SHA</tt>
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">compression methods</span>
-		01 00
-		<span class="explanation">
+		<span class="bytes">
+			01 00
+		</span>
+		<div class="explanation">
 			The client provides an ordered list of which
 			compression methods it will support.  This
 			compression would be applied before encryption
@@ -183,13 +197,15 @@ Key:
 			the security of the encrypted data so this feature
 			has been removed from future TLS protocols.
 			<br/>&nbsp;
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">extensions</span>
-		00 58
-		<span class="explanation">
+		<span class="bytes">
+			00 58
+		</span>
+		<div class="explanation">
 			The client has provided a list of optional
 			extensions which the server can use to
 			take action or enable new features.
@@ -201,13 +217,15 @@ Key:
 			<ul>
 			<li><tt>00 58</tt> - the extensions will take 0x58 (88) bytes of data
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">ext - server name</span>
-		00 00 00 18 00 16 00 00 13 65 78 61 6d 70 6c 65 2e 75 6c 66 68 65 69 6d 2e 6e 65 74
-		<span class="explanation">
+		<span class="bytes">
+			00 00 00 18 00 16 00 00 13 65 78 61 6d 70 6c 65 2e 75 6c 66 68 65 69 6d 2e 6e 65 74
+		</span>
+		<div class="explanation">
 			The client has provided the name of the
 			server it is contacting, also known as SNI
 			(Server Name Indication).
@@ -227,13 +245,15 @@ Key:
 				<li><tt>00 13</tt> - 0x13 (19) bytes of hostname follows
 				<li><tt>65 78 61 ... 6e 65 74</tt> - "example.ulfheim.net"
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">ext - status request</span>
-		00 05 00 05 01 00 00 00 00
-		<span class="explanation">
+		<span class="bytes">
+			00 05 00 05 01 00 00 00 00
+		</span>
+		<div class="explanation">
 			The next extension provided is permission
 			for the server to provide OCSP information
 			used to check whether a certificate has been revoked.
@@ -253,13 +273,15 @@ Key:
 				<li><tt>00 00</tt> - 0x0 (0) bytes of responderID information
 				<li><tt>00 00</tt> - 0x0 (0) bytes of request extension information
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">ext - supported groups</span>
-		00 0a 00 0a 00 08 00 1d 00 17 00 18 00 19
-		<span class="explanation">
+		<span class="bytes">
+			00 0a 00 0a 00 08 00 1d 00 17 00 18 00 19
+		</span>
+		<div class="explanation">
 			The client has indicated that it supports
 			elliptic curve (EC) cryptography for 4 curves.
 			To make this extension more generic for
@@ -275,13 +297,15 @@ Key:
 				<li><tt>00 18</tt> - assigned value for the curve "secp384r1"
 				<li><tt>00 19</tt> - assigned value for the curve "secp521r1"
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">ext - EC point formats</span>
-		00 0b 00 02 01 00
-		<span class="explanation">
+		<span class="bytes">
+			00 0b 00 02 01 00
+		</span>
+		<div class="explanation">
 			During elliptic curve (EC) cryptography the
 			client and server will exchange information
 			on the points selected, in either compressed
@@ -299,13 +323,15 @@ Key:
 				<li><tt>00 01</tt> - 0x1 (1) bytes of data are in the supported formats list
 				<li><tt>00</tt> - assigned value for uncompressed form
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">ext - signature algorithms</span>
-		00 0d 00 12 00 10 04 01 04 03 05 01 05 03 06 01 06 03 02 01 02 03
-		<span class="explanation">
+		<span class="bytes">
+			00 0d 00 12 00 10 04 01 04 03 05 01 05 03 06 01 06 03 02 01 02 03
+		</span>
+		<div class="explanation">
 			As TLS has developed it has become necessary to
 			support stronger signature algorithms such
 			as SHA-256 while still supporting earlier
@@ -326,13 +352,15 @@ Key:
 				<li><tt>02 01</tt> - assigned value for RSA/PKCS1/SHA1
 				<li><tt>02 03</tt> - assigned value for ECDSA/SHA1
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">ext - renegotiation info</span>
-		ff 01 00 01 00
-		<span class="explanation">
+		<span class="bytes">
+			ff 01 00 01 00
+		</span>
+		<div class="explanation">
 			The presence of this extension prevents a type of attack performed with TLS renegotation.
 			<br/><br/>
 			The ability to renegotiate a connection has been removed from the next version of this
@@ -342,13 +370,15 @@ Key:
 				<li><tt>00 01</tt> - 0x1 (1) bytes of extension data follows
 				<li><tt>00</tt> - length of renegotation data is zero, because this is a new connection
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">ext - SCT</span>
-		00 12 00 00
-		<span class="explanation">
+		<span class="bytes">
+			00 12 00 00
+		</span>
+		<div class="explanation">
 			The client has given the server permission to return a signed certificate timestamp.
 			<br/><br/>
 			This form of the client providing permission
@@ -364,7 +394,7 @@ Key:
 				<li><tt>00 12</tt> - extension "signed certificate timestamp"
 				<li><tt>00 00</tt> - 0x0 (0) bytes of extension data follows
 			</ul>
-		</span>
+		</div>
 	</span>
 </span>
 </span>
@@ -386,8 +416,10 @@ Key:
 <span class="record-data">
 	<span class="string">
 		<span class="label">record header</span>
-		16 03 03 00 31
-		<span class="explanation">
+		<span class="bytes">
+			16 03 03 00 31
+		</span>
+		<div class="explanation">
 			TLS sessions are broken into the sending
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
@@ -400,13 +432,15 @@ Key:
 			<li><tt>00 31</tt> - the length of the record payload is 0x31 (49) bytes
 			</ul>
 			All data following this header is the payload for this record.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">handshake header</span>
-		02 00 00 2d
-		<span class="explanation">
+		<span class="bytes">
+			02 00 00 2d
+		</span>
+		<div class="explanation">
 			Each handshake message will start with a type and a length.
 			<br/><br/>
 			In this message we see:
@@ -415,13 +449,15 @@ Key:
 			<li><tt>00 00 2d</tt> - payload length of 0x2D (45) bytes
 			</ul>
 			All data following this header is the payload for this message.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">server version</span>
-		03 03
-		<span class="explanation">
+		<span class="bytes">
+			03 03
+		</span>
+		<div class="explanation">
 			The protocol version of 3.3 (TLS 1.2) is given.
 			<br/><br/>
 			The reason for this version number (3.3
@@ -429,14 +465,16 @@ Key:
 			revision of the SSL 3.0 protocol created
 			by Netscape, therefore it was assigned
 			version 3.1.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">server random</span>
-		70 71 72 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f
-		80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f
-		<span class="explanation">
+		<span class="bytes">
+			70 71 72 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f
+			80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f
+		</span>
+		<div class="explanation">
 			The server provides 32 bytes of cryptographically secure random data.
 			In this example we've made the random data predictable to make it easier to recognize.
 			<br/><br/>
@@ -444,13 +482,15 @@ Key:
 			should be the current time in seconds-since-1970
 			but this is now recommended against as it enables
 			fingerprinting of hosts and servers.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">session id</span>
-		00
-		<span class="explanation">
+		<span class="bytes">
+			00
+		</span>
+		<div class="explanation">
 			The server can provide an ID for this session
 			which a client can provide on a later session
 			negotiation in an attempt to re-use the key
@@ -464,45 +504,53 @@ Key:
 			<ul>
 			<li><tt>00</tt> - length of zero (no session id is provided)
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">cipher suite</span>
-		cc a8
-		<span class="explanation">
+		<span class="bytes">
+			cc a8
+		</span>
+		<div class="explanation">
 			The server has selected cipher suite 0xCCA8
 			(ECDHE-RSA-CHACHA20-POLY1305-SHA256) from the
 			list of options given by the client.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">compression method</span>
-		00
-		<span class="explanation">
+		<span class="bytes">
+			00
+		</span>
+		<div class="explanation">
 			The server has selected compression method
 			0x00 ("Null" compression, or no compression)
 			from the list of options given by the client.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">extensions</span>
-		00 05
-		<span class="explanation">
+		<span class="bytes">
+			00 05
+		</span>
+		<div class="explanation">
 			The server has returned a list of optional extensions to the client.  Because the server is forbidden from replying with an extension that the client did not send in its hello message, the server knows that the client will support all extensions listed.
 			<br/><br/>
 			In this case, the extensions data takes
 			0x5 (5) bytes.  Each extension will be
 			presented in its own following section.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">ext - renegotiation info</span>
-		ff 01 00 01 00
-		<span class="explanation">
+		<span class="bytes">
+			ff 01 00 01 00
+		</span>
+		<div class="explanation">
 			The presence of this extension prevents a type of attack performed with TLS renegotation.
 			<br/><br/>
 			The ability to renegotiate a connection has been removed from the next version of this
@@ -512,7 +560,7 @@ Key:
 				<li><tt>00 01</tt> - 0x1 (1) bytes of extension data follows
 				<li><tt>00</tt> - length of renegotation data is zero, because this is a new connection
 			</ul>
-		</span>
+		</div>
 	</span>
 </span>
 </div>
@@ -530,8 +578,10 @@ Key:
 <span class="record-data">
 	<span class="string">
 		<span class="label">record header</span>
-		16 03 03 03 2f
-		<span class="explanation">
+		<span class="bytes">
+			16 03 03 03 2f
+		</span>
+		<div class="explanation">
 			TLS sessions are broken into the sending
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
@@ -544,13 +594,15 @@ Key:
 			<li><tt>03 2f</tt> - the length of the record payload is 0x032f (815) bytes
 			</ul>
 			All data following this header is the payload for this record.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">handshake header</span>
-		0b 00 03 2b
-		<span class="explanation">
+		<span class="bytes">
+			0b 00 03 2b
+		</span>
+		<div class="explanation">
 			Each handshake message will start with a type and a length.
 			<br/><br/>
 			In this message we see:
@@ -559,73 +611,77 @@ Key:
 			<li><tt>00 03 2b</tt> - payload length of 0x32B (811) bytes
 			</ul>
 			All data following this header is the payload for this message.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">certificate length</span>
-		00 03 25
-		<span class="explanation">
+		<span class="bytes">
+			00 03 25
+		</span>
+		<div class="explanation">
 			The certificate message begins with the
 			certificate length (0x325 or 805 bytes) and
 			will be followed by the certificate.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">certificate</span>
-		30 82 03 21 30 82 02 09 a0 03 02
-		01 02 02 08 15 5a 92 ad c2 04 8f 90 30 0d 06 09
-		2a 86 48 86 f7 0d 01 01 0b 05 00 30 22 31 0b 30
-		09 06 03 55 04 06 13 02 55 53 31 13 30 11 06 03
-		55 04 0a 13 0a 45 78 61 6d 70 6c 65 20 43 41 30
-		1e 17 0d 31 38 31 30 30 35 30 31 33 38 31 37 5a
-		17 0d 31 39 31 30 30 35 30 31 33 38 31 37 5a 30
-		2b 31 0b 30 09 06 03 55 04 06 13 02 55 53 31 1c
-		30 1a 06 03 55 04 03 13 13 65 78 61 6d 70 6c 65
-		2e 75 6c 66 68 65 69 6d 2e 6e 65 74 30 82 01 22
-		30 0d 06 09 2a 86 48 86 f7 0d 01 01 01 05 00 03
-		82 01 0f 00 30 82 01 0a 02 82 01 01 00 c4 80 36
-		06 ba e7 47 6b 08 94 04 ec a7 b6 91 04 3f f7 92
-		bc 19 ee fb 7d 74 d7 a8 0d 00 1e 7b 4b 3a 4a e6
-		0f e8 c0 71 fc 73 e7 02 4c 0d bc f4 bd d1 1d 39
-		6b ba 70 46 4a 13 e9 4a f8 3d f3 e1 09 59 54 7b
-		c9 55 fb 41 2d a3 76 52 11 e1 f3 dc 77 6c aa 53
-		37 6e ca 3a ec be c3 aa b7 3b 31 d5 6c b6 52 9c
-		80 98 bc c9 e0 28 18 e2 0b f7 f8 a0 3a fd 17 04
-		50 9e ce 79 bd 9f 39 f1 ea 69 ec 47 97 2e 83 0f
-		b5 ca 95 de 95 a1 e6 04 22 d5 ee be 52 79 54 a1
-		e7 bf 8a 86 f6 46 6d 0d 9f 16 95 1a 4c f7 a0 46
-		92 59 5c 13 52 f2 54 9e 5a fb 4e bf d7 7a 37 95
-		01 44 e4 c0 26 87 4c 65 3e 40 7d 7d 23 07 44 01
-		f4 84 ff d0 8f 7a 1f a0 52 10 d1 f4 f0 d5 ce 79
-		70 29 32 e2 ca be 70 1f df ad 6b 4b b7 11 01 f4
-		4b ad 66 6a 11 13 0f e2 ee 82 9e 4d 02 9d c9 1c
-		dd 67 16 db b9 06 18 86 ed c1 ba 94 21 02 03 01
-		00 01 a3 52 30 50 30 0e 06 03 55 1d 0f 01 01 ff
-		04 04 03 02 05 a0 30 1d 06 03 55 1d 25 04 16 30
-		14 06 08 2b 06 01 05 05 07 03 02 06 08 2b 06 01
-		05 05 07 03 01 30 1f 06 03 55 1d 23 04 18 30 16
-		80 14 89 4f de 5b cc 69 e2 52 cf 3e a3 00 df b1
-		97 b8 1d e1 c1 46 30 0d 06 09 2a 86 48 86 f7 0d
-		01 01 0b 05 00 03 82 01 01 00 59 16 45 a6 9a 2e
-		37 79 e4 f6 dd 27 1a ba 1c 0b fd 6c d7 55 99 b5
-		e7 c3 6e 53 3e ff 36 59 08 43 24 c9 e7 a5 04 07
-		9d 39 e0 d4 29 87 ff e3 eb dd 09 c1 cf 1d 91 44
-		55 87 0b 57 1d d1 9b df 1d 24 f8 bb 9a 11 fe 80
-		fd 59 2b a0 39 8c de 11 e2 65 1e 61 8c e5 98 fa
-		96 e5 37 2e ef 3d 24 8a fd e1 74 63 eb bf ab b8
-		e4 d1 ab 50 2a 54 ec 00 64 e9 2f 78 19 66 0d 3f
-		27 cf 20 9e 66 7f ce 5a e2 e4 ac 99 c7 c9 38 18
-		f8 b2 51 07 22 df ed 97 f3 2e 3e 93 49 d4 c6 6c
-		9e a6 39 6d 74 44 62 a0 6b 42 c6 d5 ba 68 8e ac
-		3a 01 7b dd fc 8e 2c fc ad 27 cb 69 d3 cc dc a2
-		80 41 44 65 d3 ae 34 8c e0 f3 4a b2 fb 9c 61 83
-		71 31 2b 19 10 41 64 1c 23 7f 11 a5 d6 5c 84 4f
-		04 04 84 99 38 71 2b 95 9e d6 85 bc 5c 5d d6 45
-		ed 19 90 94 73 40 29 26 dc b4 0e 34 69 a1 59 41
-		e8 e2 cc a8 4b b6 08 46 36 a0
-		<span class="explanation">
+		<span class="bytes">
+			30 82 03 21 30 82 02 09 a0 03 02
+			01 02 02 08 15 5a 92 ad c2 04 8f 90 30 0d 06 09
+			2a 86 48 86 f7 0d 01 01 0b 05 00 30 22 31 0b 30
+			09 06 03 55 04 06 13 02 55 53 31 13 30 11 06 03
+			55 04 0a 13 0a 45 78 61 6d 70 6c 65 20 43 41 30
+			1e 17 0d 31 38 31 30 30 35 30 31 33 38 31 37 5a
+			17 0d 31 39 31 30 30 35 30 31 33 38 31 37 5a 30
+			2b 31 0b 30 09 06 03 55 04 06 13 02 55 53 31 1c
+			30 1a 06 03 55 04 03 13 13 65 78 61 6d 70 6c 65
+			2e 75 6c 66 68 65 69 6d 2e 6e 65 74 30 82 01 22
+			30 0d 06 09 2a 86 48 86 f7 0d 01 01 01 05 00 03
+			82 01 0f 00 30 82 01 0a 02 82 01 01 00 c4 80 36
+			06 ba e7 47 6b 08 94 04 ec a7 b6 91 04 3f f7 92
+			bc 19 ee fb 7d 74 d7 a8 0d 00 1e 7b 4b 3a 4a e6
+			0f e8 c0 71 fc 73 e7 02 4c 0d bc f4 bd d1 1d 39
+			6b ba 70 46 4a 13 e9 4a f8 3d f3 e1 09 59 54 7b
+			c9 55 fb 41 2d a3 76 52 11 e1 f3 dc 77 6c aa 53
+			37 6e ca 3a ec be c3 aa b7 3b 31 d5 6c b6 52 9c
+			80 98 bc c9 e0 28 18 e2 0b f7 f8 a0 3a fd 17 04
+			50 9e ce 79 bd 9f 39 f1 ea 69 ec 47 97 2e 83 0f
+			b5 ca 95 de 95 a1 e6 04 22 d5 ee be 52 79 54 a1
+			e7 bf 8a 86 f6 46 6d 0d 9f 16 95 1a 4c f7 a0 46
+			92 59 5c 13 52 f2 54 9e 5a fb 4e bf d7 7a 37 95
+			01 44 e4 c0 26 87 4c 65 3e 40 7d 7d 23 07 44 01
+			f4 84 ff d0 8f 7a 1f a0 52 10 d1 f4 f0 d5 ce 79
+			70 29 32 e2 ca be 70 1f df ad 6b 4b b7 11 01 f4
+			4b ad 66 6a 11 13 0f e2 ee 82 9e 4d 02 9d c9 1c
+			dd 67 16 db b9 06 18 86 ed c1 ba 94 21 02 03 01
+			00 01 a3 52 30 50 30 0e 06 03 55 1d 0f 01 01 ff
+			04 04 03 02 05 a0 30 1d 06 03 55 1d 25 04 16 30
+			14 06 08 2b 06 01 05 05 07 03 02 06 08 2b 06 01
+			05 05 07 03 01 30 1f 06 03 55 1d 23 04 18 30 16
+			80 14 89 4f de 5b cc 69 e2 52 cf 3e a3 00 df b1
+			97 b8 1d e1 c1 46 30 0d 06 09 2a 86 48 86 f7 0d
+			01 01 0b 05 00 03 82 01 01 00 59 16 45 a6 9a 2e
+			37 79 e4 f6 dd 27 1a ba 1c 0b fd 6c d7 55 99 b5
+			e7 c3 6e 53 3e ff 36 59 08 43 24 c9 e7 a5 04 07
+			9d 39 e0 d4 29 87 ff e3 eb dd 09 c1 cf 1d 91 44
+			55 87 0b 57 1d d1 9b df 1d 24 f8 bb 9a 11 fe 80
+			fd 59 2b a0 39 8c de 11 e2 65 1e 61 8c e5 98 fa
+			96 e5 37 2e ef 3d 24 8a fd e1 74 63 eb bf ab b8
+			e4 d1 ab 50 2a 54 ec 00 64 e9 2f 78 19 66 0d 3f
+			27 cf 20 9e 66 7f ce 5a e2 e4 ac 99 c7 c9 38 18
+			f8 b2 51 07 22 df ed 97 f3 2e 3e 93 49 d4 c6 6c
+			9e a6 39 6d 74 44 62 a0 6b 42 c6 d5 ba 68 8e ac
+			3a 01 7b dd fc 8e 2c fc ad 27 cb 69 d3 cc dc a2
+			80 41 44 65 d3 ae 34 8c e0 f3 4a b2 fb 9c 61 83
+			71 31 2b 19 10 41 64 1c 23 7f 11 a5 d6 5c 84 4f
+			04 04 84 99 38 71 2b 95 9e d6 85 bc 5c 5d d6 45
+			ed 19 90 94 73 40 29 26 dc b4 0e 34 69 a1 59 41
+			e8 e2 cc a8 4b b6 08 46 36 a0
+		</span>
+		<div class="explanation">
 			The certificate is encoded in ASN.1 DER
 			encoding.  The details of this format and
 			the content of this binary payload are
@@ -639,7 +695,7 @@ Key:
 0000010 5a 92 ad c2 04 8f 90 30 0d 06 09 2a 86 48 86 f7
 ... snip ...
 </code></pre>
-		</span>
+		</div>
 	</span>
 </span>
 </div>
@@ -705,7 +761,7 @@ pub:
 	<span class="string">
 		<span class="label">record header</span>
  		16 03 03 01 2c
-		<span class="explanation">
+		<div class="explanation">
 			TLS sessions are broken into the sending
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
@@ -718,13 +774,15 @@ pub:
 			<li><tt>01 2c</tt> - the length of the record payload is 0x12c (300) bytes
 			</ul>
 			All data following this header is the payload for this record.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">handshake header</span>
-		0c 00 01 28
-		<span class="explanation">
+		<span class="bytes">
+			0c 00 01 28
+		</span>
+		<div class="explanation">
 			Each handshake message will start with a type and a length.
 			<br/><br/>
 			In this message we see:
@@ -733,55 +791,61 @@ pub:
 			<li><tt>00 01 28</tt> - payload length of 0x128 (296) bytes
 			</ul>
 			All data following this header is the payload for this message.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">curve info</span>
-		03 00 1d
-		<span class="explanation">
+		<span class="bytes">
+			03 00 1d
+		</span>
+		<div class="explanation">
 			The server chooses the elliptic curve that points will be calculated from.
 			<ul>
 			<li><tt>03</tt> - assigned value for "named_curve": the following bytes will identify a specific curve
 			<li><tt>00 1d</tt> - curve 0x001d ("curve x25519")
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">public key</span>
-		20 9f d7 ad 6d cf f4 29 8d d3
-		f9 6d 5b 1b 2a f9 10 a0 53 5b 14 88 d7 f8 fa bb
-		34 9a 98 28 80 b6 15
-		<span class="explanation">
+		<span class="bytes">
+			20 9f d7 ad 6d cf f4 29 8d d3
+			f9 6d 5b 1b 2a f9 10 a0 53 5b 14 88 d7 f8 fa bb
+			34 9a 98 28 80 b6 15
+		</span>
+		<div class="explanation">
 			The server provides its public key.
 			<ul>
 			<li><tt>20</tt> - length of 0x20 (32) bytes
 			<li><tt>9f d7 ... b6 15</tt> - public key
 			</ul>
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">signature</span>
-		04 01 01 00 04 02 b6 61 f7
-		c1 91 ee 59 be 45 37 66 39 bd c3 d4 bb 81 e1 15
-		ca 73 c8 34 8b 52 5b 0d 23 38 aa 14 46 67 ed 94
-		31 02 14 12 cd 9b 84 4c ba 29 93 4a aa cc e8 73
-		41 4e c1 1c b0 2e 27 2d 0a d8 1f 76 7d 33 07 67
-		21 f1 3b f3 60 20 cf 0b 1f d0 ec b0 78 de 11 28
-		be ba 09 49 eb ec e1 a1 f9 6e 20 9d c3 6e 4f ff
-		d3 6b 67 3a 7d dc 15 97 ad 44 08 e4 85 c4 ad b2
-		c8 73 84 12 49 37 25 23 80 9e 43 12 d0 c7 b3 52
-		2e f9 83 ca c1 e0 39 35 ff 13 a8 e9 6b a6 81 a6
-		2e 40 d3 e7 0a 7f f3 58 66 d3 d9 99 3f 9e 26 a6
-		34 c8 1b 4e 71 38 0f cd d6 f4 e8 35 f7 5a 64 09
-		c7 dc 2c 07 41 0e 6f 87 85 8c 7b 94 c0 1c 2e 32
-		f2 91 76 9e ac ca 71 64 3b 8b 98 a9 63 df 0a 32
-		9b ea 4e d6 39 7e 8c d0 1a 11 0a b3 61 ac 5b ad
-		1c cd 84 0a 6c 8a 6e aa 00 1a 9d 7d 87 dc 33 18
-		64 35 71 22 6c 4d d2 c2 ac 41 fb
-		<span class="explanation">
+		<span class="bytes">
+			04 01 01 00 04 02 b6 61 f7
+			c1 91 ee 59 be 45 37 66 39 bd c3 d4 bb 81 e1 15
+			ca 73 c8 34 8b 52 5b 0d 23 38 aa 14 46 67 ed 94
+			31 02 14 12 cd 9b 84 4c ba 29 93 4a aa cc e8 73
+			41 4e c1 1c b0 2e 27 2d 0a d8 1f 76 7d 33 07 67
+			21 f1 3b f3 60 20 cf 0b 1f d0 ec b0 78 de 11 28
+			be ba 09 49 eb ec e1 a1 f9 6e 20 9d c3 6e 4f ff
+			d3 6b 67 3a 7d dc 15 97 ad 44 08 e4 85 c4 ad b2
+			c8 73 84 12 49 37 25 23 80 9e 43 12 d0 c7 b3 52
+			2e f9 83 ca c1 e0 39 35 ff 13 a8 e9 6b a6 81 a6
+			2e 40 d3 e7 0a 7f f3 58 66 d3 d9 99 3f 9e 26 a6
+			34 c8 1b 4e 71 38 0f cd d6 f4 e8 35 f7 5a 64 09
+			c7 dc 2c 07 41 0e 6f 87 85 8c 7b 94 c0 1c 2e 32
+			f2 91 76 9e ac ca 71 64 3b 8b 98 a9 63 df 0a 32
+			9b ea 4e d6 39 7e 8c d0 1a 11 0a b3 61 ac 5b ad
+			1c cd 84 0a 6c 8a 6e aa 00 1a 9d 7d 87 dc 33 18
+			64 35 71 22 6c 4d d2 c2 ac 41 fb
+		</span>
+		<div class="explanation">
 			Because the server is using generated ephemeral keys
 			it is not using the public key provided in
 			the server certificate.  To prove that the
@@ -815,7 +879,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 ... snip ...
 00000f0 7d 87 dc 33 18 64 35 71 22 6c 4d d2 c2 ac 41 fb
 </code></pre>
-		</span>
+		</div>
 	</span>
 </span>
 </div>
@@ -829,8 +893,10 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 <span class="record-data">
 	<span class="string">
 		<span class="label">record header</span>
-		16 03 03 00 04
-		<span class="explanation">
+		<span class="bytes">
+			16 03 03 00 04
+		</span>
+		<div class="explanation">
 			TLS sessions are broken into the sending
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
@@ -843,13 +909,15 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 			<li><tt>00 04</tt> - the length of the record payload is 0x4 (4) bytes
 			</ul>
 			All data following this header is the payload for this record.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">handshake header</span>
-		0e 00 00 00
-		<span class="explanation">
+		<span class="bytes">
+			0e 00 00 00
+		</span>
+		<div class="explanation">
 			Each handshake message will start with a type and a length.
 			<br/><br/>
 			In this message we see:
@@ -857,7 +925,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 			<li><tt>0e</tt> - handshake message type 0x0e (server hello done)
 			<li><tt>00 00 00</tt> - payload length of 0 bytes (no payload)
 			</ul>
-		</span>
+		</div>
 	</span>
 </span>
 </div>
@@ -921,8 +989,10 @@ pub:
 <span class="record-data">
 	<span class="string">
 		<span class="label">record header</span>
-		16 03 03 00 25
-		<span class="explanation">
+		<span class="bytes">
+			16 03 03 00 25
+		</span>
+		<div class="explanation">
 			TLS sessions are broken into the sending
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
@@ -935,13 +1005,15 @@ pub:
 			<li><tt>00 25</tt> - the length of the record payload is 0x25 (37) bytes
 			</ul>
 			All data following this header is the payload for this record.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">handshake header</span>
-		10 00 00 21
-		<span class="explanation">
+		<span class="bytes">
+			10 00 00 21
+		</span>
+		<div class="explanation">
 			Each handshake message will start with a type and a length.
 			<br/><br/>
 			In this message we see:
@@ -950,20 +1022,22 @@ pub:
 			<li><tt>00 00 21</tt> - payload length of 0x21 (33) bytes
 			</ul>
 			All data following this header is the payload for this message.
-		</span>
+		</div>
 	</span>
 
 	<span class="string">
 		<span class="label">public key</span>
-		20 35 80 72 d6 36 58 80 d1 ae ea 32 9a
-		df 91 21 38 38 51 ed 21 a2 8e 3b 75 e9 65 d0 d2 cd 16 62 54
-		<span class="explanation">
+		<span class="bytes">
+			20 35 80 72 d6 36 58 80 d1 ae ea 32 9a
+			df 91 21 38 38 51 ed 21 a2 8e 3b 75 e9 65 d0 d2 cd 16 62 54
+		</span>
+		<div class="explanation">
 			The client provides its public key.
 			<ul>
 			<li><tt>20</tt> - length of 0x20 (32) bytes
 			<li><tt>35 80 ... 62 54</tt> - public key
 			</ul>
-		</span>
+		</div>
 	</span>
 </span>
 </div>
@@ -981,8 +1055,10 @@ pub:
 <span class="record-data">
 	<span class="string">
 		<span class="label">record</span>
-		14 03 03 00 01 01
-		<span class="explanation">
+		<span class="bytes">
+			14 03 03 00 01 01
+		</span>
+		<div class="explanation">
 			TLS sessions are broken into the sending
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
@@ -995,7 +1071,7 @@ pub:
 			<li><tt>00 01</tt> - the length of the record payload is 0x01 (1) bytes
 			<li><tt>01</tt> - the payload of this message is defined as the byte 0x01
 			</ul>
-		</span>
+		</div>
 	</span>
 </span>
 </div>

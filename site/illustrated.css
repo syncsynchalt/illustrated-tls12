@@ -90,6 +90,10 @@ ol, ul, dl {
 	transition: all 0.3s;
 }
 
+.record.selected, .calculation.selected {
+	box-shadow: 2px 2px 5px 1px #ccc;
+}
+
 .record.selected > .label, .calculation.selected > .label {
 	padding: 0 0 10px 0;
 	width: 0;
@@ -104,7 +108,7 @@ ol, ul, dl {
 	position: relative;
 }
 
-.record.selected .record-data, .calculation.selected .explanation {
+.record.selected .record-data {
 	display: block;
 }
 
@@ -133,15 +137,19 @@ ol, ul, dl {
 
 .record-data .string .label {
 	display: none;
-}
-.record-data .string:hover > .label, .record-data .string.selected > .label {
-	display: inline;
 	position: absolute;
-	top: -20px;
 	background-color: #FAF7DC;
 	margin: 2px 0;
 	padding: 0 5px;
 	line-height: 1.2;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.record-data .string:hover > .label, .record-data .string.selected > .label {
+	display: inline;
 }
 
 .record-data .string.selected {
@@ -160,6 +168,8 @@ ol, ul, dl {
 	border: 2px solid orange;
 	border-radius: 1em;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	box-shadow: 2px 2px 5px 1px #ccc;
+	box-shadow: 0px 0px 5px 1px #ccc;
 }
 
 .record-data .explanation {

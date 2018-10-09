@@ -17,12 +17,14 @@ ill = {
 		if (!selected) {
 			element.classList.add("selected");
 		}
+		ill.calculateStringPositions(element);
 		event && event.stopPropagation();
 	},
 
 	selectRecord: function(element, event) {
 		ill.unselectAllRecords();
 		element.classList.add("selected");
+		ill.calculateStringPositions(element);
 		event && event.stopPropagation();
 	},
 
@@ -37,6 +39,20 @@ ill = {
 
 	cancel: function(event) {
 		event && event.stopPropagation();
+	},
+
+	calculateStringPositions: function(record) {
+		[].forEach.call(record.querySelectorAll(".string > .label"), function(el, i) {
+			el.style.left = el.parentElement.offsetLeft;
+			el.style.top = (el.parentElement.offsetTop - 20)+"px";
+		});
+		[].forEach.call(record.querySelectorAll(".string > .explanation"), function(el) {
+			if (el.parentElement.offsetHeight < 20) {
+				el.style.top = (el.parentElement.offsetTop + 0)+"px";
+			} else {
+				el.style.top = (el.parentElement.offsetTop + 20)+"px";
+			}
+		});
 	}
 };
 
@@ -51,9 +67,9 @@ window.onload = function() {
 			ill.toggleRecord(el.parentNode, event);
 		};
 	});
-	[].forEach.call(document.querySelectorAll(".string"), function(el) {
+	[].forEach.call(document.querySelectorAll(".string .bytes, .string .label"), function(el) {
 		el.onclick = function(event) {
-			ill.toggleString(el, event);
+			ill.toggleString(el.parentNode, event);
 		};
 	});
 	[].forEach.call(document.querySelectorAll(".record > .explanation"), function(el) {
@@ -61,4 +77,10 @@ window.onload = function() {
 			ill.cancel(event);
 		};
 	});
+};
+
+window.onkeyup = function(e) {
+	if (e.keyCode === 27) {
+		ill.unselectAllStrings();
+	}
 };
