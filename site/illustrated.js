@@ -42,16 +42,14 @@ ill = {
 	},
 
 	calculateStringPositions: function(record) {
-		[].forEach.call(record.querySelectorAll(".string > .label"), function(el, i) {
-			el.style.left = el.parentElement.offsetLeft;
-			el.style.top = (el.parentElement.offsetTop - 20)+"px";
-		});
 		[].forEach.call(record.querySelectorAll(".string > .explanation"), function(el) {
-			if (el.parentElement.offsetHeight < 20) {
-				el.style.top = (el.parentElement.offsetTop + 0)+"px";
+			var recordData = el.parentElement.parentElement;
+			if (el.parentElement.offsetHeight < 60) {
+				el.style.top = (el.parentElement.offsetHeight+5) + "px";
 			} else {
-				el.style.top = (el.parentElement.offsetTop + 20)+"px";
+				el.style.top = "60px";
 			}
+			el.style.width = (recordData.offsetWidth-40) + "px";
 		});
 	}
 };

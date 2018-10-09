@@ -81,7 +81,7 @@ Key:
 			01 00 00 a1
 		</span>
 		<div class="explanation">
-			Each handshake message will start with a type and a length.
+			Each handshake message starts with a type and a length.
 			<br/><br/>
 			In this message we see:
 			<ul>
@@ -201,7 +201,7 @@ Key:
 	</span>
 
 	<span class="string">
-		<span class="label">extensions</span>
+		<span class="label">ext length</span>
 		<span class="bytes">
 			00 58
 		</span>
@@ -254,19 +254,19 @@ Key:
 			00 05 00 05 01 00 00 00 00
 		</span>
 		<div class="explanation">
-			The next extension provided is permission
-			for the server to provide OCSP information
-			used to check whether a certificate has been revoked.
+			The client provides permission for the
+			server to provide OCSP information in its response.
+			OCSP can be used to check whether a certificate
+			has been revoked.
 			<br/><br/>
-			This form of the client providing permission
-			for the server to reply with information
-			is necessary because in the TLS protocol
-			it is a fatal error for the server to reply
-			with an extension that the client did not
-			provide first.  Therefore it is common for the
-			client to send an empty form of the extension,
-			and the server to reply with a populated
-			extension.
+			This form of the client sending an empty
+			extension is necessary because
+			it is a fatal error for the server
+			to reply with an extension that the client
+			did not provide first.  Therefore the client
+			sends an empty form of the extension, and
+			the server replies with the extension
+			populated with data.
 			<ul>
 				<li><tt>00 05</tt> - extension "status request"
 				<li><tt>00 05</tt> - 0x5 (5) bytes of extension data follows
@@ -336,8 +336,8 @@ Key:
 			support stronger signature algorithms such
 			as SHA-256 while still supporting earlier
 			implementations that used MD5 and SHA1.
-			This extension indicates which of these
-			stronger algorithms the client is capable
+			This extension indicates which signature
+			algorithms the client is capable
 			of using.
 			<ul>
 				<li><tt>00 0d</tt> - extension "Signature Algorithms"
@@ -379,17 +379,18 @@ Key:
 			00 12 00 00
 		</span>
 		<div class="explanation">
-			The client has given the server permission to return a signed certificate timestamp.
+			The client provides permission for the
+			server to return a signed certificate
+			timestamp.
 			<br/><br/>
-			This form of the client providing permission
-			for the server to reply with information
-			is necessary because in the TLS protocol
-			it is a fatal error for the server to reply
-			with an extension that the client did not
-			provide first.  Therefore it is common for the
-			client to send an empty form of the extension,
-			and the server to reply with a populated
-			extension.
+			This form of the client sending an empty
+			extension is necessary because
+			it is a fatal error for the server
+			to reply with an extension that the client
+			did not provide first.  Therefore the client
+			sends an empty form of the extension, and
+			the server replies with the extension
+			populated with data.
 			<ul>
 				<li><tt>00 12</tt> - extension "signed certificate timestamp"
 				<li><tt>00 00</tt> - 0x0 (0) bytes of extension data follows
@@ -441,7 +442,7 @@ Key:
 			02 00 00 2d
 		</span>
 		<div class="explanation">
-			Each handshake message will start with a type and a length.
+			Each handshake message starts with a type and a length.
 			<br/><br/>
 			In this message we see:
 			<ul>
@@ -532,7 +533,7 @@ Key:
 	</span>
 
 	<span class="string">
-		<span class="label">extensions</span>
+		<span class="label">ext length</span>
 		<span class="bytes">
 			00 05
 		</span>
@@ -603,7 +604,7 @@ Key:
 			0b 00 03 2b
 		</span>
 		<div class="explanation">
-			Each handshake message will start with a type and a length.
+			Each handshake message starts with a type and a length.
 			<br/><br/>
 			In this message we see:
 			<ul>
@@ -682,12 +683,11 @@ Key:
 			e8 e2 cc a8 4b b6 08 46 36 a0
 		</span>
 		<div class="explanation">
-			The certificate is encoded in ASN.1 DER
+			The certificate is in ASN.1 DER
 			encoding.  The details of this format and
 			the content of this binary payload are
 			documented <a href="xxx">on another page</a>.
 			<a href="files/server.crt" download="server.crt">The certificate</a>
-			(which is usually kept in a non-binary format called PEM)
 			can be converted to the binary data in this message
 			using the following command:
 <pre><code>$ openssl x509 -outform der < server.crt | hexdump | head
@@ -708,7 +708,7 @@ Key:
 	method of key exchange, using the x25519 curve.
 	<br/><br/>
 	The private key is chosen by selecting an integer between
-	1 and 2^256-1.  It does this by generating 32 bytes of
+	1 and 2<sup>256</sup>-1.  It does this by generating 32 bytes of
 	random data.  The
 	<a href="files/server-ephemeral-private.key" download="server-ephemeral-private.key">private key</a>
 	selected is:
@@ -756,6 +756,7 @@ pub:
 	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs will
 	be <b>E</b>phemeral rather than using the public/private key from
 	the certificate.
+	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -783,7 +784,7 @@ pub:
 			0c 00 01 28
 		</span>
 		<div class="explanation">
-			Each handshake message will start with a type and a length.
+			Each handshake message starts with a type and a length.
 			<br/><br/>
 			In this message we see:
 			<ul>
@@ -846,7 +847,7 @@ pub:
 			64 35 71 22 6c 4d d2 c2 ac 41 fb
 		</span>
 		<div class="explanation">
-			Because the server is using generated ephemeral keys
+			Because the server is generating ephemeral keys
 			it is not using the public key provided in
 			the server certificate.  To prove that the
 			server owns the server certificate (giving the certificate
@@ -918,7 +919,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 			0e 00 00 00
 		</span>
 		<div class="explanation">
-			Each handshake message will start with a type and a length.
+			Each handshake message starts with a type and a length.
 			<br/><br/>
 			In this message we see:
 			<ul>
@@ -938,7 +939,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 	method of key exchange, using the x25519 curve.
 	<br/><br/>
 	The private key is chosen by selecting an integer between
-	1 and 2^256-1.  It does this by generating 32 bytes of
+	1 and 2<sup>256</sup>-1.  It does this by generating 32 bytes of
 	random data.  The
 	<a href="files/client-ephemeral-private.key" download="client-ephemeral-private.key">private key</a>
 	selected is:
@@ -974,17 +975,18 @@ pub:
 <div class="label">Client Key Exchange</div>
 <div class="explanation">
 	The client provides information for key exchange.  As part of the
-	key exchange process both the server and the client will have a
+	key exchange process both the server and the client will generate a
 	keypair of public and private keys, and will send the other party
 	their public key.  The shared encryption key will then be generated
-	using a combination of each party's private key and the other party's
+	using a function of each party's private key and the other party's
 	public key.
 	<br/><br/>
 	The parties had agreed on a cipher suite using ECDHE, meaning the
 	keypairs will be based on a selected <b>E</b>lliptic <b>C</b>urve,
 	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs will
-	be <b>E</b>phemeral rather than using the public/private key from
-	the certificate.
+	be <b>E</b>phemeral rather than using a public/private key from
+	the server certificate.
+	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -1014,7 +1016,7 @@ pub:
 			10 00 00 21
 		</span>
 		<div class="explanation">
-			Each handshake message will start with a type and a length.
+			Each handshake message starts with a type and a length.
 			<br/><br/>
 			In this message we see:
 			<ul>

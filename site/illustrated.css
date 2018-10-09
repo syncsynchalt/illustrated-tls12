@@ -1,7 +1,7 @@
-h1::after {
+h1:after {
 	content: " ❧";
 }
-h1::before {
+h1:before {
 	content: "❧ ";
 	/* content: "☙ "; */
 }
@@ -67,13 +67,13 @@ ol, ul, dl {
 	border: 2px solid transparent;
 }
 
-.server.record > .label::before {
+.server.record > .label:before {
 	content: "⇉ ";
 }
-.client.record > .label::before {
+.client.record > .label:before {
 	content: "⇇ ";
 }
-.calculation > .label::before {
+.calculation > .label:before {
 	content: "÷ ";
 }
 
@@ -98,7 +98,7 @@ ol, ul, dl {
 	padding: 0 0 10px 0;
 	width: 0;
 }
-.record.selected > .label::after, .calculation.selected > .label::after {
+.record.selected > .label:after, .calculation.selected > .label:after {
 	content: " ×";
 }
 
@@ -135,21 +135,42 @@ ol, ul, dl {
 	color: darkgreen;
 }
 
+.record-data .string {
+	position: relative;
+}
+
 .record-data .string .label {
 	display: none;
 	position: absolute;
 	background-color: #FAF7DC;
+	border-radius: 5px;
 	margin: 2px 0;
-	padding: 0 5px;
+	padding: 2px 7px;
 	line-height: 1.2;
 	white-space: nowrap;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	top: -28px;
+	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 .record-data .string:hover > .label, .record-data .string.selected > .label {
 	display: inline;
+}
+
+.record-data .string .label:after {
+	content: "";
+	position: absolute;
+	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+	-moz-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	transform: rotate 45deg;
+	bottom: -3px;
+	left: 10px;
+	border-width: 3px;
+	border-style: solid;
+	border-color: transparent #FAF7DC #FAF7DC transparent;
 }
 
 .record-data .string.selected {
@@ -162,14 +183,14 @@ ol, ul, dl {
 	font-weight: normal;
 	color: black;
 	font-size: 0.9em;
-	margin: 2em;
-	padding: 0.8em 1em;
+	margin: 10px;
+	padding: 10px 10px;
 	background-color: #FAF7DC;
 	border: 2px solid orange;
 	border-radius: 1em;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	box-shadow: 2px 2px 5px 1px #ccc;
 	box-shadow: 0px 0px 5px 1px #ccc;
+	z-index: 1;
 }
 
 .record-data .explanation {
