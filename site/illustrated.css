@@ -3,7 +3,6 @@ h1:after {
 }
 h1:before {
 	content: "❧ ";
-	/* content: "☙ "; */
 }
 h1,h3 {
 	text-align: center;
@@ -100,6 +99,8 @@ ol, ul, dl {
 }
 .record.selected > .label:after, .calculation.selected > .label:after {
 	content: " ×";
+	font-weight: bold;
+	cursor: pointer;
 }
 
 .record .record-data {
@@ -193,6 +194,17 @@ ol, ul, dl {
 	z-index: 1;
 }
 
-.record-data .explanation {
+.record-data .string > .explanation {
 	display: none;
+}
+
+.string .explanation .close {
+	display: inline-block;
+	cursor: pointer;
+	float: right;
+	font-size: 1.8em;
+	margin-top: -15px;
+}
+.string .explanation .close:hover {
+	font-weight: bold;
 }

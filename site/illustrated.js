@@ -41,6 +41,10 @@ ill = {
 		event && event.stopPropagation();
 	},
 
+	addCloseButton: function(el) {
+		el.innerHTML = '<span class="close" onclick="ill.unselectAllStrings()">&times;</span>' + el.innerHTML;
+	},
+
 	calculateStringPositions: function(record) {
 		[].forEach.call(record.querySelectorAll(".string > .explanation"), function(el) {
 			var recordData = el.parentElement.parentElement;
@@ -49,7 +53,7 @@ ill = {
 			} else {
 				el.style.top = "60px";
 			}
-			el.style.width = (recordData.offsetWidth-40) + "px";
+			el.style.width = (recordData.offsetWidth-30) + "px";
 		});
 	}
 };
@@ -74,6 +78,9 @@ window.onload = function() {
 		el.onclick = function(event) {
 			ill.cancel(event);
 		};
+	});
+	[].forEach.call(document.querySelectorAll(".string > .explanation"), function(el) {
+		ill.addCloseButton(el);
 	});
 };
 
