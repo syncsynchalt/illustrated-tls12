@@ -132,6 +132,7 @@ tt.longboi {
 
 .record > .explanation, .calculation > .explanation {
 	display: none;
+	margin-bottom: 1em;
 }
 .record.selected > .explanation, .calculation.selected > .explanation{
 	display: block;
@@ -287,7 +288,6 @@ codesample .show-code:active {
 	position: relative;
 	top: 1px;
 }
-
 
 codesample.show .show-code {
 	display: none;

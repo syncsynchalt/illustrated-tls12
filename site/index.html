@@ -186,7 +186,6 @@
 			Compression has characteristics that can weaken
 			the security of the encrypted data so this feature
 			has been removed from future TLS protocols.
-			<br/>&nbsp;
 		</div>
 	</span>
 
@@ -755,7 +754,6 @@ pub:
 	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs will
 	be <b>E</b>phemeral rather than using the public/private key from
 	the certificate.
-	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -895,7 +893,6 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 <div class="label">Server Hello Done</div>
 <div class="explanation">
 	The server indicates it's finished with its half of the handshake.
-	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -987,7 +984,6 @@ pub:
 	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs will
 	be <b>E</b>phemeral rather than using a public/private key from
 	the server certificate.
-	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -1224,7 +1220,6 @@ $ hexdump /tmp/server_iv
 	client will be encrypted with the client write key.
 	<br/><br/>
 	In the next version of TLS this message type has been removed because it can be inferred.
-	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -1257,7 +1252,6 @@ $ hexdump /tmp/server_iv
 	<br/><br/>
 	The verification data is built from a hash of all handshake
 	messages and verifies the integrity of the handshake process.
-	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -1590,7 +1584,6 @@ $ hexdump /tmp/server_iv
 	server will be encrypted with the server write key.
 	<br/><br/>
 	In the next version of TLS this message type has been removed because it can be inferred.
-	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -1623,7 +1616,6 @@ $ hexdump /tmp/server_iv
 	<br/><br/>
 	The verification data is built from a hash of all handshake
 	messages and verifies the integrity of the handshake process.
-	<br/>&nbsp;
 </div>
 <span class="record-data">
 	<span class="string">
@@ -1773,10 +1765,10 @@ $ hexdump /tmp/verify_data
 </div>
 
 <div class="record client">
+<div class="label">Client Application Data</div>
 <div class="explanation">
 	The client sends the data "ping".
 </div>
-<div class="label">Client Application Data</div>
 <span class="record-data">
 	<span class="string">
 		<span class="label">record header</span>
