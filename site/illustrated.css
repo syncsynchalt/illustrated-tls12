@@ -29,6 +29,12 @@ ol, ul, dl {
   margin: 1rem 0;
 }
 
+.ind1 {
+	padding-left: 1em;
+}
+.ind2 {
+	padding-left: 2em;
+}
 
 .outerblock {
 	max-width: 600px;

@@ -5,6 +5,7 @@
 	<title>The Illustrated TLS Connection</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="frombootstrap.css">
 	<link rel="stylesheet" href="illustrated.css">
 	<script src="illustrated.js"></script>
@@ -608,14 +609,29 @@
 	</span>
 
 	<span class="string">
+		<span class="label">certificates length</span>
+		<span class="bytes">
+			00 03 28
+		</span>
+		<div class="explanation">
+			The certificate message begins with the
+			length of all certificate data that will follow.
+			<ul>
+			<li><tt>00 03 28</tt> - 0x328 (808) bytes of certificates follow
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
 		<span class="label">certificate length</span>
 		<span class="bytes">
 			00 03 25
 		</span>
 		<div class="explanation">
-			The certificate message begins with the
-			certificate length (0x325 or 805 bytes) and
-			will be followed by the certificate.
+			The length of the first (and only) certificate.
+			<ul>
+			<li><tt>00 03 25</tt> - 0x325 (805) bytes of certificate follows
+			</ul>
 		</div>
 	</span>
 
@@ -693,7 +709,7 @@
 </div>
 
 <div class="calculation server">
-<div class="label">Server Key Calculation</div>
+<div class="label">Server Key Exchange Generation</div>
 <div class="explanation">
 	The server must calculate a private/public keypair for key
 	exchange.  The server has chosen to use an elliptical curve
@@ -705,14 +721,14 @@
 	<a href="files/server-ephemeral-private.key" download="server-ephemeral-private.key">private key</a>
 	selected is:
 
-<pre style="padding-left: 2em"><tt>90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d 9e 9f
+<pre class="ind2"><tt>90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d 9e 9f
 a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af</tt></pre>
 
 	The <a href="files/server-ephemeral-public.key" download="server-ephemeral-public.key">public key</a>
 	is chosen by multiplying the point x=9 on the x25519 curve
 	by the private key.  The public key calculated is:
 
-<pre style="padding-left: 2em"><tt>9f d7 ad 6d cf f4 29 8d d3 f9 6d 5b 1b 2a f9 10
+<pre class="ind2"><tt>9f d7 ad 6d cf f4 29 8d d3 f9 6d 5b 1b 2a f9 10
 a0 53 5b 14 88 d7 f8 fa bb 34 9a 98 28 80 b6 15</tt></pre>
 
 	The public key calculation can be confirmed with this command:
@@ -924,7 +940,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 </div>
 
 <div class="calculation client">
-<div class="label">Client Key Calculation</div>
+<div class="label">Client Key Exchange Generation</div>
 <div class="explanation">
 	The client must calculate a private/public keypair for key
 	exchange.  It will do this for the elliptical curve
@@ -936,14 +952,14 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 	<a href="files/client-ephemeral-private.key" download="client-ephemeral-private.key">private key</a>
 	selected is:
 
-<pre style="padding-left: 2em"><tt>20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f
+<pre class="ind2"><tt>20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f
 30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f</tt></pre>
 
 	The <a href="files/client-ephemeral-public.key" download="client-ephemeral-public.key">public key</a>
 	is chosen by multiplying the point x=9 on the x25519 curve
 	by the private key.  The public key calculated is:
 
-<pre style="padding-left: 2em"><tt>35 80 72 d6 36 58 80 d1 ae ea 32 9a df 91 21 38
+<pre class="ind2"><tt>35 80 72 d6 36 58 80 d1 ae ea 32 9a df 91 21 38
 38 51 ed 21 a2 8e 3b 75 e9 65 d0 d2 cd 16 62 54</tt></pre>
 
 	The public key calculation can be confirmed with this command:
@@ -1036,14 +1052,169 @@ pub:
 </span>
 </div>
 
+<div class="calculation client">
+<div class="label">Client Encryption Keys Calculation</div>
+<div class="explanation">
+	The client now has the information to calculate the encryption
+	keys that will be used by each side.  It uses the following
+	information in this calculation:
+	<ul>
+	<li>server random (from Server Hello)
+	<li>client random (from Client Hello)
+	<li>server public key (from Server Key Exchange)
+	<li>client private key (from Client Key Generation)
+	</ul>
+	The client multiplies the server's public key with the
+	client's public key using the curve25519() algorithm.  The
+	32-byte result is called the PreMasterSecret, and is found
+	to be:
+<pre class="ind2"><tt>df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
+26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24</tt></pre>
+
+	I've provided <a href="files/curve25519-mult.c">a utility</a> to perform this calculation:
+<pre><code>$ gcc -o curve25519-mult curve25519-mult
+$ ./curve25519-multi client-ephemeral-private.key \
+                     server-ephemeral-public.key | hexdump
+
+0000000 df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
+0000010 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24
+</code></pre>
+
+	The client then calculates 48 bytes of the MasterSecret
+	from the PreMasterSecret using the following method:
+
+	<pre class="ind1">seed = "master secret" + client_random + server_random
+a0 = seed
+a1 = HMAC-SHA256(key=PreMasterSecret, data=a0)
+a2 = HMAC-SHA256(key=PreMasterSecret, data=a1)
+p1 = HMAC-SHA256(key=PreMasterSecret, data=a1 + seed)
+p2 = HMAC-SHA256(key=PreMasterSecret, data=a2 + seed)
+MasterSecret = p1[32 bytes] + p2[bytes 0-16]</pre>
+
+	Here we demonstrate on the command line:
+<pre><code>### set up our PreMasterSecret as a hex string
+$ pmshex=df4a291baa1eb7cfa6934b29b474baad
+$ pmshex=${pmshex}2697e29f1f920dcc77c8a0a088447624
+### client random from Client Hello
+$ echo -en '\x00\x01\x02\x03\x04\x05\x06\x07' >  /tmp/c_rand
+$ echo -en '\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f' >> /tmp/c_rand
+$ echo -en '\x10\x11\x12\x13\x14\x15\x16\x17' >> /tmp/c_rand
+$ echo -en '\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f' >> /tmp/c_rand
+### server random from Server Hello
+$ echo -en '\x70\x71\x72\x73\x74\x75\x76\x77' >  /tmp/s_rand
+$ echo -en '\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f' >> /tmp/s_rand
+$ echo -en '\x80\x81\x82\x83\x84\x85\x86\x87' >> /tmp/s_rand
+$ echo -en '\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f' >> /tmp/s_rand
+### build the seed
+$ echo -en 'master secret' > /tmp/seed
+$ cat /tmp/c_rand /tmp/s_rand >> /tmp/seed
+### a0 is the same as the seed
+$ cat /tmp/seed > /tmp/a0
+### a(n) is hmac-sha256(key=secret, data=a(n-1))
+$ cat /tmp/a0 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/a1
+$ cat /tmp/a1 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/a2
+### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
+$ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/p1
+$ cat /tmp/a2 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/p2
+$ cat /tmp/p1 /tmp/p2 | head -c 48 > /tmp/mastersecret
+$ hexdump /tmp/mastersecret
+
+0000000 91 6a bf 9d a5 59 73 e1 36 14 ae 0a 3f 5d 3f 37
+0000010 b0 23 ba 12 9a ee 02 cc 91 34 33 81 27 cd 70 49
+0000020 78 1c 8e 19 fc 1e b2 a7 38 7a c0 6a e2 37 34 4c
+</code></pre>
+
+	This gives us a MasterSecret of:
+<pre class="ind1"><tt>91 6a bf 9d a5 59 73 e1 36 14 ae 0a 3f 5d 3f 37
+b0 23 ba 12 9a ee 02 cc 91 34 33 81 27 cd 70 49
+78 1c 8e 19 fc 1e b2 a7 38 7a c0 6a e2 37 34 4c</tt></pre>
+
+	We then generate the final encryption keys using a key expansion:
+
+<pre class="ind1">
+seed = "key expansion" + server_random + client_random
+a0 = seed
+a1 = HMAC-SHA256(key=MasterSecret, data=a0)
+a2 = HMAC-SHA256(key=MasterSecret, data=a1)
+a3 = HMAC-SHA256(key=MasterSecret, data=a2)
+p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
+p2 = HMAC-SHA256(key=MasterSecret, data=a2 + seed)
+p3 = HMAC-SHA256(key=MasterSecret, data=a3 + seed)
+client_write_key = p1[32 bytes]
+server_write_key = p2[32 bytes]
+client_write_IV = p3[bytes 0-11]
+server_write_IV = p3[bytes 12-23]</pre>
+
+	Again we demonstrate on the command line:
+<pre><code>### continued from above command line example
+### set up our MasterSecret as a hex string
+$ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
+### build the seed
+$ echo -en 'key expansion' > /tmp/seed
+$ cat /tmp/s_rand /tmp/c_rand >> /tmp/seed
+### a0 is the same as the seed
+$ cat /tmp/seed > /tmp/a0
+### a(n) is hmac-sha256(key=secret, data=a(n-1))
+$ cat /tmp/a0 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a1
+$ cat /tmp/a1 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a2
+$ cat /tmp/a2 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a3
+### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
+$ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p1
+$ cat /tmp/a2 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p2
+$ cat /tmp/a3 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p3
+$ cat /tmp/p1 > /tmp/client_key
+$ cat /tmp/p2 > /tmp/server_key
+$ cat /tmp/p3 | head -c 12 > /tmp/client_iv
+$ cat /tmp/p3 | tail -c 20 | head -c 12 > /tmp/server_iv
+$ hexdump /tmp/client_key
+
+0000000 1b 7d 11 7c 7d 5f 69 0b c2 63 ca e8 ef 60 af 0f
+0000010 18 78 ac c2 2a d8 bd d8 c6 01 a6 17 12 6f 63 54
+
+$ hexdump /tmp/server_key
+
+0000000 0e b2 09 06 f7 81 fa d2 f6 56 d0 37 b1 73 ef 3e
+0000010 11 16 9f 27 23 1a 84 b6 75 2a 18 e7 a9 fc b7 cb
+
+$ hexdump /tmp/client_iv
+
+0000000 cd d8 f9 8d d8 f7 69 eb a0 d2 55 0c
+
+$ hexdump /tmp/server_iv
+
+0000000 92 38 ee bf ef 5c 32 25 1a bb 67 d6
+</code></pre>
+
+	From this we get the following key data:
+	<ul>
+	<li>client write key: <tt>1b 7d 11 7c 7d 5f 69 0b c2 63 ca e8 ef 60 af 0f
+18 78 ac c2 2a d8 bd d8 c6 01 a6 17 12 6f 63 54</tt>
+	<li>server write key: <tt>0e b2 09 06 f7 81 fa d2 f6 56 d0 37 b1 73 ef 3e
+0000010 11 16 9f 27 23 1a 84 b6 75 2a 18 e7 a9 fc b7 cb</tt>
+	<li>client write IV: <tt>cd d8 f9 8d d8 f7 69 eb a0 d2 55 0c</tt>
+	<li>server write IV: <tt>92 38 ee bf ef 5c 32 25 1a bb 67 d6</tt>
+	</ul>
+</div>
+</div>
+
 <div class="record client">
 <div class="label">Client Change Cipher Spec</div>
 <div class="explanation">
 	The client indicates that it has calculated the shared
 	encryption keys and that all following messages from the
-	client will be encrypted with the client key.
+	client will be encrypted with the client write key.
 	<br/><br/>
-	In the next version of TLS this message has been removed as it can be inferred.
+	In the next version of TLS this message type has been removed because it can be inferred.
 	<br/>&nbsp;
 </div>
 <span class="record-data">
@@ -1072,9 +1243,84 @@ pub:
 
 <div class="record client">
 <div class="label">Client Handshake Finished</div>
+<div class="explanation">
+	To verify that the handshake was successful and not tampered
+	with, the client calculates verify_data and encrypts
+	it with the client_write key.
+	<br/><br/>
+	The verify_data is built from the master secret and the
+	hash of the payload of all handshake records (type=0x16) previous to this one.
+	<br/><br/>
+	The calculation for verify_data is as follows:
+<pre class="ind1">
+seed = "client finished" + SHA256(all handshake messages)
+a0 = seed
+a1 = HMAC-SHA256(key=MasterSecret, data=a0)
+p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
+verify_data = p1[bytes 0-11]
+</pre>
+	The SHA256 of all handshake messages before this one
+	is <tt>7d5f1060a3f28ffb 0871c0de00b90c0e
+	       8a276a747e81b951 fa288434623c5ebf</tt>.
+	<br/><br/>
+	The calculated verify data is <tt>a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d</tt>.  We can demonstrate this on the command line:
+<pre><code>### set up our MasterSecret as a hex string
+$ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
+### build the seed
+$ echo -en 'client finished' > /tmp/seed
+### add SHA256(all_messages) to seed
+$ echo -en '\x7d\x5f\x10\x60\xa3\xf2\x8f\xfb' >> /tmp/seed
+$ echo -en '\x08\x71\xc0\xde\x00\xb9\x0c\x0e' >> /tmp/seed
+$ echo -en '\x8a\x27\x6a\x74\x7e\x81\xb9\x51' >> /tmp/seed
+$ echo -en '\xfa\x28\x84\x34\x62\x3c\x5e\xbf' >> /tmp/seed
+### a0 is the same as the seed
+$ cat /tmp/seed > /tmp/a0
+### a(n) is hmac-sha256(key=secret, data=a(n-1))
+$ cat /tmp/a0 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a1
+### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
+$ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p1
+$ head -c 12 /tmp/p1 > /tmp/verify_data
+$ hexdump /tmp/verify_data
+
+0000000 a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d
+</code></pre>
+</div>
 <span class="record-data">
-16 03 03 00 20 de e7 6c b8 34 68 5e 69 21 30 7a 15 26 a2 8a 35 d9
-5b 9c 3b 3b 26 42 49 65 f2 87 3e 0e 42 49 3d
+	<span class="string">
+		<span class="label">record header</span>
+		<span class="bytes">
+			16 03 03 00 20
+		</span>
+		<div class="explanation">
+			TLS sessions are broken into the sending
+			and receiving of "records", which are blocks
+			of data with a type, a protocol version,
+			and a length.
+			<br/><br/>
+			In this record header we see the following:
+			<ul>
+			<li><tt>16</tt> - type is 0x16 (handshake record)
+			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
+			<li><tt>00 20</tt> - the length of the record payload is 0x20 (32) bytes
+			</ul>
+			All data following this header is the payload for this record.
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">encrypted data</span>
+		<span class="bytes">
+			de e7 6c b8 34 68 5e 69 21 30 7a 15 26 a2 8a 35
+			d9 5b 9c 3b 3b 26 42 49 65 f2 87 3e 0e 42 49 3d
+		</span>
+		<div class="explanation">
+			This data is encrypted with the client write key and IV.
+
+			It can be decrypted by pressing the "Decrypt data" button.
+		</div>
+	</span>
 </span>
 </div>
 
