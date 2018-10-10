@@ -27,8 +27,8 @@
 <div class="record client">
 <div class="label">Client Hello</div>
 <div class="explanation">
-	We begin the session by having the client say "Hello".
-	In this message the client provides the following:
+	The session begins with the client saying "Hello".
+	The client provides the following:
 	<ul>
 	<li>protocol version
 	<li>client random data (used later in the handshake)
@@ -49,8 +49,6 @@
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
 			and a length.
-			<br/><br/>
-			In this record header we see the following:
 			<ul>
 			<li><tt>16</tt> - type is 0x16 (handshake record)
 			<li><tt>03 01</tt> - protocol version is 3.1 (also known as TLS 1.0)
@@ -396,7 +394,7 @@
 <div class="record server">
 <div class="label">Server Hello</div>
 <div class="explanation">
-	The server says "hello" back.  In this message the server provides the following:
+	The server says "Hello" back.  The server provides the following:
 	<ul>
 	<li>protocol version
 	<li>server random data (used later in the handshake)
@@ -417,8 +415,6 @@
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
 			and a length.
-			<br/><br/>
-			In this record header we see the following:
 			<ul>
 			<li><tt>16</tt> - type is 0x16 (handshake record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
@@ -577,8 +573,6 @@
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
 			and a length.
-			<br/><br/>
-			In this record header we see the following:
 			<ul>
 			<li><tt>16</tt> - type is 0x16 (handshake record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
@@ -772,8 +766,6 @@ pub:
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
 			and a length.
-			<br/><br/>
-			In this record header we see the following:
 			<ul>
 			<li><tt>16</tt> - type is 0x16 (handshake record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
@@ -863,8 +855,8 @@ pub:
 			<li><tt>04 01</tt> - reserved value for RSA signature with SHA256 hash
 			<li><tt>01 00</tt> - length of signature (0x100 or 256 bytes)
 			<li><tt>04 02 b6 ... ac 41 fb</tt> - the
-			        computed signature for <tt>SHA256(client_hello_random
-			        + server_hello_random + curve_info + public_key)</tt>
+					computed signature for <tt>SHA256(client_hello_random
+					+ server_hello_random + curve_info + public_key)</tt>
 			</ul>
 			We can compute the signature ourselves using
 			the <a href="files/server.key" download="server.key">server's private key</a>,
@@ -916,8 +908,6 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
 			and a length.
-			<br/><br/>
-			In this record header we see the following:
 			<ul>
 			<li><tt>16</tt> - type is 0x16 (handshake record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
@@ -1010,8 +1000,6 @@ pub:
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
 			and a length.
-			<br/><br/>
-			In this record header we see the following:
 			<ul>
 			<li><tt>16</tt> - type is 0x16 (handshake record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
@@ -1249,8 +1237,6 @@ $ hexdump /tmp/server_iv
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
 			and a length.
-			<br/><br/>
-			In this record header we see the following:
 			<ul>
 			<li><tt>14</tt> - type is 0x14 (ChangeCipherSpec record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
@@ -1267,7 +1253,7 @@ $ hexdump /tmp/server_iv
 <div class="explanation">
 	To verify that the handshake was successful and not tampered
 	with, the client calculates verification data and encrypts
-	it with the client_write key.
+	it with the client write key.
 	<br/><br/>
 	The verification data is built from a hash of all handshake
 	messages and verifies the integrity of the handshake process.
@@ -1284,8 +1270,6 @@ $ hexdump /tmp/server_iv
 			and receiving of "records", which are blocks
 			of data with a type, a protocol version,
 			and a length.
-			<br/><br/>
-			In this record header we see the following:
 			<ul>
 			<li><tt>16</tt> - type is 0x16 (handshake record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
@@ -1325,16 +1309,14 @@ $ hexdump /tmp/server_iv
 	</span>
 
 	<div class="decryption">
-		<div class="label">⬇ decryption ⬇</div>
+		<div class="label">⬇ Decryption ⬇</div>
 		<div class="explanation">
-			This data can be decoded using the encryption
+			This data can be decrypted using the encryption
 			IV and the client write key that was generated
 			in the step "Client Encryption Keys
 			Calculation".
-			<br/><br/>
 			<codesample>
-<pre><code>
-### client key
+<pre><code>### client key
 $ hexkey=f656d037b173ef3e11169f27231a84b6
 ### IV for this record
 $ hexiv=404142434445464748494a4b4c4d4e4f
@@ -1345,7 +1327,7 @@ $ echo -en '\x58\x04\xb7\xee\xb2\xe2\x14\xc3' >> /tmp/msg1
 $ echo -en '\x2b\x68\x92\xac\xa3\xdb\x7b\x78' >> /tmp/msg1
 $ echo -en '\x07\x7f\xdd\x90\x06\x7c\x51\x6b' >> /tmp/msg1
 $ echo -en '\xac\xb3\xba\x90\xde\xdf\x72\x0f' >> /tmp/msg1
-cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
 
 0000000 14 00 00 0c cf 91 96 26 f1 36 0c 53 6a aa d7 3a
 0000010 a5 a0 3d 23 30 56 e4 ac 6e ba 7f d9 e5 31 7f ac
@@ -1366,7 +1348,7 @@ of (not shown) padding bytes and can be ignored.
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
 			<ul>
-			<li><tt>01</tt> - handshake message type 0x14 (finished)
+			<li><tt>14</tt> - handshake message type 0x14 (finished)
 			<li><tt>00 00 0c</tt> - payload length of 0x0C (12) bytes
 			</ul>
 			All data following this header is the payload for this message.
@@ -1396,7 +1378,7 @@ verify_data = p1[first 12 bytes]
 			The verify data calculated from this hash is <tt class="longboi">a0744dd49a212f152b3c060d</tt>.
 			We can show this on the command line:
 			<codesample>
-			<pre><code>### set up our MasterSecret as a hex string
+<pre><code>### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
 ### build the seed
 $ echo -en 'client finished' > /tmp/seed
@@ -1602,49 +1584,492 @@ $ hexdump /tmp/server_iv
 
 <div class="record server">
 <div class="label">Server Change Cipher Spec</div>
+<div class="explanation">
+	The server indicates that it has calculated the shared
+	encryption keys and that all following messages from the
+	server will be encrypted with the server write key.
+	<br/><br/>
+	In the next version of TLS this message type has been removed because it can be inferred.
+	<br/>&nbsp;
+</div>
 <span class="record-data">
- 14 03 03 00 01 01
+	<span class="string">
+		<span class="label">record</span>
+		<span class="bytes">
+			14 03 03 00 01 01
+		</span>
+		<div class="explanation">
+			TLS sessions are broken into the sending
+			and receiving of "records", which are blocks
+			of data with a type, a protocol version,
+			and a length.
+			<ul>
+			<li><tt>14</tt> - type is 0x14 (ChangeCipherSpec record)
+			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
+			<li><tt>00 01</tt> - the length of the record payload is 0x01 (1) bytes
+			<li><tt>01</tt> - the payload of this message is defined as the byte 0x01
+			</ul>
+		</div>
+	</span>
 </span>
 </div>
 
 <div class="record server">
 <div class="label">Server Handshake Finished</div>
+<div class="explanation">
+	To verify that the handshake was successful and not tampered
+	with, the server calculates verification data and encrypts
+	it with the server write key.
+	<br/><br/>
+	The verification data is built from a hash of all handshake
+	messages and verifies the integrity of the handshake process.
+	<br/>&nbsp;
+</div>
 <span class="record-data">
-16 03 03 00 40 51 52 53 54 55 56 57 58 59 5a 5b
-5c 5d 5e 5f 60 18 e0 75 31 7b 10 03 15 f6 08 1f
-cb f3 13 78 1a ac 73 ef e1 9f e2 5b a1 af 59 c2
-0b e9 4f c0 1b da 2d 68 00 29 8b 73 a7 e8 49 d7
-4b d4 94 cf 7d
+	<span class="string">
+		<span class="label">record header</span>
+		<span class="bytes">
+			16 03 03 00 40
+		</span>
+		<div class="explanation">
+			TLS sessions are broken into the sending
+			and receiving of "records", which are blocks
+			of data with a type, a protocol version,
+			and a length.
+			<ul>
+			<li><tt>16</tt> - type is 0x16 (handshake record)
+			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
+			<li><tt>00 40</tt> - the length of the record payload is 0x40 (64) bytes
+			</ul>
+			All data following this header is the payload for this record.
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">encryption IV</span>
+		<span class="bytes">
+			51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 60
+		</span>
+		<div class="explanation">
+			The server has sent an IV for this encrypted block.
+			Because we have overridden the rand function it
+			is a predictable sequence.
+		</div>
+	</span>
+
+	<span class="string encrypted">
+		<span class="label">encrypted data</span>
+		<span class="bytes">
+			18 e0 75 31 7b 10 03 15 f6 08 1f cb f3 13 78 1a ac 73
+			ef e1 9f e2 5b a1 af 59 c2 0b e9 4f c0 1b da 2d 68 00
+			29 8b 73 a7 e8 49 d7 4b d4 94 cf 7d
+		</span>
+		<div class="explanation">
+			This data is encrypted with the server write
+			key.  Because it contains a message
+			authentication code (MAC) and padding it
+			is larger than the decrypted data.
+			<br/><br/>
+			See below for the decrypted data.
+		</div>
+	</span>
+
+	<div class="decryption">
+		<div class="label">⬇ Decryption ⬇</div>
+		<div class="explanation">
+			This data can be decrypted using the encryption
+			IV and the server write key that was generated
+			in the step "Server Encryption Keys
+			Calculation".
+			<codesample>
+<pre><code>### server key
+$ hexkey=752a18e7a9fcb7cbcdd8f98dd8f769eb
+### IV for this record
+$ hexiv=5152535455565758595a5b5c5d5e5f60
+### encrypted data
+$ echo -en '\x18\xe0\x75\x31\x7b\x10\x03\x15'  > /tmp/msg1
+$ echo -en '\xf6\x08\x1f\xcb\xf3\x13\x78\x1a' >> /tmp/msg1
+$ echo -en '\xac\x73\xef\xe1\x9f\xe2\x5b\xa1' >> /tmp/msg1
+$ echo -en '\xaf\x59\xc2\x0b\xe9\x4f\xc0\x1b' >> /tmp/msg1
+$ echo -en '\xda\x2d\x68\x00\x29\x8b\x73\xa7' >> /tmp/msg1
+$ echo -en '\xe8\x49\xd7\x4b\xd4\x94\xcf\x7d' >> /tmp/msg1
+$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+
+0000000 14 00 00 0c 84 4d 3c 10 74 6d d7 22 f9 2f 0c 7e
+0000010 20 c4 97 46 d2 a3 0f 23 57 39 90 58 07 53 52 43
+0000020 af f2 bf e0 0b
+
+The last 21 bytes contain a MAC and the number
+of (not shown) padding bytes and can be ignored.
+</code></pre>
+			</codesample>
+		</div>
+	</div>
+
+	<span class="string decrypted">
+		<span class="label">handshake header</span>
+		<span class="bytes">
+			14 00 00 0c
+		</span>
+		<div class="explanation">
+			Each handshake message starts with a type and a length.
+			<ul>
+			<li><tt>14</tt> - handshake message type 0x14 (finished)
+			<li><tt>00 00 0c</tt> - payload length of 0x0C (12) bytes
+			</ul>
+			All data following this header is the payload for this message.
+		</div>
+	</span>
+
+	<span class="string decrypted">
+		<span class="label">verify data</span>
+		<span class="bytes">
+			84 4d 3c 10 74 6d d7 22 f9 2f 0c 7e
+		</span>
+		<div class="explanation">
+			The verify_data is built from the master secret and the
+			hash of the payload of all handshake records (type=0x16) previous to this one.
+			<br/><br/>
+			The SHA256 of all handshake messages before this one
+			is <tt class="longboi">b2017ba28d0e27f03ae327456b6ff00b4d5bbf0ef7cda83ce1029b521c3e7c35</tt>.
+			<br/><br/>
+			The calculation for verify_data is as follows:
+<pre class="ind1">
+seed = "server finished" + SHA256(all handshake messages)
+a0 = seed
+a1 = HMAC-SHA256(key=MasterSecret, data=a0)
+p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
+verify_data = p1[first 12 bytes]
+</pre>
+			The verify data calculated from this hash is <tt class="longboi">a0744dd49a212f152b3c060d</tt>.
+			We can show this on the command line:
+			<codesample>
+			<pre><code>### set up our MasterSecret as a hex string
+$ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
+### build the seed
+$ echo -en 'server finished' > /tmp/seed
+### add SHA256(all_messages) to seed
+$ echo -en '\xb2\x01\x7b\xa2\x8d\x0e\x27\xf0' >> /tmp/seed
+$ echo -en '\x3a\xe3\x27\x45\x6b\x6f\xf0\x0b' >> /tmp/seed
+$ echo -en '\x4d\x5b\xbf\x0e\xf7\xcd\xa8\x3c' >> /tmp/seed
+$ echo -en '\xe1\x02\x9b\x52\x1c\x3e\x7c\x35' >> /tmp/seed
+### a0 is the same as the seed
+$ cat /tmp/seed > /tmp/a0
+### a(n) is hmac-sha256(key=secret, data=a(n-1))
+$ cat /tmp/a0 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a1
+### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
+$ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p1
+$ head -c 12 /tmp/p1 > /tmp/verify_data
+$ hexdump /tmp/verify_data
+
+0000000 84 4d 3c 10 74 6d d7 22 f9 2f 0c 7e
+</code></pre>
+			</codesample>
+		</div>
+	</span>
 </span>
 </div>
 
 <div class="record client">
+<div class="explanation">
+	The client sends the data "ping".
+</div>
 <div class="label">Client Application Data</div>
 <span class="record-data">
-17 03 03 00 30 00 01 02 03 04 05 06 07 08 09 0a
-0b 0c 0d 0e 0f 6c 42 1c 71 c4 2b 18 3b fa 06 19
-5d 13 3d 0a 09 d0 0f c7 cb 4e 0f 5d 1c da 59 d1
-47 ec 79 0c 99
+	<span class="string">
+		<span class="label">record header</span>
+		<span class="bytes">
+			17 03 03 00 30
+		</span>
+		<div class="explanation">
+			TLS sessions are broken into the sending
+			and receiving of "records", which are blocks
+			of data with a type, a protocol version,
+			and a length.
+			<ul>
+			<li><tt>17</tt> - type is 0x17 (application data)
+			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
+			<li><tt>00 30</tt> - the length of the record payload is 0x30 (48) bytes
+			</ul>
+			All data following this header is the payload for this record.
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">encryption IV</span>
+		<span class="bytes">
+			00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f
+		</span>
+		<div class="explanation">
+			The client has sent an IV for this encrypted block.
+			Because we have overridden the rand function it
+			is a predictable sequence.
+		</div>
+	</span>
+
+	<span class="string encrypted">
+		<span class="label">encrypted data</span>
+		<span class="bytes">
+			6c 42 1c 71 c4 2b 18 3b fa 06 19
+			5d 13 3d 0a 09 d0 0f c7 cb 4e 0f 5d 1c da 59 d1
+			47 ec 79 0c 99
+		</span>
+		<div class="explanation">
+			This data is encrypted with the client write
+			key.  Because it contains a message
+			authentication code (MAC) and padding it
+			is larger than the decrypted data.
+			<br/><br/>
+			See below for the decrypted data.
+		</div>
+	</span>
+
+	<div class="decryption">
+		<div class="label">⬇ Decryption ⬇</div>
+		<div class="explanation">
+			This data can be decrypted using the encryption
+			IV and the client write key that was generated
+			in the step "Client Encryption Keys
+			Calculation".
+			<codesample>
+<pre><code>### client key
+$ hexkey=f656d037b173ef3e11169f27231a84b6
+### IV for this record
+$ hexiv=000102030405060708090a0b0c0d0e0f
+### encrypted data
+$ echo -en '\x6c\x42\x1c\x71\xc4\x2b\x18\x3b' >  /tmp/msg1
+$ echo -en '\xfa\x06\x19\x5d\x13\x3d\x0a\x09' >> /tmp/msg1
+$ echo -en '\xd0\x0f\xc7\xcb\x4e\x0f\x5d\x1c' >> /tmp/msg1
+$ echo -en '\xda\x59\xd1\x47\xec\x79\x0c\x99' >> /tmp/msg1
+$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+
+0000000 70 69 6e 67 60 10 12 49 f7 4a 03 77 c9 ca cf 63
+0000010 09 75 13 70 d8 0c fc aa 07
+
+The last 21 bytes contain a MAC and the number
+of (not shown) padding bytes and can be ignored.
+</code></pre>
+			</codesample>
+		</div>
+	</div>
+
+	<span class="string decrypted">
+		<span class="label">application data</span>
+		<span class="bytes">
+			70 69 6e 67
+		</span>
+		<div class="explanation">
+			The bytes "ping".
+		</div>
+	</span>
 </span>
 </div>
 
 <div class="record server">
 <div class="label">Server Application Data</div>
+<div class="explanation">
+	The server replies with the data "pong".
+</div>
 <span class="record-data">
-17 03 03 00 30 61 62 63 64 65 66 67 68 69 6a 6b
-6c 6d 6e 6f 70 97 83 48 8a f5 fa 20 bf 7a 2e f6
-9d eb b5 34 db 9f b0 7a 8c 27 21 de e5 40 9f 77
-af 0c 3d de 56
+	<span class="string">
+		<span class="label">record header</span>
+		<span class="bytes">
+			17 03 03 00 30
+		</span>
+		<div class="explanation">
+			TLS sessions are broken into the sending
+			and receiving of "records", which are blocks
+			of data with a type, a protocol version,
+			and a length.
+			<ul>
+			<li><tt>17</tt> - type is 0x17 (application data)
+			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
+			<li><tt>00 30</tt> - the length of the record payload is 0x30 (48) bytes
+			</ul>
+			All data following this header is the payload for this record.
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">encryption IV</span>
+		<span class="bytes">
+			61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70
+		</span>
+		<div class="explanation">
+			The server has sent an IV for this encrypted block.
+			Because we have overridden the rand function it
+			is a predictable sequence.
+		</div>
+	</span>
+
+	<span class="string encrypted">
+		<span class="label">encrypted data</span>
+		<span class="bytes">
+			97 83 48 8a f5 fa 20 bf 7a 2e f6
+			9d eb b5 34 db 9f b0 7a 8c 27 21 de e5 40 9f 77
+			af 0c 3d de 56
+		</span>
+		<div class="explanation">
+			This data is encrypted with the client write
+			key.  Because it contains a message
+			authentication code (MAC) and padding it
+			is larger than the decrypted data.
+			<br/><br/>
+			See below for the decrypted data.
+		</div>
+	</span>
+
+	<div class="decryption">
+		<div class="label">⬇ Decryption ⬇</div>
+		<div class="explanation">
+			This data can be decrypted using the encryption
+			IV and the client write key that was generated
+			in the step "Server Encryption Keys
+			Calculation".
+			<codesample>
+<pre><code>### server key
+$ hexkey=752a18e7a9fcb7cbcdd8f98dd8f769eb
+### IV for this record
+$ hexiv=6162636465666768696a6b6c6d6e6f70
+### encrypted data
+$ echo -en '\x97\x83\x48\x8a\xf5\xfa\x20\xbf' >  /tmp/msg1
+$ echo -en '\x7a\x2e\xf6\x9d\xeb\xb5\x34\xdb' >> /tmp/msg1
+$ echo -en '\x9f\xb0\x7a\x8c\x27\x21\xde\xe5' >> /tmp/msg1
+$ echo -en '\x40\x9f\x77\xaf\x0c\x3d\xde\x56' >> /tmp/msg1
+$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+
+0000000 70 6f 6e 67 5a c7 99 dc cf dc 0f af 95 2b dc 91
+0000010 18 af 20 0e e3 1c 51 05 07                     
+
+The last 21 bytes contain a MAC and the number
+of (not shown) padding bytes and can be ignored.
+</code></pre>
+			</codesample>
+		</div>
+	</div>
+
+	<span class="string decrypted">
+		<span class="label">application data</span>
+		<span class="bytes">
+			70 6f 6e 67
+		</span>
+		<div class="explanation">
+			The bytes "pong".
+		</div>
+	</span>
 </span>
 </div>
 
 <div class="record client">
 <div class="label">Client Close Notify</div>
+<div class="explanation">
+	The client sends an alert that it is closing the connection.
+</div>
 <span class="record-data">
-15 03 03 00 30 10 11 12 13 14 15 16 17 18 19 1a
-1b 1c 1d 1e 1f 0d 83 f9 79 04 75 0d d8 fd 8a a1
-30 21 86 32 63 4f d0 65 e4 62 83 79 b8 8b bf 9e
-fd 12 87 a6 2d
+	<span class="string">
+		<span class="label">record header</span>
+		<span class="bytes">
+			15 03 03 00 30
+		</span>
+		<div class="explanation">
+			TLS sessions are broken into the sending
+			and receiving of "records", which are blocks
+			of data with a type, a protocol version,
+			and a length.
+			<ul>
+			<li><tt>16</tt> - type is 0x15 (alert record)
+			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
+			<li><tt>00 31</tt> - the length of the record payload is 0x30 (48) bytes
+			</ul>
+			All data following this header is the payload for this record.
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">encryption IV</span>
+		<span class="bytes">
+			10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+		</span>
+		<div class="explanation">
+			The client has sent an IV for this encrypted block.
+			Because we have overridden the rand function it
+			is a predictable sequence.
+		</div>
+	</span>
+
+	<span class="string encrypted">
+		<span class="label">encrypted data</span>
+		<span class="bytes">
+			0d 83 f9 79  04 75 0d d8  fd 8a a1 30  21 86 32 63
+			4f d0 65 e4  62 83 79 b8  8b bf 9e fd  12 87 a6 2d
+		</span>
+		<div class="explanation">
+			This data is encrypted with the client write
+			key.  Because it contains a message
+			authentication code (MAC) and padding it
+			is larger than the decrypted data.
+			<br/><br/>
+			See below for the decrypted data.
+		</div>
+	</span>
+
+	<div class="decryption">
+		<div class="label">⬇ Decryption ⬇</div>
+		<div class="explanation">
+			This data can be decrypted using the encryption
+			IV and the client write key that was generated
+			in the step "Client Encryption Keys
+			Calculation".
+			<codesample>
+<pre><code>### client key
+$ hexkey=f656d037b173ef3e11169f27231a84b6
+### IV for this record
+$ hexiv=101112131415161718191a1b1c1d1e1f
+### encrypted data
+$ echo -en '\x0d\x83\xf9\x79\x04\x75\x0d\xd8' >  /tmp/msg1
+$ echo -en '\xfd\x8a\xa1\x30\x21\x86\x32\x63' >> /tmp/msg1
+$ echo -en '\x4f\xd0\x65\xe4\x62\x83\x79\xb8' >> /tmp/msg1
+$ echo -en '\x8b\xbf\x9e\xfd\x12\x87\xa6\x2d' >> /tmp/msg1
+$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+
+0000000 01 00 92 79 9c ba 81 9f 31 07 44 c5 59 62 2b e4
+0000010 2b ce 3d 6a 41 fb 09
+
+The last 21 bytes contain a MAC and the number
+of (not shown) padding bytes and can be ignored.
+</code></pre>
+			</codesample>
+		</div>
+	</div>
+
+	<span class="string decrypted">
+		<span class="label">alert level</span>
+		<span class="bytes">
+			01
+		</span>
+		<div class="explanation">
+			<ul>
+			<li><tt>01</tt> - assigned value for "Warning"
+			</ul>
+			A "Warning" alert is informational.
+		</div>
+	</span>
+
+	<span class="string decrypted">
+		<span class="label">alert type</span>
+		<span class="bytes">
+			00
+		</span>
+		<div class="explanation">
+			<ul>
+			<li><tt>00</tt> - assigned value for "Close Notify"
+			</ul>
+			This message notifies the recipient that
+			the sender will not send any more messages on this connection.
+		</div>
+	</span>
 </span>
 </div>
 
