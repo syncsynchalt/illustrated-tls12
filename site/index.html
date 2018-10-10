@@ -1074,8 +1074,8 @@ pub:
 	I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
 	<codesample>
 <pre><code>$ gcc -o curve25519-mult curve25519-mult.c
-$ ./curve25519-multi client-ephemeral-private.key \
-                     server-ephemeral-public.key | hexdump
+$ ./curve25519-mult client-ephemeral-private.key \
+                    server-ephemeral-public.key | hexdump
 
 0000000 df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
 0000010 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24
@@ -1123,6 +1123,7 @@ $ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/p1
 $ cat /tmp/a2 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/p2
+### first 48 bytes is MasterSecret
 $ cat /tmp/p1 /tmp/p2 | head -c 48 > /tmp/mastersecret
 $ hexdump /tmp/mastersecret
 
@@ -1161,7 +1162,7 @@ server write IV = [next 16 bytes of p]
 	<codesample>
 <pre><code>### continued from above command line example
 ### set up our MasterSecret as a hex string
-$ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
+$ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
 ### build the seed
 $ echo -en 'key expansion' > /tmp/seed
 $ cat /tmp/s_rand /tmp/c_rand >> /tmp/seed
@@ -1185,6 +1186,7 @@ $ cat /tmp/a3 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p3
 $ cat /tmp/a4 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p4
+### combine them into a single stream
 $ cat /tmp/p1 /tmp/p2 /tmp/p3 /tmp/p4 > /tmp/p
 $ dd if=/tmp/p of=/tmp/client_mac_key bs=1 skip=0  count=20
 $ dd if=/tmp/p of=/tmp/server_mac_key bs=1 skip=20 count=20
@@ -1293,20 +1295,30 @@ $ hexdump /tmp/server_iv
 		</div>
 	</span>
 
+	<span class="string">
+		<span class="label">encryption IV</span>
+		<span class="bytes">
+			40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f
+		</span>
+		<div class="explanation">
+			The client has sent an IV for this encrypted block.
+			Because we have overridden the rand function it
+			is a predictable sequence.
+		</div>
+	</span>
+
 	<span class="string encrypted">
 		<span class="label">encrypted data</span>
 		<span class="bytes">
-			40 41 42 43 44 45 46 47
-			48 49 4a 4b 4c 4d 4e 4f
 			22 7b c9 ba 81 ef 30 f2 a8 a7 8f f1 df 50 84 4d 58 04
 			b7 ee b2 e2 14 c3 2b 68 92 ac a3 db 7b 78 07 7f dd 90
 			06 7c 51 6b ac b3 ba 90 de df 72 0f
 		</span>
 		<div class="explanation">
 			This data is encrypted with the client write
-			key and IV.  Because it starts with a xxx (nonce?)
-xxx
-			it is larger than the decrypted data.
+			key.  Because it contains a message
+			authentication code (MAC) and padding it
+			is larger than the decrypted data.
 			<br/><br/>
 			See below for the decrypted data.
 		</div>
@@ -1315,28 +1327,32 @@ xxx
 	<div class="decryption">
 		<div class="label">⬇ decryption ⬇</div>
 		<div class="explanation">
-			This data can be decoded using the client
-			MAC key, write key, and IV that were generated
+			This data can be decoded using the encryption
+			IV and the client write key that was generated
 			in the step "Client Encryption Keys
 			Calculation".
 			<br/><br/>
 			<codesample>
 <pre><code>
+### client key
+$ hexkey=f656d037b173ef3e11169f27231a84b6
+### IV for this record
+$ hexiv=404142434445464748494a4b4c4d4e4f
+### encrypted data
+$ echo -en '\x22\x7b\xc9\xba\x81\xef\x30\xf2'  > /tmp/msg1
+$ echo -en '\xa8\xa7\x8f\xf1\xdf\x50\x84\x4d' >> /tmp/msg1
+$ echo -en '\x58\x04\xb7\xee\xb2\xe2\x14\xc3' >> /tmp/msg1
+$ echo -en '\x2b\x68\x92\xac\xa3\xdb\x7b\x78' >> /tmp/msg1
+$ echo -en '\x07\x7f\xdd\x90\x06\x7c\x51\x6b' >> /tmp/msg1
+$ echo -en '\xac\xb3\xba\x90\xde\xdf\x72\x0f' >> /tmp/msg1
+cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
 
-xxx
-<br/><br/>
-Contrary to popular belief, Lorem Ipsum is not simply random text.
-It has roots in a piece of classical Latin literature from 45 BC,
-making it over 2000 years old. Richard McClintock, a Latin professor
-at Hampden-Sydney College in Virginia, looked up one of the more
-obscure Latin words, consectetur, from a Lorem Ipsum passage, and
-going through the cites of the word in classical literature,
-discovered the undoubtable source. Lorem Ipsum comes from sections
-1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes
-of Good and Evil) by Cicero, written in 45 BC. This book is a
-treatise on the theory of ethics, very popular during the Renaissance.
-The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes
-from a line in section 1.10.32.
+0000000 14 00 00 0c cf 91 96 26 f1 36 0c 53 6a aa d7 3a
+0000010 a5 a0 3d 23 30 56 e4 ac 6e ba 7f d9 e5 31 7f ac
+0000020 2d b5 b7 0e 0b
+
+The last 21 bytes contain a MAC and the number
+of (not shown) padding bytes and can be ignored.
 </code></pre>
 			</codesample>
 		</div>
@@ -1350,7 +1366,7 @@ from a line in section 1.10.32.
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
 			<ul>
-			<li><tt>01</tt> - handshake message type 0x01 (client hello)
+			<li><tt>01</tt> - handshake message type 0x14 (finished)
 			<li><tt>00 00 0c</tt> - payload length of 0x0C (12) bytes
 			</ul>
 			All data following this header is the payload for this message.
@@ -1381,7 +1397,7 @@ verify_data = p1[first 12 bytes]
 			We can show this on the command line:
 			<codesample>
 			<pre><code>### set up our MasterSecret as a hex string
-$ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
+$ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
 ### build the seed
 $ echo -en 'client finished' > /tmp/seed
 ### add SHA256(all_messages) to seed
@@ -1429,14 +1445,16 @@ $ hexdump /tmp/verify_data
 	I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
 	<codesample>
 <pre><code>$ gcc -o curve25519-mult curve25519-mult.c
-$ ./curve25519-multi server-ephemeral-private.key \
-                     client-ephemeral-public.key | hexdump
+$ ./curve25519-mult server-ephemeral-private.key \
+                    client-ephemeral-public.key | hexdump
 
 0000000 df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
 0000010 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24
 </code></pre>
 	</codesample>
-
+	This is identical to the PreMasterSecret found by the client,
+	therefore the following calculations will be identical.
+	<br/><br/>
 	The client then calculates 48 bytes of the MasterSecret
 	from the PreMasterSecret using the following method:
 
@@ -1478,6 +1496,7 @@ $ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/p1
 $ cat /tmp/a2 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/p2
+### first 48 bytes is MasterSecret
 $ cat /tmp/p1 /tmp/p2 | head -c 48 > /tmp/mastersecret
 $ hexdump /tmp/mastersecret
 
@@ -1516,7 +1535,7 @@ server write IV = [next 16 bytes of p]
 	<codesample>
 <pre><code>### continued from above command line example
 ### set up our MasterSecret as a hex string
-$ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
+$ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
 ### build the seed
 $ echo -en 'key expansion' > /tmp/seed
 $ cat /tmp/s_rand /tmp/c_rand >> /tmp/seed
