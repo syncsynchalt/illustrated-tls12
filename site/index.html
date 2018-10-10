@@ -76,8 +76,6 @@
 		</span>
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
-			<br/><br/>
-			In this message we see:
 			<ul>
 			<li><tt>01</tt> - handshake message type 0x01 (client hello)
 			<li><tt>00 00 a1</tt> - payload length of 0xA1 (161) bytes
@@ -437,8 +435,6 @@
 		</span>
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
-			<br/><br/>
-			In this message we see:
 			<ul>
 			<li><tt>02</tt> - handshake message type 0x02 (server hello)
 			<li><tt>00 00 2d</tt> - payload length of 0x2D (45) bytes
@@ -599,8 +595,6 @@
 		</span>
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
-			<br/><br/>
-			In this message we see:
 			<ul>
 			<li><tt>0b</tt> - handshake message type 0x0B (certificate)
 			<li><tt>00 03 2b</tt> - payload length of 0x32B (811) bytes
@@ -699,14 +693,14 @@
 			<a href="files/server.crt" download="server.crt">The certificate</a>
 			can be converted to the binary data in this message
 			at the command line:
-<codesample>
+			<codesample>
 <pre><code>$ openssl x509 -outform der < server.crt | hexdump | head
 
 0000000 30 82 03 21 30 82 02 09 a0 03 02 01 02 02 08 15
 0000010 5a 92 ad c2 04 8f 90 30 0d 06 09 2a 86 48 86 f7
 ... snip ...
 </code></pre>
-</codesample>
+			</codesample>
 		</div>
 	</span>
 </span>
@@ -736,7 +730,7 @@ a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af</tt></pre>
 a0 53 5b 14 88 d7 f8 fa bb 34 9a 98 28 80 b6 15</tt></pre>
 
 	The public key calculation can be confirmed with command line tools:
-<codesample>
+	<codesample>
 <pre><code>### requires openssl 1.1.0 or higher
 $ openssl pkey -noout -text < server-ephemeral-private.key
 
@@ -750,7 +744,7 @@ pub:
     10:a0:53:5b:14:88:d7:f8:fa:bb:34:9a:98:28:80:
     b6:15
 </code></pre>
-</codesample>
+	</codesample>
 </div>
 </div>
 
@@ -798,8 +792,6 @@ pub:
 		</span>
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
-			<br/><br/>
-			In this message we see:
 			<ul>
 			<li><tt>0c</tt> - handshake message type 0x0c (server key exchange)
 			<li><tt>00 01 28</tt> - payload length of 0x128 (296) bytes
@@ -879,7 +871,7 @@ pub:
 			We can compute the signature ourselves using
 			the <a href="files/server.key" download="server.key">server's private key</a>,
 			at the command line:
-<codesample>
+			<codesample>
 <pre><code>### client random from Client Hello
 $ echo -en '\x00\x01\x02\x03\x04\x05\x06\x07'  > /tmp/compute
 $ echo -en '\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f' >> /tmp/compute
@@ -903,7 +895,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 ... snip ...
 00000f0 7d 87 dc 33 18 64 35 71 22 6c 4d d2 c2 ac 41 fb
 </code></pre>
-</codesample>
+			</codesample>
 		</div>
 	</span>
 </span>
@@ -944,8 +936,6 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 		</span>
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
-			<br/><br/>
-			In this message we see:
 			<ul>
 			<li><tt>0e</tt> - handshake message type 0x0e (server hello done)
 			<li><tt>00 00 00</tt> - payload length of 0 bytes (no payload)
@@ -979,7 +969,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 38 51 ed 21 a2 8e 3b 75 e9 65 d0 d2 cd 16 62 54</tt></pre>
 
 	The public key calculation can be confirmed at the command line:
-<codesample>
+	<codesample>
 <pre><code>### requires openssl 1.1.0 or higher
 $ openssl pkey -noout -text < client-ephemeral-private.key
 
@@ -993,7 +983,7 @@ pub:
     38:38:51:ed:21:a2:8e:3b:75:e9:65:d0:d2:cd:16:
     62:54
 </code></pre>
-</codesample>
+	</codesample>
 </div>
 </div>
 <div class="record client">
@@ -1042,8 +1032,6 @@ pub:
 		</span>
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
-			<br/><br/>
-			In this message we see:
 			<ul>
 			<li><tt>10</tt> - handshake message type 0x10 (client key exchange)
 			<li><tt>00 00 21</tt> - payload length of 0x21 (33) bytes
@@ -1089,7 +1077,7 @@ pub:
 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24</tt></pre>
 
 	I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
-<codesample>
+	<codesample>
 <pre><code>$ gcc -o curve25519-mult curve25519-mult.c
 $ ./curve25519-multi client-ephemeral-private.key \
                      server-ephemeral-public.key | hexdump
@@ -1097,7 +1085,7 @@ $ ./curve25519-multi client-ephemeral-private.key \
 0000000 df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
 0000010 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24
 </code></pre>
-</codesample>
+	</codesample>
 
 	The client then calculates 48 bytes of the MasterSecret
 	from the PreMasterSecret using the following method:
@@ -1111,7 +1099,7 @@ p2 = HMAC-SHA256(key=PreMasterSecret, data=a2 + seed)
 MasterSecret = p1[32 bytes] + p2[bytes 0-16]</pre>
 
 	Here we demonstrate on the command line:
-<codesample>
+	<codesample>
 <pre><code>### set up our PreMasterSecret as a hex string
 $ pmshex=df4a291baa1eb7cfa6934b29b474baad
 $ pmshex=${pmshex}2697e29f1f920dcc77c8a0a088447624
@@ -1147,7 +1135,7 @@ $ hexdump /tmp/mastersecret
 0000010 b0 23 ba 12 9a ee 02 cc 91 34 33 81 27 cd 70 49
 0000020 78 1c 8e 19 fc 1e b2 a7 38 7a c0 6a e2 37 34 4c
 </code></pre>
-</codesample>
+	</codesample>
 
 	This gives us a MasterSecret of:
 <pre class="ind1"><tt>91 6a bf 9d a5 59 73 e1 36 14 ae 0a 3f 5d 3f 37
@@ -1171,7 +1159,7 @@ client_write_IV = p3[bytes 0-11]
 server_write_IV = p3[bytes 12-23]</pre>
 
 	We can demonstrate this on the command line:
-<codesample>
+	<codesample>
 <pre><code>### continued from above command line example
 ### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
@@ -1216,7 +1204,7 @@ $ hexdump /tmp/server_iv
 
 0000000 92 38 ee bf ef 5c 32 25 1a bb 67 d6
 </code></pre>
-</codesample>
+	</codesample>
 
 	From this we get the following key data:
 	<ul>
@@ -1268,51 +1256,13 @@ $ hexdump /tmp/server_iv
 <div class="label">Client Handshake Finished</div>
 <div class="explanation">
 	To verify that the handshake was successful and not tampered
-	with, the client calculates verify_data and encrypts
+	with, the client calculates verification data and encrypts
 	it with the client_write key.
 	<br/><br/>
-	The verify_data is built from the master secret and the
-	hash of the payload of all handshake records (type=0x16) previous to this one.
-	<br/><br/>
-	The calculation for verify_data is as follows:
-<pre class="ind1">
-seed = "client finished" + SHA256(all handshake messages)
-a0 = seed
-a1 = HMAC-SHA256(key=MasterSecret, data=a0)
-p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
-verify_data = p1[bytes 0-11]
-</pre>
-	The SHA256 of all handshake messages before this one
-	is <tt>7d5f1060a3f28ffb 0871c0de00b90c0e
-	       8a276a747e81b951 fa288434623c5ebf</tt>.
-	<br/><br/>
-	The calculated verify data is <tt>a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d</tt>.  We can show this on the command line:
-<codesample>
-<pre><code>### set up our MasterSecret as a hex string
-$ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
-### build the seed
-$ echo -en 'client finished' > /tmp/seed
-### add SHA256(all_messages) to seed
-$ echo -en '\x7d\x5f\x10\x60\xa3\xf2\x8f\xfb' >> /tmp/seed
-$ echo -en '\x08\x71\xc0\xde\x00\xb9\x0c\x0e' >> /tmp/seed
-$ echo -en '\x8a\x27\x6a\x74\x7e\x81\xb9\x51' >> /tmp/seed
-$ echo -en '\xfa\x28\x84\x34\x62\x3c\x5e\xbf' >> /tmp/seed
-### a0 is the same as the seed
-$ cat /tmp/seed > /tmp/a0
-### a(n) is hmac-sha256(key=secret, data=a(n-1))
-$ cat /tmp/a0 | openssl dgst -sha256 \
-   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a1
-### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
-$ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
-   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p1
-$ head -c 12 /tmp/p1 > /tmp/verify_data
-$ hexdump /tmp/verify_data
-
-0000000 a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d
-</code></pre>
-</codesample>
+	The verification data is built from a hash of all handshake
+	messages and verifies the integrity of the handshake process.
+	<br/>&nbsp;
 </div>
-
 <span class="record-data">
 	<span class="string">
 		<span class="label">record header</span>
@@ -1335,16 +1285,116 @@ $ hexdump /tmp/verify_data
 		</div>
 	</span>
 
-	<span class="string">
+	<span class="string encrypted">
 		<span class="label">encrypted data</span>
 		<span class="bytes">
 			de e7 6c b8 34 68 5e 69 21 30 7a 15 26 a2 8a 35
 			d9 5b 9c 3b 3b 26 42 49 65 f2 87 3e 0e 42 49 3d
 		</span>
 		<div class="explanation">
-			This data is encrypted with the client write key and IV.
+			This data is encrypted with the client write
+			key and IV.  Because we are using an AEAD
+			cipher suite (which includes message
+			authentication codes) it is larger than the
+			decrypted data.
+			<br/><br/>
+			See below for the decrypted data.
+		</div>
+	</span>
 
-			It can be decrypted by pressing the "Decrypt data" button.
+	<div class="decryption">
+		<div class="label">⬇ decryption ⬇</div>
+		<div class="explanation">
+			This data can be decoded using the client
+			write key and IV that were generated in the
+			step "Client Encryption Keys Calculation".
+			<br/><br/>
+			Unfortunately the openssl command line tool
+			does not support AEAD ciphers so we must create
+			<a href="files/decrypt_chacha20_poly1305.c">our own tool</a>.
+			<codesample>
+<pre><code>
+
+xxx Where does it come from?
+<br/><br/>
+Contrary to popular belief, Lorem Ipsum is not simply random text.
+It has roots in a piece of classical Latin literature from 45 BC,
+making it over 2000 years old. Richard McClintock, a Latin professor
+at Hampden-Sydney College in Virginia, looked up one of the more
+obscure Latin words, consectetur, from a Lorem Ipsum passage, and
+going through the cites of the word in classical literature,
+discovered the undoubtable source. Lorem Ipsum comes from sections
+1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes
+of Good and Evil) by Cicero, written in 45 BC. This book is a
+treatise on the theory of ethics, very popular during the Renaissance.
+The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes
+from a line in section 1.10.32.
+</code></pre>
+			</codesample>
+		</div>
+	</div>
+
+	<span class="string decrypted">
+		<span class="label">handshake header</span>
+		<span class="bytes">
+			14 00 00 0c
+		</span>
+		<div class="explanation">
+			Each handshake message starts with a type and a length.
+			<ul>
+			<li><tt>01</tt> - handshake message type 0x01 (client hello)
+			<li><tt>00 00 0c</tt> - payload length of 0x0C (12) bytes
+			</ul>
+			All data following this header is the payload for this message.
+		</div>
+	</span>
+
+	<span class="string decrypted">
+		<span class="label">verify data</span>
+		<span class="bytes">
+			a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d
+		</span>
+		<div class="explanation">
+			The verify_data is built from the master secret and the
+			hash of the payload of all handshake records (type=0x16) previous to this one.
+			<br/><br/>
+			The calculation for verify_data is as follows:
+<pre class="ind1">
+seed = "client finished" + SHA256(all handshake messages)
+a0 = seed
+a1 = HMAC-SHA256(key=MasterSecret, data=a0)
+p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
+verify_data = p1[bytes 0-11]
+</pre>
+			The SHA256 of all handshake messages before this one
+			is <tt>7d5f1060a3f28ffb 0871c0de00b90c0e
+			       8a276a747e81b951 fa288434623c5ebf</tt>.
+			<br/><br/>
+			The calculated verify data is <tt>a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d</tt>.  We can show this on the command line:
+			<codesample>
+			<pre><code>### set up our MasterSecret as a hex string
+$ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
+### build the seed
+$ echo -en 'client finished' > /tmp/seed
+### add SHA256(all_messages) to seed
+$ echo -en '\x7d\x5f\x10\x60\xa3\xf2\x8f\xfb' >> /tmp/seed
+$ echo -en '\x08\x71\xc0\xde\x00\xb9\x0c\x0e' >> /tmp/seed
+$ echo -en '\x8a\x27\x6a\x74\x7e\x81\xb9\x51' >> /tmp/seed
+$ echo -en '\xfa\x28\x84\x34\x62\x3c\x5e\xbf' >> /tmp/seed
+### a0 is the same as the seed
+$ cat /tmp/seed > /tmp/a0
+### a(n) is hmac-sha256(key=secret, data=a(n-1))
+$ cat /tmp/a0 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a1
+### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
+$ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p1
+$ head -c 12 /tmp/p1 > /tmp/verify_data
+$ hexdump /tmp/verify_data
+
+0000000 a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d
+</code></pre>
+			</codesample>
 		</div>
 	</span>
 </span>

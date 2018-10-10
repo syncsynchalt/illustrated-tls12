@@ -6,7 +6,7 @@ ill = {
 	},
 
 	unselectAllStrings: function() {
-		[].forEach.call(document.querySelectorAll(".string.selected"), function(el) {
+		[].forEach.call(document.querySelectorAll(".string.selected, .decryption.selected"), function(el) {
 			el.classList.remove("selected");
 		});
 	},
@@ -86,7 +86,7 @@ window.onload = function() {
 			ill.toggleRecord(el.parentNode, event);
 		};
 	});
-	[].forEach.call(document.querySelectorAll(".string .bytes, .string .label"), function(el) {
+	[].forEach.call(document.querySelectorAll(".string .bytes, .string .label, .decryption .label"), function(el) {
 		el.onclick = function(event) {
 			ill.toggleString(el.parentNode, event);
 		};
@@ -96,7 +96,7 @@ window.onload = function() {
 			ill.cancel(event);
 		};
 	});
-	[].forEach.call(document.querySelectorAll(".string > .explanation"), function(el) {
+	[].forEach.call(document.querySelectorAll(".string > .explanation, .decryption > .explanation"), function(el) {
 		ill.addExplanationCloseButton(el);
 	});
 	[].forEach.call(document.querySelectorAll("codesample"), function(el) {

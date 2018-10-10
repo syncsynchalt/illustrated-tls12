@@ -82,6 +82,7 @@ ol, ul, dl {
 }
 
 .record > .label, .calculation > .label {
+	cursor: pointer;
 	font-size: 1.3em;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -143,6 +144,7 @@ ol, ul, dl {
 
 .record-data .string {
 	position: relative;
+	cursor: pointer;
 }
 
 .record-data .string .label {
@@ -185,7 +187,7 @@ ol, ul, dl {
 	font-weight: bold;
 }
 
-.record-data .string.selected > .explanation {
+.record-data .string.selected > .explanation, .record-data .decryption.selected > .explanation {
 	display: block;
 	position: absolute;
 	font-weight: normal;
@@ -201,18 +203,43 @@ ol, ul, dl {
 	z-index: 1;
 }
 
-.record-data .string > .explanation {
+.record-data .string > .explanation, .record-data .decryption > .explanation {
 	display: none;
 }
 
-.string .explanation .close {
+.string .explanation .close, .decryption .explanation .close {
 	display: block;
 	cursor: pointer;
 	float: right;
 	font-size: 1.8em;
 	margin-top: -15px;
 }
-.string .explanation .close:hover {
+.string .explanation .close:hover, .decryption .explanation .close:hover {
+	font-weight: bold;
+}
+
+.string .bytes {
+	cursor: pointer;
+}
+
+.string.encrypted .bytes {
+	text-shadow: 1px 1px 1px pink;
+}
+
+.string.decrypted .bytes {
+	text-shadow: 1px 1px 1px #90EE90;
+}
+
+.record-data .decryption {
+	margin: 1em;
+}
+
+.record-data .decryption .label {
+	text-align: center;
+}
+
+.record-data .decryption .label:hover {
+	cursor: pointer;
 	font-weight: bold;
 }
 
