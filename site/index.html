@@ -501,11 +501,11 @@
 	<span class="string">
 		<span class="label">cipher suite</span>
 		<span class="bytes">
-			cc a8
+			c0 13
 		</span>
 		<div class="explanation">
-			The server has selected cipher suite 0xCCA8
-			(ECDHE-RSA-CHACHA20-POLY1305-SHA256) from the
+			The server has selected cipher suite 0xC013
+			(ECDHE-RSA-AES128-CBC-SHA) from the
 			list of options given by the client.
 		</div>
 	</span>
@@ -719,15 +719,13 @@
 	<a href="files/server-ephemeral-private.key" download="server-ephemeral-private.key">private key</a>
 	selected is:
 
-<pre class="ind2"><tt>90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d 9e 9f
-a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af</tt></pre>
+<pre class="ind2"><tt class="longboi">909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeaf</tt></pre>
 
 	The <a href="files/server-ephemeral-public.key" download="server-ephemeral-public.key">public key</a>
 	is chosen by multiplying the point x=9 on the x25519 curve
 	by the private key.  The public key calculated is:
 
-<pre class="ind2"><tt>9f d7 ad 6d cf f4 29 8d d3 f9 6d 5b 1b 2a f9 10
-a0 53 5b 14 88 d7 f8 fa bb 34 9a 98 28 80 b6 15</tt></pre>
+<pre class="ind2"><tt class="longboi">9fd7ad6dcff4298dd3f96d5b1b2af910a0535b1488d7f8fabb349a982880b615</tt></pre>
 
 	The public key calculation can be confirmed with command line tools:
 	<codesample>
@@ -958,15 +956,13 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 	<a href="files/client-ephemeral-private.key" download="client-ephemeral-private.key">private key</a>
 	selected is:
 
-<pre class="ind2"><tt>20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f
-30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f</tt></pre>
+	<pre class="ind2"><tt class="longboi">202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f</tt></pre>
 
 	The <a href="files/client-ephemeral-public.key" download="client-ephemeral-public.key">public key</a>
 	is chosen by multiplying the point x=9 on the x25519 curve
 	by the private key.  The public key calculated is:
 
-<pre class="ind2"><tt>35 80 72 d6 36 58 80 d1 ae ea 32 9a df 91 21 38
-38 51 ed 21 a2 8e 3b 75 e9 65 d0 d2 cd 16 62 54</tt></pre>
+	<pre class="ind2"><tt class="longboi">358072d6365880d1aeea329adf9121383851ed21a28e3b75e965d0d2cd166254</tt></pre>
 
 	The public key calculation can be confirmed at the command line:
 	<codesample>
@@ -1073,8 +1069,7 @@ pub:
 	client's public key using the curve25519() algorithm.  The
 	32-byte result is called the PreMasterSecret, and is found
 	to be:
-<pre class="ind2"><tt>df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
-26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24</tt></pre>
+	<pre class="ind2"><tt class="longboi">df4a291baa1eb7cfa6934b29b474baad2697e29f1f920dcc77c8a0a088447624</tt></pre>
 
 	I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
 	<codesample>
@@ -1096,7 +1091,7 @@ a1 = HMAC-SHA256(key=PreMasterSecret, data=a0)
 a2 = HMAC-SHA256(key=PreMasterSecret, data=a1)
 p1 = HMAC-SHA256(key=PreMasterSecret, data=a1 + seed)
 p2 = HMAC-SHA256(key=PreMasterSecret, data=a2 + seed)
-MasterSecret = p1[32 bytes] + p2[bytes 0-16]</pre>
+MasterSecret = p1[all 32 bytes] + p2[first 16 bytes]</pre>
 
 	Here we demonstrate on the command line:
 	<codesample>
@@ -1138,9 +1133,7 @@ $ hexdump /tmp/mastersecret
 	</codesample>
 
 	This gives us a MasterSecret of:
-<pre class="ind1"><tt>91 6a bf 9d a5 59 73 e1 36 14 ae 0a 3f 5d 3f 37
-b0 23 ba 12 9a ee 02 cc 91 34 33 81 27 cd 70 49
-78 1c 8e 19 fc 1e b2 a7 38 7a c0 6a e2 37 34 4c</tt></pre>
+<pre class="ind1"><tt class="longboi">916abf9da55973e13614ae0a3f5d3f37b023ba129aee02cc9134338127cd7049781c8e19fc1eb2a7387ac06ae237344c</tt></pre>
 
 	We then generate the final encryption keys using a key expansion:
 
@@ -1150,13 +1143,19 @@ a0 = seed
 a1 = HMAC-SHA256(key=MasterSecret, data=a0)
 a2 = HMAC-SHA256(key=MasterSecret, data=a1)
 a3 = HMAC-SHA256(key=MasterSecret, data=a2)
+a4 = ...
 p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
 p2 = HMAC-SHA256(key=MasterSecret, data=a2 + seed)
 p3 = HMAC-SHA256(key=MasterSecret, data=a3 + seed)
-client_write_key = p1[32 bytes]
-server_write_key = p2[32 bytes]
-client_write_IV = p3[bytes 0-11]
-server_write_IV = p3[bytes 12-23]</pre>
+p4 = ...
+p = p1 + p2 + p3 + p4 ...
+client write mac key = [first 20 bytes of p]
+server write mac key = [next 20 bytes of p]
+client write key = [next 16 bytes of p]
+server write key = [next 16 bytes of p]
+client write IV = [next 16 bytes of p]
+server write IV = [next 16 bytes of p]
+</pre>
 
 	We can demonstrate this on the command line:
 	<codesample>
@@ -1175,6 +1174,8 @@ $ cat /tmp/a1 | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a2
 $ cat /tmp/a2 | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a3
+$ cat /tmp/a3 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a4
 ### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
 $ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p1
@@ -1182,38 +1183,45 @@ $ cat /tmp/a2 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p2
 $ cat /tmp/a3 /tmp/seed | openssl dgst -sha256 \
    -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p3
-$ cat /tmp/p1 > /tmp/client_key
-$ cat /tmp/p2 > /tmp/server_key
-$ cat /tmp/p3 | head -c 12 > /tmp/client_iv
-$ cat /tmp/p3 | tail -c 20 | head -c 12 > /tmp/server_iv
-$ hexdump /tmp/client_key
-
+$ cat /tmp/a4 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p4
+$ cat /tmp/p1 /tmp/p2 /tmp/p3 /tmp/p4 > /tmp/p
+$ dd if=/tmp/p of=/tmp/client_mac_key bs=1 skip=0  count=20
+$ dd if=/tmp/p of=/tmp/server_mac_key bs=1 skip=20 count=20
+$ dd if=/tmp/p of=/tmp/client_key     bs=1 skip=40 count=16
+$ dd if=/tmp/p of=/tmp/server_key     bs=1 skip=56 count=16
+$ dd if=/tmp/p of=/tmp/client_iv      bs=1 skip=72 count=16
+$ dd if=/tmp/p of=/tmp/server_iv      bs=1 skip=88 count=16
+$ hexdump /tmp/client_mac_key
 0000000 1b 7d 11 7c 7d 5f 69 0b c2 63 ca e8 ef 60 af 0f
-0000010 18 78 ac c2 2a d8 bd d8 c6 01 a6 17 12 6f 63 54
+0000010 18 78 ac c2
+
+$ hexdump /tmp/server_mac_key
+0000000 2a d8 bd d8 c6 01 a6 17 12 6f 63 54 0e b2 09 06
+0000010 f7 81 fa d2
+
+$ hexdump /tmp/client_key
+0000000 f6 56 d0 37 b1 73 ef 3e 11 16 9f 27 23 1a 84 b6
 
 $ hexdump /tmp/server_key
-
-0000000 0e b2 09 06 f7 81 fa d2 f6 56 d0 37 b1 73 ef 3e
-0000010 11 16 9f 27 23 1a 84 b6 75 2a 18 e7 a9 fc b7 cb
+0000000 75 2a 18 e7 a9 fc b7 cb cd d8 f9 8d d8 f7 69 eb
 
 $ hexdump /tmp/client_iv
-
-0000000 cd d8 f9 8d d8 f7 69 eb a0 d2 55 0c
+0000000 a0 d2 55 0c 92 38 ee bf ef 5c 32 25 1a bb 67 d6
 
 $ hexdump /tmp/server_iv
-
-0000000 92 38 ee bf ef 5c 32 25 1a bb 67 d6
+0000000 43 45 28 db 49 37 d5 40 d3 93 13 5e 06 a1 1b b8
 </code></pre>
 	</codesample>
 
 	From this we get the following key data:
 	<ul>
-	<li>client write key: <tt>1b 7d 11 7c 7d 5f 69 0b c2 63 ca e8 ef 60 af 0f
-		18 78 ac c2 2a d8 bd d8 c6 01 a6 17 12 6f 63 54</tt>
-	<li>server write key: <tt>0e b2 09 06 f7 81 fa d2 f6 56 d0 37 b1 73 ef 3e
-		0000010 11 16 9f 27 23 1a 84 b6 75 2a 18 e7 a9 fc b7 cb</tt>
-	<li>client write IV: <tt>cd d8 f9 8d d8 f7 69 eb a0 d2 55 0c</tt>
-	<li>server write IV: <tt>92 38 ee bf ef 5c 32 25 1a bb 67 d6</tt>
+	<li>client MAC key: <tt class="longboi">1b7d117c7d5f690bc263cae8ef60af0f1878acc2</tt>
+	<li>server MAC key: <tt class="longboi">2ad8bdd8c601a617126f63540eb20906f781fad2</tt>
+	<li>client write key: <tt class="longboi">f656d037b173ef3e11169f27231a84b6</tt>
+	<li>server write key: <tt class="longboi">752a18e7a9fcb7cbcdd8f98dd8f769eb</tt>
+	<li>client write IV: <tt class="longboi">a0d2550c9238eebfef5c32251abb67d6</tt>
+	<li>server write IV: <tt class="longboi">434528db4937d540d393135e06a11bb8</tt>
 	</ul>
 </div>
 </div>
@@ -1267,7 +1275,7 @@ $ hexdump /tmp/server_iv
 	<span class="string">
 		<span class="label">record header</span>
 		<span class="bytes">
-			16 03 03 00 20
+			16 03 03 00 40
 		</span>
 		<div class="explanation">
 			TLS sessions are broken into the sending
@@ -1279,7 +1287,7 @@ $ hexdump /tmp/server_iv
 			<ul>
 			<li><tt>16</tt> - type is 0x16 (handshake record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>00 20</tt> - the length of the record payload is 0x20 (32) bytes
+			<li><tt>00 40</tt> - the length of the record payload is 0x40 (64) bytes
 			</ul>
 			All data following this header is the payload for this record.
 		</div>
@@ -1288,15 +1296,17 @@ $ hexdump /tmp/server_iv
 	<span class="string encrypted">
 		<span class="label">encrypted data</span>
 		<span class="bytes">
-			de e7 6c b8 34 68 5e 69 21 30 7a 15 26 a2 8a 35
-			d9 5b 9c 3b 3b 26 42 49 65 f2 87 3e 0e 42 49 3d
+			40 41 42 43 44 45 46 47
+			48 49 4a 4b 4c 4d 4e 4f
+			22 7b c9 ba 81 ef 30 f2 a8 a7 8f f1 df 50 84 4d 58 04
+			b7 ee b2 e2 14 c3 2b 68 92 ac a3 db 7b 78 07 7f dd 90
+			06 7c 51 6b ac b3 ba 90 de df 72 0f
 		</span>
 		<div class="explanation">
 			This data is encrypted with the client write
-			key and IV.  Because we are using an AEAD
-			cipher suite (which includes message
-			authentication codes) it is larger than the
-			decrypted data.
+			key and IV.  Because it starts with a xxx (nonce?)
+xxx
+			it is larger than the decrypted data.
 			<br/><br/>
 			See below for the decrypted data.
 		</div>
@@ -1306,16 +1316,14 @@ $ hexdump /tmp/server_iv
 		<div class="label">⬇ decryption ⬇</div>
 		<div class="explanation">
 			This data can be decoded using the client
-			write key and IV that were generated in the
-			step "Client Encryption Keys Calculation".
+			MAC key, write key, and IV that were generated
+			in the step "Client Encryption Keys
+			Calculation".
 			<br/><br/>
-			Unfortunately the openssl command line tool
-			does not support AEAD ciphers so we must create
-			<a href="files/decrypt_chacha20_poly1305.c">our own tool</a>.
 			<codesample>
 <pre><code>
 
-xxx Where does it come from?
+xxx
 <br/><br/>
 Contrary to popular belief, Lorem Ipsum is not simply random text.
 It has roots in a piece of classical Latin literature from 45 BC,
@@ -1352,11 +1360,14 @@ from a line in section 1.10.32.
 	<span class="string decrypted">
 		<span class="label">verify data</span>
 		<span class="bytes">
-			a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d
+			cf 91 96 26 f1 36 0c 53 6a aa d7 3a
 		</span>
 		<div class="explanation">
 			The verify_data is built from the master secret and the
 			hash of the payload of all handshake records (type=0x16) previous to this one.
+			<br/><br/>
+			The SHA256 of all handshake messages before this one
+			is <tt class="longboi">061dda04b3c2217ff73bd79b9cf88a2bb6ec505404aac8722db03ef417b54cb4</tt>.
 			<br/><br/>
 			The calculation for verify_data is as follows:
 <pre class="ind1">
@@ -1364,23 +1375,20 @@ seed = "client finished" + SHA256(all handshake messages)
 a0 = seed
 a1 = HMAC-SHA256(key=MasterSecret, data=a0)
 p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
-verify_data = p1[bytes 0-11]
+verify_data = p1[first 12 bytes]
 </pre>
-			The SHA256 of all handshake messages before this one
-			is <tt>7d5f1060a3f28ffb 0871c0de00b90c0e
-			       8a276a747e81b951 fa288434623c5ebf</tt>.
-			<br/><br/>
-			The calculated verify data is <tt>a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d</tt>.  We can show this on the command line:
+			The verify data calculated from this hash is <tt class="longboi">a0744dd49a212f152b3c060d</tt>.
+			We can show this on the command line:
 			<codesample>
 			<pre><code>### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
 ### build the seed
 $ echo -en 'client finished' > /tmp/seed
 ### add SHA256(all_messages) to seed
-$ echo -en '\x7d\x5f\x10\x60\xa3\xf2\x8f\xfb' >> /tmp/seed
-$ echo -en '\x08\x71\xc0\xde\x00\xb9\x0c\x0e' >> /tmp/seed
-$ echo -en '\x8a\x27\x6a\x74\x7e\x81\xb9\x51' >> /tmp/seed
-$ echo -en '\xfa\x28\x84\x34\x62\x3c\x5e\xbf' >> /tmp/seed
+$ echo -en '\x06\x1d\xda\x04\xb3\xc2\x21\x7f' >> /tmp/seed
+$ echo -en '\xf7\x3b\xd7\x9b\x9c\xf8\x8a\x2b' >> /tmp/seed
+$ echo -en '\xb6\xec\x50\x54\x04\xaa\xc8\x72' >> /tmp/seed
+$ echo -en '\x2d\xb0\x3e\xf4\x17\xb5\x4c\xb4' >> /tmp/seed
 ### a0 is the same as the seed
 $ cat /tmp/seed > /tmp/a0
 ### a(n) is hmac-sha256(key=secret, data=a(n-1))
@@ -1392,12 +1400,185 @@ $ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
 $ head -c 12 /tmp/p1 > /tmp/verify_data
 $ hexdump /tmp/verify_data
 
-0000000 a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d
+0000000 cf 91 96 26 f1 36 0c 53 6a aa d7 3a
 </code></pre>
 			</codesample>
 		</div>
 	</span>
 </span>
+</div>
+
+<div class="calculation server">
+<div class="label">Server Encryption Keys Calculation</div>
+<div class="explanation">
+	The server now has the information to calculate the encryption
+	keys that will be used by each side.  It uses the following
+	information in this calculation:
+	<ul>
+	<li>server random (from Server Hello)
+	<li>client random (from Client Hello)
+	<li>client public key (from Client Key Exchange)
+	<li>server private key (from Server Key Generation)
+	</ul>
+	The server multiplies the client's public key with the
+	client's public key using the curve25519() algorithm.  The
+	32-byte result is called the PreMasterSecret, and is found
+	to be:
+	<pre class="ind2"><tt class="longboi">df4a291baa1eb7cfa6934b29b474baad2697e29f1f920dcc77c8a0a088447624</tt></pre>
+
+	I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
+	<codesample>
+<pre><code>$ gcc -o curve25519-mult curve25519-mult.c
+$ ./curve25519-multi server-ephemeral-private.key \
+                     client-ephemeral-public.key | hexdump
+
+0000000 df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
+0000010 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24
+</code></pre>
+	</codesample>
+
+	The client then calculates 48 bytes of the MasterSecret
+	from the PreMasterSecret using the following method:
+
+	<pre class="ind1">seed = "master secret" + client_random + server_random
+a0 = seed
+a1 = HMAC-SHA256(key=PreMasterSecret, data=a0)
+a2 = HMAC-SHA256(key=PreMasterSecret, data=a1)
+p1 = HMAC-SHA256(key=PreMasterSecret, data=a1 + seed)
+p2 = HMAC-SHA256(key=PreMasterSecret, data=a2 + seed)
+MasterSecret = p1[all 32 bytes] + p2[first 16 bytes]</pre>
+
+	Here we demonstrate on the command line:
+	<codesample>
+<pre><code>### set up our PreMasterSecret as a hex string
+$ pmshex=df4a291baa1eb7cfa6934b29b474baad
+$ pmshex=${pmshex}2697e29f1f920dcc77c8a0a088447624
+### client random from Client Hello
+$ echo -en '\x00\x01\x02\x03\x04\x05\x06\x07' >  /tmp/c_rand
+$ echo -en '\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f' >> /tmp/c_rand
+$ echo -en '\x10\x11\x12\x13\x14\x15\x16\x17' >> /tmp/c_rand
+$ echo -en '\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f' >> /tmp/c_rand
+### server random from Server Hello
+$ echo -en '\x70\x71\x72\x73\x74\x75\x76\x77' >  /tmp/s_rand
+$ echo -en '\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f' >> /tmp/s_rand
+$ echo -en '\x80\x81\x82\x83\x84\x85\x86\x87' >> /tmp/s_rand
+$ echo -en '\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f' >> /tmp/s_rand
+### build the seed
+$ echo -en 'master secret' > /tmp/seed
+$ cat /tmp/c_rand /tmp/s_rand >> /tmp/seed
+### a0 is the same as the seed
+$ cat /tmp/seed > /tmp/a0
+### a(n) is hmac-sha256(key=secret, data=a(n-1))
+$ cat /tmp/a0 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/a1
+$ cat /tmp/a1 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/a2
+### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
+$ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/p1
+$ cat /tmp/a2 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$pmshex -binary > /tmp/p2
+$ cat /tmp/p1 /tmp/p2 | head -c 48 > /tmp/mastersecret
+$ hexdump /tmp/mastersecret
+
+0000000 91 6a bf 9d a5 59 73 e1 36 14 ae 0a 3f 5d 3f 37
+0000010 b0 23 ba 12 9a ee 02 cc 91 34 33 81 27 cd 70 49
+0000020 78 1c 8e 19 fc 1e b2 a7 38 7a c0 6a e2 37 34 4c
+</code></pre>
+	</codesample>
+
+	This gives us a MasterSecret of:
+<pre class="ind1"><tt class="longboi">916abf9da55973e13614ae0a3f5d3f37b023ba129aee02cc9134338127cd7049781c8e19fc1eb2a7387ac06ae237344c</tt></pre>
+
+	We then generate the final encryption keys using a key expansion:
+
+<pre class="ind1">
+seed = "key expansion" + server_random + client_random
+a0 = seed
+a1 = HMAC-SHA256(key=MasterSecret, data=a0)
+a2 = HMAC-SHA256(key=MasterSecret, data=a1)
+a3 = HMAC-SHA256(key=MasterSecret, data=a2)
+a4 = ...
+p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
+p2 = HMAC-SHA256(key=MasterSecret, data=a2 + seed)
+p3 = HMAC-SHA256(key=MasterSecret, data=a3 + seed)
+p4 = ...
+p = p1 + p2 + p3 + p4 ...
+client write mac key = [first 20 bytes of p]
+server write mac key = [next 20 bytes of p]
+client write key = [next 16 bytes of p]
+server write key = [next 16 bytes of p]
+client write IV = [next 16 bytes of p]
+server write IV = [next 16 bytes of p]
+</pre>
+
+	We can demonstrate this on the command line:
+	<codesample>
+<pre><code>### continued from above command line example
+### set up our MasterSecret as a hex string
+$ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
+### build the seed
+$ echo -en 'key expansion' > /tmp/seed
+$ cat /tmp/s_rand /tmp/c_rand >> /tmp/seed
+### a0 is the same as the seed
+$ cat /tmp/seed > /tmp/a0
+### a(n) is hmac-sha256(key=secret, data=a(n-1))
+$ cat /tmp/a0 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a1
+$ cat /tmp/a1 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a2
+$ cat /tmp/a2 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a3
+$ cat /tmp/a3 | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/a4
+### p(n) is hmac-sha256(key=secret, data=a(n)+seed)
+$ cat /tmp/a1 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p1
+$ cat /tmp/a2 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p2
+$ cat /tmp/a3 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p3
+$ cat /tmp/a4 /tmp/seed | openssl dgst -sha256 \
+   -mac HMAC -macopt hexkey:$mshex -binary > /tmp/p4
+$ cat /tmp/p1 /tmp/p2 /tmp/p3 /tmp/p4 > /tmp/p
+$ dd if=/tmp/p of=/tmp/client_mac_key bs=1 skip=0  count=20
+$ dd if=/tmp/p of=/tmp/server_mac_key bs=1 skip=20 count=20
+$ dd if=/tmp/p of=/tmp/client_key     bs=1 skip=40 count=16
+$ dd if=/tmp/p of=/tmp/server_key     bs=1 skip=56 count=16
+$ dd if=/tmp/p of=/tmp/client_iv      bs=1 skip=72 count=16
+$ dd if=/tmp/p of=/tmp/server_iv      bs=1 skip=88 count=16
+$ hexdump /tmp/client_mac_key
+0000000 1b 7d 11 7c 7d 5f 69 0b c2 63 ca e8 ef 60 af 0f
+0000010 18 78 ac c2
+
+$ hexdump /tmp/server_mac_key
+0000000 2a d8 bd d8 c6 01 a6 17 12 6f 63 54 0e b2 09 06
+0000010 f7 81 fa d2
+
+$ hexdump /tmp/client_key
+0000000 f6 56 d0 37 b1 73 ef 3e 11 16 9f 27 23 1a 84 b6
+
+$ hexdump /tmp/server_key
+0000000 75 2a 18 e7 a9 fc b7 cb cd d8 f9 8d d8 f7 69 eb
+
+$ hexdump /tmp/client_iv
+0000000 a0 d2 55 0c 92 38 ee bf ef 5c 32 25 1a bb 67 d6
+
+$ hexdump /tmp/server_iv
+0000000 43 45 28 db 49 37 d5 40 d3 93 13 5e 06 a1 1b b8
+</code></pre>
+	</codesample>
+
+	From this we get the following key data:
+	<ul>
+	<li>client MAC key: <tt class="longboi">1b7d117c7d5f690bc263cae8ef60af0f1878acc2</tt>
+	<li>server MAC key: <tt class="longboi">2ad8bdd8c601a617126f63540eb20906f781fad2</tt>
+	<li>client write key: <tt class="longboi">f656d037b173ef3e11169f27231a84b6</tt>
+	<li>server write key: <tt class="longboi">752a18e7a9fcb7cbcdd8f98dd8f769eb</tt>
+	<li>client write IV: <tt class="longboi">a0d2550c9238eebfef5c32251abb67d6</tt>
+	<li>server write IV: <tt class="longboi">434528db4937d540d393135e06a11bb8</tt>
+	</ul>
+</div>
 </div>
 
 <div class="record server">
@@ -1410,28 +1591,41 @@ $ hexdump /tmp/verify_data
 <div class="record server">
 <div class="label">Server Handshake Finished</div>
 <span class="record-data">
-16 03 03 00 20 ec 1e b8 af bf e5 14 80 03 3f bd 40 4a 13 94 93 59 bb d4 59 97 96 ea 0f d8 dd 37 37 c6 25 b8 d3
+16 03 03 00 40 51 52 53 54 55 56 57 58 59 5a 5b
+5c 5d 5e 5f 60 18 e0 75 31 7b 10 03 15 f6 08 1f
+cb f3 13 78 1a ac 73 ef e1 9f e2 5b a1 af 59 c2
+0b e9 4f c0 1b da 2d 68 00 29 8b 73 a7 e8 49 d7
+4b d4 94 cf 7d
 </span>
 </div>
 
 <div class="record client">
 <div class="label">Client Application Data</div>
 <span class="record-data">
- 17 03 03 00 14 38 1c 53 d0 e1 d0 da 47 c8 ef d5 67 b1 8b c2 0d b4 70 96 7e
+17 03 03 00 30 00 01 02 03 04 05 06 07 08 09 0a
+0b 0c 0d 0e 0f 6c 42 1c 71 c4 2b 18 3b fa 06 19
+5d 13 3d 0a 09 d0 0f c7 cb 4e 0f 5d 1c da 59 d1
+47 ec 79 0c 99
 </span>
 </div>
 
 <div class="record server">
 <div class="label">Server Application Data</div>
 <span class="record-data">
- 17 03 03 00 14 47 dd 8b cd b9 03 9a c0 22 bb 41 ce cc 71 f4 c3 b0 c2 2d 4c
+17 03 03 00 30 61 62 63 64 65 66 67 68 69 6a 6b
+6c 6d 6e 6f 70 97 83 48 8a f5 fa 20 bf 7a 2e f6
+9d eb b5 34 db 9f b0 7a 8c 27 21 de e5 40 9f 77
+af 0c 3d de 56
 </span>
 </div>
 
 <div class="record client">
 <div class="label">Client Close Notify</div>
 <span class="record-data">
- 15 03 03 00 12 b2 5e dd 7d f9 e7 b8 16 cc ae f2 b7 4b 6d 89 63 9f 85
+15 03 03 00 30 10 11 12 13 14 15 16 17 18 19 1a
+1b 1c 1d 1e 1f 0d 83 f9 79 04 75 0d d8 fd 8a a1
+30 21 86 32 63 4f d0 65 e4 62 83 79 b8 8b bf 9e
+fd 12 87 a6 2d
 </span>
 </div>
 

@@ -48,6 +48,17 @@ func main() {
 	ln, err := tls.Listen("tcp", ":8443", &tls.Config{
 		Rand:         rand,
 		Time:         func() time.Time { return time.Unix(1538708249, 0) },
+		CipherSuites: []uint16{
+			// for the purpose of education we avoid AEAD cipher suites
+			0xc013, // ECDHE-RSA-AES128-SHA
+			0xc009, // ECDHE-ECDSA-AES128-SHA
+			0xc014, // ECDHE-RSA-AES256-SHA
+			0xc00a, // ECDHE-ECDSA-AES256-SHA
+			0x002f, // RSA-AES128-SHA
+			0x0035, // RSA-AES256-SHA
+			0xc012, // ECDHE-RSA-3DES-EDE-SHA
+			0x000a, // RSA-3DES-EDE-SHA
+		},
 		Certificates: []tls.Certificate{cert},
 		KeyLogWriter: &keyWriter{},
 	})
@@ -69,6 +80,9 @@ func main() {
 
 	wdata := []byte("pong")
 	n, err = conn.Write(wdata)
+	if n != len(wdata) {
+		panic(fmt.Sprintf("incorrect write of %d (expected %d)", n, wdata))
+	}
 	fmt.Println("server wrote data:", string(wdata[:n]))
 	if err != nil {
 		panic(err)

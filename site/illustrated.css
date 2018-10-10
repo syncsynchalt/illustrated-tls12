@@ -31,6 +31,10 @@ ol, ul, dl {
   margin: 1rem 0;
 }
 
+tt.longboi {
+	word-break: break-all;
+}
+
 .ind1 {
 	padding-left: 1em;
 }
