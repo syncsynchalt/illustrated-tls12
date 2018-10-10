@@ -13,7 +13,7 @@ h1,h3 {
 
 pre {
 	margin: 1em 0;
-	overflow: auto;
+	overflow: scroll;
 	-ms-overflow-style: scrollbar;
 }
 
@@ -23,6 +23,8 @@ pre code {
 	background-color: black;
 	padding: 0.5em;
 	border-radius: 5px;
+	overflow: scroll;
+	-ms-overflow-style: scrollbar;
 }
 
 ol, ul, dl {
@@ -212,4 +214,54 @@ ol, ul, dl {
 }
 .string .explanation .close:hover {
 	font-weight: bold;
+}
+
+/***** codesample *****/
+
+codesample {
+	display: block;
+	margin: 1em 0;
+}
+
+codesample pre {
+	margin: 0;
+	height: 0;
+	transition: all 0.3s;
+}
+
+codesample .show-code {
+	display: block;
+	clear: both;
+	box-shadow: inset 0px 1px 3px 0px #91b8b3;
+	background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+	background-color: #768d87;
+	border-radius:5px;
+	border: 1px solid #566963;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 11px 23px;
+	text-decoration: none;
+	text-shadow: 0px -1px 0px #2b665e;
+}
+
+codesample .show-code:hover:hover {
+	background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+	background-color: #6c7c7c;
+}
+
+codesample .show-code:active {
+	position: relative;
+	top: 1px;
+}
+
+
+codesample.show .show-code {
+	display: none;
+}
+
+codesample.show pre {
+	height: auto;
 }

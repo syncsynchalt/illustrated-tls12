@@ -16,6 +16,8 @@ ill = {
 		ill.unselectAllRecords();
 		if (!selected) {
 			element.classList.add("selected");
+		} else {
+			ill.closeAllCode();
 		}
 		ill.calculateStringPositions(element);
 		if (event) { event.stopPropagation(); }
@@ -37,12 +39,27 @@ ill = {
 		if (event) { event.stopPropagation(); }
 	},
 
+	showCode: function(element, event) {
+		element.parentNode.classList.add("show");
+		if (event) { event.stopPropagation(); }
+	},
+
+	closeAllCode: function() {
+		[].forEach.call(document.querySelectorAll("codesample.show"), function(el) {
+			el.classList.remove("show");
+		});
+	},
+
 	cancel: function(event) {
 		if (event) { event.stopPropagation(); }
 	},
 
-	addCloseButton: function(el) {
-		el.innerHTML = '<span class="close" onclick="ill.unselectAllStrings()">&times;</span>' + el.innerHTML;
+	addExplanationCloseButton: function(el) {
+		el.innerHTML = document.getElementById('closeBtnTmpl').innerHTML + el.innerHTML;
+	},
+
+	addShowCode: function(el) {
+		el.innerHTML = document.getElementById('showCodeTmpl').innerHTML + el.innerHTML;
 	},
 
 	calculateStringPositions: function(record) {
@@ -80,7 +97,10 @@ window.onload = function() {
 		};
 	});
 	[].forEach.call(document.querySelectorAll(".string > .explanation"), function(el) {
-		ill.addCloseButton(el);
+		ill.addExplanationCloseButton(el);
+	});
+	[].forEach.call(document.querySelectorAll("codesample"), function(el) {
+		ill.addShowCode(el);
 	});
 };
 

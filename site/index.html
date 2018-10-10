@@ -22,6 +22,7 @@
 	negotiated a TLS 1.2 session, sent "ping", received "pong",
 	and then terminated the session. Click below to begin
 	exploring.</p>
+	</div>
 
 <div class="record client">
 <div class="label">Client Hello</div>
@@ -697,12 +698,15 @@
 			documented <a href="xxx">on another page</a>.
 			<a href="files/server.crt" download="server.crt">The certificate</a>
 			can be converted to the binary data in this message
-			using the following command:
+			at the command line:
+<codesample>
 <pre><code>$ openssl x509 -outform der < server.crt | hexdump | head
+
 0000000 30 82 03 21 30 82 02 09 a0 03 02 01 02 02 08 15
 0000010 5a 92 ad c2 04 8f 90 30 0d 06 09 2a 86 48 86 f7
 ... snip ...
 </code></pre>
+</codesample>
 		</div>
 	</span>
 </span>
@@ -731,10 +735,10 @@ a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af</tt></pre>
 <pre class="ind2"><tt>9f d7 ad 6d cf f4 29 8d d3 f9 6d 5b 1b 2a f9 10
 a0 53 5b 14 88 d7 f8 fa bb 34 9a 98 28 80 b6 15</tt></pre>
 
-	The public key calculation can be confirmed with this command:
+	The public key calculation can be confirmed with command line tools:
+<codesample>
 <pre><code>### requires openssl 1.1.0 or higher
-$ openssl pkey -noout -text \
-   < server-ephemeral-private.key
+$ openssl pkey -noout -text < server-ephemeral-private.key
 
 X25519 Private-Key:
 priv:
@@ -746,6 +750,7 @@ pub:
     10:a0:53:5b:14:88:d7:f8:fa:bb:34:9a:98:28:80:
     b6:15
 </code></pre>
+</codesample>
 </div>
 </div>
 
@@ -820,9 +825,9 @@ pub:
 	<span class="string">
 		<span class="label">public key</span>
 		<span class="bytes">
-			20 9f d7 ad 6d cf f4 29 8d d3
-			f9 6d 5b 1b 2a f9 10 a0 53 5b 14 88 d7 f8 fa bb
-			34 9a 98 28 80 b6 15
+			20 9f d7 ad 6d cf f4 29 8d d3 f9 6d 5b 1b 2a f9
+			10 a0 53 5b 14 88 d7 f8 fa bb 34 9a 98 28 80 b6
+			15
 		</span>
 		<div class="explanation">
 			The server provides its public key.
@@ -871,23 +876,34 @@ pub:
 			        computed signature for <tt>SHA256(client_hello_random
 			        + server_hello_random + curve_info + public_key)</tt>
 			</ul>
-			To compute the signature ourselves using
+			We can compute the signature ourselves using
 			the <a href="files/server.key" download="server.key">server's private key</a>,
-			we can do the following:
-<pre><code>### client and server random can be found in hello msgs
-$ echo -n $client_random > /tmp/compute
-$ echo -n $server_random >> /tmp/compute
-### the curve info and public key sections from this msg
-$ curve_info=$(echo -en '\x03\x00\x1d')
-$ pubkey=$(echo -en '\x20\x9f...\x15')
-$ echo -n $curve_info >> /tmp/compute
-$ echo -n $pubkey >> /tmp/compute
+			at the command line:
+<codesample>
+<pre><code>### client random from Client Hello
+$ echo -en '\x00\x01\x02\x03\x04\x05\x06\x07'  > /tmp/compute
+$ echo -en '\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f' >> /tmp/compute
+$ echo -en '\x10\x11\x12\x13\x14\x15\x16\x17' >> /tmp/compute
+$ echo -en '\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f' >> /tmp/compute
+### server random from Server Hello
+$ echo -en '\x70\x71\x72\x73\x74\x75\x76\x77' >> /tmp/compute
+$ echo -en '\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f' >> /tmp/compute
+$ echo -en '\x80\x81\x82\x83\x84\x85\x86\x87' >> /tmp/compute
+$ echo -en '\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f' >> /tmp/compute
+### the curve info section from this message
+$ echo -en '\x03\x00\x1d' >> /tmp/compute
+### the public key sections from this msg
+$ echo -en '\x20\x9f\xd7\xad\x6d\xcf\xf4\x29' >> /tmp/compute
+$ echo -en '\x8d\xd3\xf9\x6d\x5b\x1b\x2a\xf9' >> /tmp/compute
+$ echo -en '\x10\xa0\x53\x5b\x14\x88\xd7\xf8' >> /tmp/compute
+$ echo -en '\xfa\xbb\x34\x9a\x98\x28\x80\xb6\x15' >> /tmp/compute
 $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 
 0000000 04 02 b6 61 f7 c1 91 ee 59 be 45 37 66 39 bd c3
 ... snip ...
 00000f0 7d 87 dc 33 18 64 35 71 22 6c 4d d2 c2 ac 41 fb
 </code></pre>
+</codesample>
 		</div>
 	</span>
 </span>
@@ -962,10 +978,10 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 <pre class="ind2"><tt>35 80 72 d6 36 58 80 d1 ae ea 32 9a df 91 21 38
 38 51 ed 21 a2 8e 3b 75 e9 65 d0 d2 cd 16 62 54</tt></pre>
 
-	The public key calculation can be confirmed with this command:
+	The public key calculation can be confirmed at the command line:
+<codesample>
 <pre><code>### requires openssl 1.1.0 or higher
-$ openssl pkey -noout -text \
-   < client-ephemeral-private.key
+$ openssl pkey -noout -text < client-ephemeral-private.key
 
 X25519 Private-Key:
 priv:
@@ -977,6 +993,7 @@ pub:
     38:38:51:ed:21:a2:8e:3b:75:e9:65:d0:d2:cd:16:
     62:54
 </code></pre>
+</codesample>
 </div>
 </div>
 <div class="record client">
@@ -1071,14 +1088,16 @@ pub:
 <pre class="ind2"><tt>df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24</tt></pre>
 
-	I've provided <a href="files/curve25519-mult.c">a utility</a> to perform this calculation:
-<pre><code>$ gcc -o curve25519-mult curve25519-mult
+	I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
+<codesample>
+<pre><code>$ gcc -o curve25519-mult curve25519-mult.c
 $ ./curve25519-multi client-ephemeral-private.key \
                      server-ephemeral-public.key | hexdump
 
 0000000 df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
 0000010 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24
 </code></pre>
+</codesample>
 
 	The client then calculates 48 bytes of the MasterSecret
 	from the PreMasterSecret using the following method:
@@ -1092,6 +1111,7 @@ p2 = HMAC-SHA256(key=PreMasterSecret, data=a2 + seed)
 MasterSecret = p1[32 bytes] + p2[bytes 0-16]</pre>
 
 	Here we demonstrate on the command line:
+<codesample>
 <pre><code>### set up our PreMasterSecret as a hex string
 $ pmshex=df4a291baa1eb7cfa6934b29b474baad
 $ pmshex=${pmshex}2697e29f1f920dcc77c8a0a088447624
@@ -1127,6 +1147,7 @@ $ hexdump /tmp/mastersecret
 0000010 b0 23 ba 12 9a ee 02 cc 91 34 33 81 27 cd 70 49
 0000020 78 1c 8e 19 fc 1e b2 a7 38 7a c0 6a e2 37 34 4c
 </code></pre>
+</codesample>
 
 	This gives us a MasterSecret of:
 <pre class="ind1"><tt>91 6a bf 9d a5 59 73 e1 36 14 ae 0a 3f 5d 3f 37
@@ -1149,7 +1170,8 @@ server_write_key = p2[32 bytes]
 client_write_IV = p3[bytes 0-11]
 server_write_IV = p3[bytes 12-23]</pre>
 
-	Again we demonstrate on the command line:
+	We can demonstrate this on the command line:
+<codesample>
 <pre><code>### continued from above command line example
 ### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
@@ -1194,13 +1216,14 @@ $ hexdump /tmp/server_iv
 
 0000000 92 38 ee bf ef 5c 32 25 1a bb 67 d6
 </code></pre>
+</codesample>
 
 	From this we get the following key data:
 	<ul>
 	<li>client write key: <tt>1b 7d 11 7c 7d 5f 69 0b c2 63 ca e8 ef 60 af 0f
-18 78 ac c2 2a d8 bd d8 c6 01 a6 17 12 6f 63 54</tt>
+		18 78 ac c2 2a d8 bd d8 c6 01 a6 17 12 6f 63 54</tt>
 	<li>server write key: <tt>0e b2 09 06 f7 81 fa d2 f6 56 d0 37 b1 73 ef 3e
-0000010 11 16 9f 27 23 1a 84 b6 75 2a 18 e7 a9 fc b7 cb</tt>
+		0000010 11 16 9f 27 23 1a 84 b6 75 2a 18 e7 a9 fc b7 cb</tt>
 	<li>client write IV: <tt>cd d8 f9 8d d8 f7 69 eb a0 d2 55 0c</tt>
 	<li>server write IV: <tt>92 38 ee bf ef 5c 32 25 1a bb 67 d6</tt>
 	</ul>
@@ -1263,7 +1286,8 @@ verify_data = p1[bytes 0-11]
 	is <tt>7d5f1060a3f28ffb 0871c0de00b90c0e
 	       8a276a747e81b951 fa288434623c5ebf</tt>.
 	<br/><br/>
-	The calculated verify data is <tt>a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d</tt>.  We can demonstrate this on the command line:
+	The calculated verify data is <tt>a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d</tt>.  We can show this on the command line:
+<codesample>
 <pre><code>### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -e '/1 "%02x"' /tmp/mastersecret)
 ### build the seed
@@ -1286,7 +1310,9 @@ $ hexdump /tmp/verify_data
 
 0000000 a0 74 4d d4 9a 21 2f 15 2b 3c 06 0d
 </code></pre>
+</codesample>
 </div>
+
 <span class="record-data">
 	<span class="string">
 		<span class="label">record header</span>
@@ -1369,5 +1395,14 @@ $ hexdump /tmp/verify_data
 	<a href="https://twitter.com/xargsnotbombs">@XargsNotBombs</a>.</p>
 	</div>
 
+</div>
+
+<div id="templates" style="display: none">
+	<div id="closeBtnTmpl">
+		<span class="close" onclick="ill.unselectAllStrings()">&times;</span>
+	</div>
+	<div id="showCodeTmpl">
+		<button class="show-code" onclick="ill.showCode(this, event)">Show Code</button>
+	</div>
 </div>
 </body>
