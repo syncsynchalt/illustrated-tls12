@@ -1,4 +1,16 @@
 ill = {
+	elementIsVisible: function(el) {
+		var rect = el.getBoundingClientRect(),
+			viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+		return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+	},
+
+	ensureElementInView: function(el) {
+		if (!ill.elementIsVisible(el)) {
+			el.scrollIntoView({behavior: 'smooth'});
+		}
+	},
+
 	unselectAllRecords: function() {
 		[].forEach.call(document.querySelectorAll(".record.selected, .calculation.selected"), function(el) {
 			el.classList.remove("selected");
@@ -21,6 +33,7 @@ ill = {
 		}
 		ill.calculateStringPositions(element);
 		if (event) { event.stopPropagation(); }
+		ill.ensureElementInView(element);
 	},
 
 	selectRecord: function(element, event) {
@@ -28,6 +41,7 @@ ill = {
 		element.classList.add("selected");
 		ill.calculateStringPositions(element);
 		if (event) { event.stopPropagation(); }
+		ill.ensureElementInView(element);
 	},
 
 	toggleString: function(element, event) {
