@@ -1,4 +1,6 @@
 ill = {
+	// viewports etc
+
 	elementIsVisible: function(el) {
 		var rect = el.getBoundingClientRect(),
 			viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
@@ -11,14 +13,10 @@ ill = {
 		}
 	},
 
+	// events
+
 	unselectAllRecords: function() {
 		[].forEach.call(document.querySelectorAll(".record.selected, .calculation.selected"), function(el) {
-			el.classList.remove("selected");
-		});
-	},
-
-	unselectAllStrings: function() {
-		[].forEach.call(document.querySelectorAll(".string.selected, .decryption.selected"), function(el) {
 			el.classList.remove("selected");
 		});
 	},
@@ -31,7 +29,6 @@ ill = {
 		} else {
 			ill.closeAllCode();
 		}
-		ill.calculateStringPositions(element);
 		if (event) { event.stopPropagation(); }
 		ill.ensureElementInView(element);
 	},
@@ -39,18 +36,8 @@ ill = {
 	selectRecord: function(element, event) {
 		ill.unselectAllRecords();
 		element.classList.add("selected");
-		ill.calculateStringPositions(element);
 		if (event) { event.stopPropagation(); }
 		ill.ensureElementInView(element);
-	},
-
-	toggleString: function(element, event) {
-		var selected = element.classList.contains("selected");
-		ill.unselectAllStrings();
-		if (!selected) {
-			element.classList.add("selected");
-		}
-		if (event) { event.stopPropagation(); }
 	},
 
 	showCode: function(element, event) {
@@ -64,29 +51,33 @@ ill = {
 		});
 	},
 
+	toggleAnnotate: function(el) {
+		el.classList.toggle("annotate");
+	},
+
 	cancel: function(event) {
 		if (event) { event.stopPropagation(); }
 	},
 
-	addExplanationCloseButton: function(el) {
-		el.innerHTML = document.getElementById('closeBtnTmpl').innerHTML + el.innerHTML;
-	},
+	// injections
 
 	addShowCode: function(el) {
 		el.innerHTML = document.getElementById('showCodeTmpl').innerHTML + el.innerHTML;
 	},
 
-	calculateStringPositions: function(record) {
-		[].forEach.call(record.querySelectorAll(".string > .explanation"), function(el) {
-			var recordData = el.parentElement.parentElement;
-			if (el.parentElement.offsetHeight < 60) {
-				el.style.top = (el.parentElement.offsetHeight+5) + "px";
-			} else {
-				el.style.top = "60px";
-			}
-			el.style.width = (recordData.offsetWidth-30) + "px";
-			// hack, only safari gets this wrong
-			el.style.left = "-" + el.parentElement.offsetLeft + "px";
+	addToggleAnnotations: function(record) {
+		var expl = record.querySelector(".explanation"),
+			copy = document.getElementById("annotateTmpl").cloneNode(true);
+		expl.insertAdjacentElement("afterend", copy);
+	},
+
+	injectLabels: function() {
+		var els = document.querySelectorAll(".string > .explanation, .decryption > .explanation");
+		[].forEach.call(els, function(expl) {
+			var label = expl.parentNode.querySelector(".label"),
+				h4 = document.createElement("h4");
+			h4.appendChild(document.createTextNode(label.textContent));
+			expl.insertAdjacentElement("afterbegin", h4);
 		});
 	}
 };
@@ -106,26 +97,23 @@ window.onload = function() {
 			ill.toggleRecord(el.parentNode, event);
 		};
 	});
-	[].forEach.call(document.querySelectorAll(".string .bytes, .string .label, .decryption .label"), function(el) {
-		el.onclick = function(event) {
-			ill.toggleString(el.parentNode, event);
-		};
-	});
-	[].forEach.call(document.querySelectorAll(".record > .explanation"), function(el) {
-		el.onclick = function(event) {
-			ill.cancel(event);
-		};
-	});
-	[].forEach.call(document.querySelectorAll(".string > .explanation, .decryption > .explanation"), function(el) {
-		ill.addExplanationCloseButton(el);
+	[].forEach.call(document.querySelectorAll(".record"), function(el) {
+		ill.addToggleAnnotations(el);
 	});
 	[].forEach.call(document.querySelectorAll("codesample"), function(el) {
 		ill.addShowCode(el);
 	});
+	ill.injectLabels();
 };
 
 window.onkeyup = function(e) {
+	var els;
 	if (e.keyCode === 27) {
-		ill.unselectAllStrings();
+		els = document.querySelectorAll(".record.annotate");
+		if (els.length) {
+			[].forEach.call(els, function(rec) { rec.classList.remove("annotate"); });
+		} else {
+			ill.unselectAllRecords();
+		}
 	}
 };

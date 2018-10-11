@@ -1,3 +1,10 @@
+body:not(.user-is-tabbing) button:focus,
+body:not(.user-is-tabbing) input:focus,
+body:not(.user-is-tabbing) select:focus,
+body:not(.user-is-tabbing) textarea:focus {
+	outline: none;
+}
+
 h1:after {
 	content: " ❧";
 }
@@ -134,7 +141,8 @@ tt.longboi {
 .calculation:hover {
 	border: 2px solid #666;
 }
-.record.selected:hover, .calculation.selected:hover {
+.record.selected:hover,
+.calculation.selected:hover {
 	border: 2px solid transparent;
 }
 
@@ -148,20 +156,24 @@ tt.longboi {
 	display: block;
 }
 
+.record > button.annotate-toggle {
+	display: none;
+}
+.record.selected > button.annotate-toggle {
+	display: block;
+}
+
 /***** .record-data *****/
 
-.client .record-data .string:hover,
-.client .record-data .string.selected {
+.client .record-data .string:hover {
 	color: teal;
 }
-.server .record-data .string:hover,
-.server .record-data .string.selected {
+.server .record-data .string:hover {
 	color: darkgreen;
 }
 
 .record-data .string {
 	position: relative;
-	cursor: pointer;
 }
 
 .record-data .string .label {
@@ -180,8 +192,7 @@ tt.longboi {
 	top: -28px;
 	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
-.record-data .string:hover > .label,
-.record-data .string.selected > .label {
+.record-data .string:hover > .label {
 	display: inline;
 }
 
@@ -201,47 +212,34 @@ tt.longboi {
 	border-color: transparent #FAF7DC #FAF7DC transparent;
 }
 
-.record-data .string.selected {
-	font-weight: bold;
-}
-
-.record-data .string.selected > .explanation,
-.record-data .decryption.selected > .explanation {
+.record.annotate .string > .explanation,
+.record.annotate .decryption > .explanation {
 	display: block;
-	position: absolute;
-	font-weight: normal;
-	color: black;
 	font-size: 0.9em;
-	margin: 10px;
-	padding: 10px 10px;
+	color: black;
+	margin: 1em 0;
+	padding: 1em;
 	background-color: #FAF7DC;
 	border: 2px solid #e0d998;
 	border-radius: 1em;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
-	z-index: 1;
 }
 
-.record-data .string > .explanation,
-.record-data .decryption > .explanation {
+.record.annotate .string > .label {
 	display: none;
 }
 
-.string .explanation .close,
-.decryption .explanation .close {
-	display: block;
-	cursor: pointer;
-	float: right;
-	font-size: 1.8em;
-	margin-top: -15px;
-}
-.string .explanation .close:hover,
-.decryption .explanation .close:hover {
-	font-weight: bold;
+.record .string > .explanation,
+.record .decryption > .explanation {
+	display: none;
 }
 
-.string .bytes {
-	cursor: pointer;
+.record .decryption > .label:before {
+	content: "⬇ ";
+}
+.record .decryption > .label:after {
+	content: " ⬇";
 }
 
 .string.encrypted .bytes {
@@ -253,16 +251,11 @@ tt.longboi {
 }
 
 .record-data .decryption {
-	margin: 1em;
+	margin: 1em 0;
 }
 
 .record-data .decryption .label {
 	text-align: center;
-}
-
-.record-data .decryption .label:hover {
-	cursor: pointer;
-	font-weight: bold;
 }
 
 /***** codesample *****/
@@ -299,16 +292,59 @@ codesample button.show-code:hover:hover {
 	background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
 	background-color: #6c7c7c;
 }
-
 codesample button.show-code:active {
 	position: relative;
 	top: 1px;
 }
-
 codesample.show button.show-code {
 	display: none;
 }
-
 codesample.show pre {
 	height: auto;
+}
+
+/***** annotation toggle button *****/
+
+button.annotate-toggle {
+	margin-bottom: 1em;
+
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font: Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+	padding: .5em 2em .55em;
+	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	-webkit-border-radius: .5em;
+	-moz-border-radius: .5em;
+	border-radius: .5em;
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.3);
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.3);
+	box-shadow: 1px 1px 2px rgba(0,0,0,.3);
+
+	color: #fef4e9;
+	border: solid 1px #da7c0c;
+	background: #f78d1d;
+	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+}
+button.annotate-toggle:hover:active {
+	text-decoration: none;
+
+	background: #f47c20;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f88e11), to(#f06015));
+	background: -moz-linear-gradient(top,  #f88e11,  #f06015);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f88e11', endColorstr='#f06015');
+}
+button.annotate-toggle:active {
+	position: relative;
+	top: 1px;
+
+	color: #fcd3a5;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f47a20), to(#faa51a));
+	background: -moz-linear-gradient(top,  #f47a20,  #faa51a);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f47a20', endColorstr='#faa51a');
 }
