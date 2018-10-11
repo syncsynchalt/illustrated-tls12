@@ -85,6 +85,8 @@ ill = {
 				el.style.top = "60px";
 			}
 			el.style.width = (recordData.offsetWidth-30) + "px";
+			// hack, only safari gets this wrong
+			el.style.left = "-" + el.parentElement.offsetLeft + "px";
 		});
 	}
 };

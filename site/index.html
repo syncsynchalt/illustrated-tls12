@@ -3,11 +3,11 @@
 
 <head>
 	<title>The Illustrated TLS Connection</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="format-detection" content="telephone=no">
-	<link rel="stylesheet" href="frombootstrap.css">
-	<link rel="stylesheet" href="illustrated.css">
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<link rel="stylesheet" href="frombootstrap.css"/>
+	<link rel="stylesheet" href="illustrated.css"/>
 	<script src="illustrated.js"></script>
 </head>
 
@@ -387,7 +387,6 @@
 		</div>
 	</span>
 </span>
-</span>
 </div>
 
 <div class="record server">
@@ -687,7 +686,7 @@
 			can be converted to the binary data in this message
 			at the command line:
 			<codesample>
-<pre><code>$ openssl x509 -outform der < server.crt | hexdump | head
+<pre><code>$ openssl x509 -outform der &lt; server.crt | hexdump | head
 
 0000000 30 82 03 21 30 82 02 09 a0 03 02 01 02 02 08 15
 0000010 5a 92 ad c2 04 8f 90 30 0d 06 09 2a 86 48 86 f7
@@ -723,7 +722,7 @@
 	The public key calculation can be confirmed with command line tools:
 	<codesample>
 <pre><code>### requires openssl 1.1.0 or higher
-$ openssl pkey -noout -text < server-ephemeral-private.key
+$ openssl pkey -noout -text &lt; server-ephemeral-private.key
 
 X25519 Private-Key:
 priv:
@@ -954,7 +953,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 	The public key calculation can be confirmed at the command line:
 	<codesample>
 <pre><code>### requires openssl 1.1.0 or higher
-$ openssl pkey -noout -text < client-ephemeral-private.key
+$ openssl pkey -noout -text &lt; client-ephemeral-private.key
 
 X25519 Private-Key:
 priv:
@@ -2079,7 +2078,7 @@ of (not shown) padding bytes and can be ignored.
 
 <div id="templates" style="display: none">
 	<div id="closeBtnTmpl">
-		<span class="close" onclick="ill.unselectAllStrings()">&times;</span>
+		<span class="close" onclick="ill.unselectAllStrings()">×</span>
 	</div>
 	<div id="showCodeTmpl">
 		<button class="show-code" onclick="ill.showCode(this, event)">Show Code</button>
