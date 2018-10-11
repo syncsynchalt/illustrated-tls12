@@ -4,7 +4,8 @@ h1:after {
 h1:before {
 	content: "❧ ";
 }
-h1,h3 {
+h1,
+h3 {
 	text-align: center;
 	padding: 10px;
 	max-width: 800px;
@@ -76,17 +77,18 @@ tt.longboi {
 	border: 2px solid transparent;
 }
 
-.server.record > .label:before {
+.illustrated .server.record > .label:before {
 	content: "⇉ ";
 }
-.client.record > .label:before {
+.illustrated .client.record > .label:before {
 	content: "⇇ ";
 }
-.calculation > .label:before {
+.illustrated .calculation > .label:before {
 	content: "÷ ";
 }
 
-.record > .label, .calculation > .label {
+.record > .label,
+.calculation > .label {
 	cursor: pointer;
 	font-size: 1.3em;
 	-webkit-user-select: none;
@@ -100,16 +102,19 @@ tt.longboi {
 	transition: all 0.3s;
 }
 
-.record.selected, .calculation.selected {
+.record.selected,
+.calculation.selected {
 	cursor: inherit;
 	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 
-.record.selected > .label, .calculation.selected > .label {
+.record.selected > .label,
+.calculation.selected > .label {
 	padding: 0 0 10px 0;
 	width: 0;
 }
-.record.selected > .label:after, .calculation.selected > .label:after {
+.illustrated .record.selected > .label:after,
+.illustrated .calculation.selected > .label:after {
 	content: " ×";
 	font-weight: bold;
 	cursor: pointer;
@@ -125,27 +130,32 @@ tt.longboi {
 	display: block;
 }
 
-.record:hover, .calculation:hover {
+.record:hover,
+.calculation:hover {
 	border: 2px solid #666;
 }
 .record.selected:hover, .calculation.selected:hover {
 	border: 2px solid transparent;
 }
 
-.record > .explanation, .calculation > .explanation {
+.record > .explanation,
+.calculation > .explanation {
 	display: none;
 	margin-bottom: 1em;
 }
-.record.selected > .explanation, .calculation.selected > .explanation{
+.record.selected > .explanation,
+.calculation.selected > .explanation{
 	display: block;
 }
 
 /***** .record-data *****/
 
-.client .record-data .string:hover, .client .record-data .string.selected {
+.client .record-data .string:hover,
+.client .record-data .string.selected {
 	color: teal;
 }
-.server .record-data .string:hover, .server .record-data .string.selected {
+.server .record-data .string:hover,
+.server .record-data .string.selected {
 	color: darkgreen;
 }
 
@@ -170,7 +180,8 @@ tt.longboi {
 	top: -28px;
 	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
-.record-data .string:hover > .label, .record-data .string.selected > .label {
+.record-data .string:hover > .label,
+.record-data .string.selected > .label {
 	display: inline;
 }
 
@@ -194,7 +205,8 @@ tt.longboi {
 	font-weight: bold;
 }
 
-.record-data .string.selected > .explanation, .record-data .decryption.selected > .explanation {
+.record-data .string.selected > .explanation,
+.record-data .decryption.selected > .explanation {
 	display: block;
 	position: absolute;
 	font-weight: normal;
@@ -210,18 +222,21 @@ tt.longboi {
 	z-index: 1;
 }
 
-.record-data .string > .explanation, .record-data .decryption > .explanation {
+.record-data .string > .explanation,
+.record-data .decryption > .explanation {
 	display: none;
 }
 
-.string .explanation .close, .decryption .explanation .close {
+.string .explanation .close,
+.decryption .explanation .close {
 	display: block;
 	cursor: pointer;
 	float: right;
 	font-size: 1.8em;
 	margin-top: -15px;
 }
-.string .explanation .close:hover, .decryption .explanation .close:hover {
+.string .explanation .close:hover,
+.decryption .explanation .close:hover {
 	font-weight: bold;
 }
 
