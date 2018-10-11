@@ -190,7 +190,7 @@
 	</span>
 
 	<span class="string">
-		<span class="label">Ext Length</span>
+		<span class="label">Extensions Length</span>
 		<span class="bytes">
 			00 58
 		</span>
@@ -198,14 +198,13 @@
 			The client has provided a list of optional
 			extensions which the server can use to
 			take action or enable new features.
-			<br/><br/>
+			<ul>
+			<li><tt>00 58</tt> - the extensions will take 0x58 (88) bytes of data
+			</ul>
 			Each extension will start with two bytes
 			that indicate which extension it is, followed
 			by a two-byte content length field, followed
 			by the contents of the extension.
-			<ul>
-			<li><tt>00 58</tt> - the extensions will take 0x58 (88) bytes of data
-			</ul>
 		</div>
 	</span>
 
@@ -227,7 +226,7 @@
 			after the TLS session was negotiated and the
 			HTTP request was made.
 			<ul>
-				<li><tt>00 00</tt> - extension "server name"
+				<li><tt>00 00</tt> - assigned value for extension "server name"
 				<li><tt>00 18</tt> - 0x18 (24) bytes of extension data follows
 				<li><tt>00 16</tt> - 0x16 (22) bytes of first (and only) list entry follows
 				<li><tt>00</tt> - list entry is type 0x00 "DNS hostname"
@@ -257,7 +256,7 @@
 			the server replies with the extension
 			populated with data.
 			<ul>
-				<li><tt>00 05</tt> - extension "status request"
+				<li><tt>00 05</tt> - assigned value for extension "status request"
 				<li><tt>00 05</tt> - 0x5 (5) bytes of extension data follows
 				<li><tt>00 00</tt> - 0x0 (0) bytes of responderID information
 				<li><tt>00 00</tt> - 0x0 (0) bytes of request extension information
@@ -278,7 +277,7 @@
 			"supported groups" instead of "supported
 			curves".
 			<ul>
-				<li><tt>00 0a</tt> - extension "supported groups"
+				<li><tt>00 0a</tt> - assigned value for extension "supported groups"
 				<li><tt>00 0a</tt> - 0xA (10) bytes of extension data follows
 				<li><tt>00 08</tt> - 0x8 (8) bytes of data are in the curves list
 				<li><tt>00 1d</tt> - assigned value for the curve "x25519"
@@ -307,7 +306,7 @@
 			single point is pre-selected for each curve),
 			so this extension would not be sent.
 			<ul>
-				<li><tt>00 0b</tt> - extension "EC points format"
+				<li><tt>00 0b</tt> - assigned value for extension "EC points format"
 				<li><tt>00 02</tt> - 0x2 (2) bytes of extension data follows
 				<li><tt>00 01</tt> - 0x1 (1) bytes of data are in the supported formats list
 				<li><tt>00</tt> - assigned value for uncompressed form
@@ -329,7 +328,7 @@
 			algorithms the client is capable
 			of using.
 			<ul>
-				<li><tt>00 0d</tt> - extension "Signature Algorithms"
+				<li><tt>00 0d</tt> - assigned value for extension "Signature Algorithms"
 				<li><tt>00 12</tt> - 0x12 (18) bytes of extension data follows
 				<li><tt>00 10</tt> - 0x10 (16) bytes of data are in the following list of algorithms
 				<li><tt>04 01</tt> - assigned value for RSA/PKCS1/SHA256
@@ -355,7 +354,7 @@
 			The ability to renegotiate a connection has been removed from the next version of this
 			protocol (TLS 1.3) so this will no longer be necessary.
 			<ul>
-				<li><tt>ff 01</tt> - extension "Renegotiation Info"
+				<li><tt>ff 01</tt> - assigned value for extension "Renegotiation Info"
 				<li><tt>00 01</tt> - 0x1 (1) bytes of extension data follows
 				<li><tt>00</tt> - length of renegotiation data is zero, because this is a new connection
 			</ul>
@@ -381,7 +380,7 @@
 			the server replies with the extension
 			populated with data.
 			<ul>
-				<li><tt>00 12</tt> - extension "signed certificate timestamp"
+				<li><tt>00 12</tt> - assigned value for extension "signed certificate timestamp"
 				<li><tt>00 00</tt> - 0x0 (0) bytes of extension data follows
 			</ul>
 		</div>
@@ -511,22 +510,26 @@
 		</span>
 		<div class="explanation">
 			The server has selected compression method
-			0x00 ("Null" compression, or no compression)
+			0x00 ("Null", which performs no compression)
 			from the list of options given by the client.
 		</div>
 	</span>
 
 	<span class="string">
-		<span class="label">Ext Length</span>
+		<span class="label">Extensions Length</span>
 		<span class="bytes">
 			00 05
 		</span>
 		<div class="explanation">
-			The server has returned a list of optional extensions to the client.  Because the server is forbidden from replying with an extension that the client did not send in its hello message, the server knows that the client will support all extensions listed.
-			<br/><br/>
-			In this case, the extensions data takes
-			0x5 (5) bytes.  Each extension will be
-			presented in its own following section.
+			The server has returned a list of extensions
+			to the client.  Because the server is
+			forbidden from replying with an extension
+			that the client did not send in its hello
+			message, the server knows that the client
+			will support all extensions listed.
+			<ul>
+			<li><tt>00 58</tt> - the extensions will take 0x5 (5) bytes of data
+			</ul>
 		</div>
 	</span>
 
@@ -541,7 +544,7 @@
 			The ability to renegotiate a connection has been removed from the next version of this
 			protocol (TLS 1.3) so this will no longer be necessary.
 			<ul>
-				<li><tt>ff 01</tt> - extension "Renegotiation Info"
+				<li><tt>ff 01</tt> - assigned value for extension "Renegotiation Info"
 				<li><tt>00 01</tt> - 0x1 (1) bytes of extension data follows
 				<li><tt>00</tt> - length of renegotiation data is zero, because this is a new connection
 			</ul>
@@ -687,7 +690,7 @@
 			can be converted to the binary data in this message
 			at the command line:
 			<codesample>
-<pre><code>$ openssl x509 -outform der &lt; server.crt | hexdump | head
+<pre><code>$ openssl x509 -outform der &lt; server.crt | hexdump
 
 0000000 30 82 03 21 30 82 02 09 a0 03 02 01 02 02 08 15
 0000010 5a 92 ad c2 04 8f 90 30 0d 06 09 2a 86 48 86 f7
@@ -758,7 +761,9 @@ pub:
 <span class="record-data">
 	<span class="string">
 		<span class="label">Record Header</span>
- 		16 03 03 01 2c
+		<span class="bytes">
+			16 03 03 01 2c
+		</span>
 		<div class="explanation">
 			TLS sessions are broken into the sending
 			and receiving of "records", which are blocks
@@ -1971,7 +1976,7 @@ of (not shown) padding bytes and can be ignored.
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>16</tt> - type is 0x15 (alert record)
+			<li><tt>15</tt> - type is 0x15 (alert record)
 			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
 			<li><tt>00 31</tt> - the length of the record payload is 0x30 (48) bytes
 			</ul>
