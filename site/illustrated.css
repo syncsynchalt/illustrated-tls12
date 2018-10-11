@@ -100,7 +100,7 @@ tt.longboi {
 }
 
 .record.selected, .calculation.selected {
-	box-shadow: 2px 2px 5px 1px #ccc;
+	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 
 .record.selected > .label, .calculation.selected > .label {
@@ -201,10 +201,10 @@ tt.longboi {
 	margin: 10px;
 	padding: 10px 10px;
 	background-color: #FAF7DC;
-	border: 2px solid orange;
+	border: 2px solid #e0d998;
 	border-radius: 1em;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	box-shadow: 0 0 5px 1px #ccc;
+	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 	z-index: 1;
 }
 
@@ -258,10 +258,9 @@ codesample {
 codesample pre {
 	margin: 0;
 	height: 0;
-	transition: all 0.3s;
 }
 
-codesample .show-code {
+codesample button.show-code {
 	display: block;
 	clear: both;
 	box-shadow: inset 0px 1px 3px 0px #91b8b3;
@@ -279,17 +278,17 @@ codesample .show-code {
 	text-shadow: 0px -1px 0px #2b665e;
 }
 
-codesample .show-code:hover:hover {
+codesample button.show-code:hover:hover {
 	background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
 	background-color: #6c7c7c;
 }
 
-codesample .show-code:active {
+codesample button.show-code:active {
 	position: relative;
 	top: 1px;
 }
 
-codesample.show .show-code {
+codesample.show button.show-code {
 	display: none;
 }
 
