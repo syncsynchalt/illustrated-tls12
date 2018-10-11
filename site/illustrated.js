@@ -78,7 +78,11 @@ ill = {
 window.onload = function() {
 	[].forEach.call(document.querySelectorAll(".record, .calculation"), function(el) {
 		el.onclick = function(event) {
-			ill.selectRecord(el, event);
+			if (el === event.target && event.offsetY < 60) {
+				ill.toggleRecord(el, event);
+			} else {
+				ill.selectRecord(el, event);
+			}
 		};
 	});
 	[].forEach.call(document.querySelectorAll(".record > .label, .calculation > .label"), function(el) {
