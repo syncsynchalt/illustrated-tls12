@@ -245,11 +245,11 @@ tt.longboi {
 }
 
 .string.encrypted .bytes {
-	text-shadow: 1px 1px 1px pink;
+	text-shadow: 0px 0px 1px pink;
 }
 
 .string.decrypted .bytes {
-	text-shadow: 1px 1px 1px #90EE90;
+	text-shadow: 0px 0px 1px #90EE90;
 }
 
 .record-data .decryption {
