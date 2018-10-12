@@ -158,6 +158,17 @@ tt.longboi {
 	display: block;
 }
 
+.record .illustration,
+.calculation .illustration {
+	margin: -40px 0 0 0;
+	display: none;
+	float: right;
+}
+.record.selected .illustration,
+.calculation.selected .illustration {
+	display: block;
+}
+
 .record > button.annotate-toggle {
 	display: none;
 }

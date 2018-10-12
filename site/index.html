@@ -26,6 +26,7 @@
 
 <div class="record client">
 <div class="label">Client Hello</div>
+<image class="illustration" src="images/key1.png" width="135" height="250"/>
 <div class="explanation">
 	The session begins with the client saying "Hello".
 	The client provides the following:
@@ -390,6 +391,7 @@
 
 <div class="record server">
 <div class="label">Server Hello</div>
+<image class="illustration" src="images/key2.png" width="124" height="250"/>
 <div class="explanation">
 	The server says "Hello" back.  The server provides the following:
 	<ul>
@@ -555,6 +557,7 @@
 
 <div class="record server">
 <div class="label">Server Certificate</div>
+<image class="illustration" src="images/key3.png" width="130" height="250"/>
 <div class="explanation">
 	The server provides a certificate containing the following:
 	<ul>
@@ -704,6 +707,7 @@
 
 <div class="calculation server">
 <div class="label">Server Key Exchange Generation</div>
+<image class="illustration" src="images/key4.png" width="112" height="250"/>
 <div class="explanation">
 	The server must calculate a private/public keypair for key
 	exchange.  The server has chosen to use an elliptical curve
@@ -744,6 +748,7 @@ pub:
 
 <div class="record server">
 <div class="label">Server Key Exchange</div>
+<image class="illustration" src="images/key5.png" width="138" height="250"/>
 <div class="explanation">
 	The server provides information for key exchange.  As part of the
 	key exchange process both the server and the client will have a
@@ -937,6 +942,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 
 <div class="calculation client">
 <div class="label">Client Key Exchange Generation</div>
+<image class="illustration" src="images/key6.png" width="105" height="250"/>
 <div class="explanation">
 	The client must calculate a private/public keypair for key
 	exchange.  It will do this for the elliptical curve
@@ -976,6 +982,7 @@ pub:
 </div>
 <div class="record client">
 <div class="label">Client Key Exchange</div>
+<image class="illustration" src="images/key7.png" width="116" height="250"/>
 <div class="explanation">
 	The client provides information for key exchange.  As part of the
 	key exchange process both the server and the client will generate a
@@ -1044,6 +1051,7 @@ pub:
 
 <div class="calculation client">
 <div class="label">Client Encryption Keys Calculation</div>
+<image class="illustration" src="images/key8.png" width="97" height="250"/>
 <div class="explanation">
 	The client now has the information to calculate the encryption
 	keys that will be used by each side.  It uses the following
@@ -1407,6 +1415,7 @@ $ hexdump /tmp/verify_data
 
 <div class="calculation server">
 <div class="label">Server Encryption Keys Calculation</div>
+<image class="illustration" src="images/key9.png" width="97" height="250"/>
 <div class="explanation">
 	The server now has the information to calculate the encryption
 	keys that will be used by each side.  It uses the following
