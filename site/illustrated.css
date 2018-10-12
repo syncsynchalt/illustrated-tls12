@@ -26,6 +26,8 @@ pre {
 }
 
 pre code {
+	font-size: inherit;
+	word-break: normal;
 	display: block;
 	color: white;
 	background-color: black;
