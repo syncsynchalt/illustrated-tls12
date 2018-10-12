@@ -95,10 +95,10 @@ tt.longboi {
 }
 
 .illustrated .server.record > .label:before {
-	content: "⇉ ";
+	content: "⇇ ";
 }
 .illustrated .client.record > .label:before {
-	content: "⇇ ";
+	content: "⇉ ";
 }
 .illustrated .calculation > .label:before {
 	content: "÷ ";
