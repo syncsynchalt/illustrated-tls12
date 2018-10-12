@@ -1,8 +1,16 @@
+/* remove focus rings for non-keyboard users */
 body:not(.user-is-tabbing) button:focus,
 body:not(.user-is-tabbing) input:focus,
 body:not(.user-is-tabbing) select:focus,
 body:not(.user-is-tabbing) textarea:focus {
 	outline: none;
+}
+
+/* hide keys when there is no room for them */
+@media (max-width: 600px) {
+    .illustration {
+        display: none !important;
+    }
 }
 
 h1:after {
