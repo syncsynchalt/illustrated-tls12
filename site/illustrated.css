@@ -18,9 +18,12 @@ body {
 
 /* hide keys when there is no room for them */
 @media (max-width: 600px) {
-    .illustration {
-        display: none !important;
-    }
+	.illustration {
+		display: none !important;
+	}
+	.print-mode {
+		display: none;
+	}
 }
 
 h1:after {
