@@ -6,6 +6,16 @@ body:not(.user-is-tabbing) textarea:focus {
 	outline: none;
 }
 
+body {
+	/* printmode */
+	position: relative;
+}
+
+.container {
+	/* printmode */
+	overflow: auto;
+}
+
 /* hide keys when there is no room for them */
 @media (max-width: 600px) {
     .illustration {
@@ -359,4 +369,12 @@ button.annotate-toggle:hover {
 button.annotate-toggle:active {
 	position: relative;
 	top: 1px;
+}
+
+.print-mode {
+	cursor: pointer;
+	position: absolute;
+	padding: 5px;
+	bottom: 0;
+	right: 0;
 }

@@ -79,6 +79,24 @@ ill = {
 			h4.appendChild(document.createTextNode(label.textContent));
 			expl.insertAdjacentElement("afterbegin", h4);
 		});
+	},
+
+	printMode: function() {
+		// add printmode css
+		var inject = document.createElement("link");
+		inject.setAttribute("rel", "stylesheet");
+		inject.setAttribute("href", "printmode.css");
+		document.head.appendChild(inject);
+		// open everything up
+		[].forEach.call(document.querySelectorAll(".record, .calculation"), function(el){
+			el.classList.add("selected");
+		});
+		[].forEach.call(document.querySelectorAll(".record, .calculation"), function(el){
+			el.classList.add("annotate");
+		});
+		[].forEach.call(document.querySelectorAll("codesample"), function(el){
+			el.classList.add("show");
+		});
 	}
 };
 

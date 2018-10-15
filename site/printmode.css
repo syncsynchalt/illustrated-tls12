@@ -1,0 +1,54 @@
+/* print mode */
+
+@media (min-width: 0) {
+	.container {
+		max-width: none !important;
+		margin: 5px 0 !important;
+	}
+}
+
+*, *:hover {
+	color: #000 !important;
+	background-color: #fff !important;
+	text-shadow: none !important;
+}
+
+.illustration {
+	display: none !important;
+}
+
+button {
+	display: none !important;
+}
+
+.client, .server {
+	background-color: #fff !important;
+	border: 1px solid black !important;
+	box-shadow: none !important;
+	max-width: none !important;
+	margin: 1em 0;
+}
+
+.client > .label::after, .server > .label::after {
+	content: "" !important;
+}
+
+.string > .explanation, .decryption > .explanation {
+	background-color: #fff !important;
+	box-shadow: none !important;
+	border: 2px solid black !important;
+}
+
+pre code {
+	border-radius: 0 !important;
+	border: 2px solid black !important;
+	white-space: pre-wrap !important;
+}
+
+a:after {
+	content: " [link]";
+}
+
+.print-mode {
+	display: none;
+}
