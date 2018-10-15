@@ -1,0 +1,27 @@
+{
+	"esversion": 6,
+	"bitwise": true,
+	"curly": true,
+	"eqeqeq": true,
+	"eqnull": true,
+	"expr": true,
+	"forin": true,
+	"freeze": true,
+	"futurehostile": true,
+	"latedef": true,
+	"onevar": true,
+	"noarg": true,
+	"nocomma": true,
+	"node": true,
+	"nonbsp": true,
+	"nonew": true,
+	"quotmark": true,
+	"singleGroups": true,
+	"strict": "global",
+	"undef": true,
+	"unused": true,
+	"varstmt": true,
+
+	"predef": [ "window", "document" ],
+	"globals": [ "ill" ]
+}
