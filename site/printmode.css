@@ -26,7 +26,7 @@ button {
 	border: 1px solid black !important;
 	box-shadow: none !important;
 	max-width: none !important;
-	margin: 1em 0;
+	margin: 1em 0 !important;
 }
 
 .client > .label::after, .server > .label::after {

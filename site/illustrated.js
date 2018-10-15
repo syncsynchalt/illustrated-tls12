@@ -16,7 +16,8 @@ ill = {
 	// events
 
 	unselectAllRecords: function() {
-		[].forEach.call(document.querySelectorAll(".record.selected, .calculation.selected"), function(el) {
+		[].forEach.call(document.querySelectorAll(".illustrated .record.selected, .illustrated .calculation.selected"),
+		function(el) {
 			el.classList.remove("selected");
 		});
 	},
@@ -96,6 +97,9 @@ ill = {
 		});
 		[].forEach.call(document.querySelectorAll("codesample"), function(el){
 			el.classList.add("show");
+		});
+		[].forEach.call(document.querySelectorAll("*"), function(el) {
+			el.onclick = null;
 		});
 	}
 };
