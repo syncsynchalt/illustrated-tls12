@@ -23,5 +23,5 @@
 	"varstmt": true,
 
 	"predef": [ "window", "document" ],
-	"globals": [ "ill" ]
+	"globals": { "ill": true }
 }
