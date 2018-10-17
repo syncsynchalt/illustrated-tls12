@@ -1446,7 +1446,7 @@ $ ./curve25519-mult server-ephemeral-private.key \
 	This is identical to the PreMasterSecret found by the client,
 	therefore the following calculations will be identical.
 	<br/><br/>
-	The client then calculates 48 bytes of the MasterSecret
+	The server then calculates 48 bytes of the MasterSecret
 	from the PreMasterSecret using the following method:
 
 	<pre class="ind1">seed = "master secret" + client_random + server_random
