@@ -13,6 +13,9 @@ test:
 		go test -timeout=5s $$i || exit 1; \
 	done
 
+site:
+	make -C generate
+
 clean:
 	rm -f server/server client/client
 	rm -f generate/generator
@@ -26,5 +29,4 @@ vet:
 fmt:
 	go fmt ./...
 
-.PHONY: client server all clean realclean test fmt vet
-
+.PHONY: client server all clean realclean test fmt vet site
