@@ -1,0 +1,435 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>The Illustrated Certificate</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="frombootstrap.css">
+	<link rel="stylesheet" href="illustrated.css">
+	<script src="illustrated.js"></script>
+</head>
+
+<body class="certificate">
+<div class="container">
+<div class="record server selected">
+<div class="label">Server Certificate Detail</div>
+<div class="explanation">
+	The certificate is in ASN.1 DER binary encoding.  This encoding consists of records in the following sequence:
+	type tag, length, data.
+	<br/><br/>
+	The type tag contains the following information:
+	<ul>
+	<li>type class (2 bits): universal, application, context-specific, or private
+	<li>constructed (1 bit): set if the record consists of smaller records
+	<li>type (5 bits): if type class is universal then type indicates integer, ASCII string, Object ID, etc.
+	</ul>
+</div>
+%file ../captures/caps/servercert
+%next 15
+<span class="record-data">
+	<span class="string">
+		<span class="label">Certificate Sequence</span>
+		<span class="bytes">
+%next 4
+%bytes
+		</span>
+		<div class="explanation">
+			Sequence of three entries follows, the certificate info, the signature algorithm, and the signature.
+			<ul>
+			<li><tt>30</tt> - constructed universal type sequence
+			<li><tt>%1 %2 %3</tt> - long-form length of 0x321 (801) bytes
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Certificate Info Sequence</span>
+		<span class="bytes">
+%next 4
+%bytes
+		</span>
+		<div class="explanation">
+			Sequence of certificate info follows.
+			<ul>
+			<li><tt>30</tt> - constructed universal type sequence
+			<li><tt>%1 %2 %3</tt> - long-form sequence length of 0x209 (521) bytes
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Version</span>
+		<span class="bytes">
+%next 5
+%bytes
+		</span>
+		<div class="explanation">
+			Certificate version 0x2 - assigned value for "v3"
+			<ul>
+			<li><tt>%0</tt> - constructed context-specific type [0]
+			<li><tt>%1</tt> - length of 0x3 (3) bytes
+			<li><tt>%2</tt> - universal type integer
+			<li><tt>%3</tt> - integer length of 0x1 bytes
+			<li><tt>%4</tt> - integer value of 2
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Serial Number</span>
+		<span class="bytes">
+%next 10
+%bytes
+		</span>
+		<div class="explanation">
+			Sequence number 0x155a92adc2048f90
+			<ul>
+			<li><tt>02</tt> - universal type integer
+			<li><tt>%1</tt> - integer length of %x1 (%d1) bytes
+			<li><tt>%2 %3 %4 %5 %6 %7 %8 %9</tt> - integer value of 0x155a92adc2048f90
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Algorithm</span>
+		<span class="bytes">
+%next 15
+%bytes
+		</span>
+		<div class="explanation">
+			Algorithm SHA256 with RSA Encryption, null params.
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - universal type object id (OID)
+			<li><tt>%3</tt> - OID length of %x3 (%d3) bytes
+			<li><tt>%4 %5 %6 %7 %8 %9 %10 %11 %12</tt> - OID 1.2.840.113549.1.1.11 "Sha256WithRSAEncryption"
+			<li><tt>%13</tt> - universal type null (parameters)
+			<li><tt>%14</tt> - null length of 0x0 (0) bytes
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Issuer Sequence</span>
+		<span class="bytes">
+%next 2
+%bytes
+		</span>
+		<div class="explanation">
+			Sequence of items making up the Issuer name follow.
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Country</span>
+		<span class="bytes">
+%next 13
+%bytes
+		</span>
+		<div class="explanation">
+			Country "US"
+			<ul>
+			<li><tt>%0</tt> - constructed universal type set
+			<li><tt>%1</tt> - set length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - constructed universal type sequence
+			<li><tt>%3</tt> - sequence length of %x3 (%d3) bytes
+			<li><tt>%4</tt> - universal type object ID (OID)
+			<li><tt>%5 %6 %7 %8</tt> - OID 2.5.4.6 "Country"
+			<li><tt>%9</tt> - universal type printablestring
+			<li><tt>%10</tt> - printable string length %x10 (%d10) bytes
+			<li><tt>%11 %12</tt> - "US"
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Organizational Unit</span>
+		<span class="bytes">
+%next 21
+%bytes
+		</span>
+		<div class="explanation">
+			Organizational Unit "Example CA"
+			<ul>
+			<li><tt>%0</tt> - constructed universal type set
+			<li><tt>%1</tt> - set length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - constructed universal type sequence
+			<li><tt>%3</tt> - sequence length of %x3 (%d3) bytes
+			<li><tt>%4</tt> - universal type object ID (OID)
+			<li><tt>%5 %6 %7 %8</tt> - OID 2.5.4.10 "OrganizationalUnit"
+			<li><tt>%9</tt> - universal type printablestring
+			<li><tt>%10</tt> - printable string length %x10 (%d10) bytes
+			<li><tt>%11 %12 %13 %14 %15 %16 %17 %18 %19 %20</tt> - "Example CA"
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Validity</span>
+		<span class="bytes">
+%next 32
+%bytes
+		</span>
+		<div class="explanation">
+			Valid from 2018-10-05 01:38:17 GMT to 2019-10-05 01:38:17 GMT
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1</tt> - set length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - universal type utctime
+			<li><tt>%3</tt> - utctime length %x3 (%d3) bytes
+			<li><tt>%4 %5 %6 %7 %8 %9 %10 %11 %12 %13 %14 %15 %16</tt> - "181005013817Z"
+			<li><tt>%17</tt> - universal type utctime
+			<li><tt>%18</tt> - utctime length %x18 (%d18) bytes
+			<li><tt>%19 %20 %21 %22 %23 %24 %25 %26 %27 %28 %29 %30 %31</tt> - "191005013817Z"
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Subject Sequence</span>
+		<span class="bytes">
+%next 2
+%bytes
+		</span>
+		<div class="explanation">
+			Sequence of items making up the subject of this certificate follow.
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Country</span>
+		<span class="bytes">
+%next 13
+%bytes
+		</span>
+		<div class="explanation">
+			Country "US"
+			<ul>
+			<li><tt>%0</tt> - constructed universal type set
+			<li><tt>%1</tt> - set length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - constructed universal type sequence
+			<li><tt>%3</tt> - sequence length of %x3 (%d3) bytes
+			<li><tt>%4</tt> - universal type object ID (OID)
+			<li><tt>%5</tt> - OID length %x5 (%d5) bytes
+			<li><tt>%6 %7 %8</tt> - OID 2.5.4.6 "Country"
+			<li><tt>%9</tt> - universal type printablestring
+			<li><tt>%10</tt> - printable string length %x10 (%d10) bytes
+			<li><tt>%11 %12</tt> - "US"
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Common Name</span>
+		<span class="bytes">
+%next 30
+%bytes
+		</span>
+		<div class="explanation">
+			Common Name "example.ulfheim.net"
+			<ul>
+			<li><tt>%0</tt> - constructed universal type set
+			<li><tt>%1</tt> - set length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - constructed universal type sequence
+			<li><tt>%3</tt> - sequence length of %x3 (%d3) bytes
+			<li><tt>%4</tt> - universal type object ID (OID)
+			<li><tt>%5</tt> - OID length %x5 (%d5) bytes
+			<li><tt>%6 %7 %8</tt> - OID 2.5.4.3 "CommonName"
+			<li><tt>%9</tt> - universal type printablestring
+			<li><tt>%10</tt> - printable string length %x10 (%d10) bytes
+			<li><tt>%11 %12 %13 %14 %15 %16 %17 %18 %19 %20
+				%21 %22 %23 %24 %25 %26 %27 %28 %29</tt> - "example.ulfheim.net"
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Public Key</span>
+		<span class="bytes">
+%next 294
+%bytes
+		</span>
+		<div class="explanation">
+			Provides public key and its type (RSA)
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1 %2 %3</tt> - long-form sequence length 0x122 (290 bytes)
+			<li><tt>%4</tt> - constructed universal type sequence
+			<li><tt>%5</tt> - sequence length %x5 (%d5) bytes
+			<li><tt>%6</tt> - universal type object id (OID)
+			<li><tt>%7</tt> - OID length of %x7 (%d7) bytes
+			<li><tt>%8 %9 %10 %11 %12 %13 %14 %15 %16</tt> - OID 1.2.840.113549.1.1.1 (RSA Encryption)
+			<li><tt>%17</tt> - universal type null (parameters)
+			<li><tt>%18</tt> - null length of %x18 (%d18) bytes
+			<li><tt>%19</tt> - universal type bitstring
+			<li><tt>%20 %21 %22</tt> - long-form bitstring length 0x10f (271) bytes
+			<li><tt>%23</tt> - right-pad bitstring by 0 bits
+			<li><tt>%24 %25 %26 ... %-3 %-2 %-1</tt> - public key
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Extensions</span>
+		<span class="bytes">
+%next 4
+%bytes
+		</span>
+		<div class="explanation">
+			Extension data follows.
+			<ul>
+			<li><tt>%0</tt> - constructed context-specific type [3]
+			<li><tt>%1</tt> - length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - constructed universal sequence
+			<li><tt>%3</tt> - sequence length of %x3 (%d3) bytes
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Extension - Key Usage</span>
+		<span class="bytes">
+%next 16
+%bytes
+		</span>
+		<div class="explanation">
+			Key Usage: digitalSignature and keyEncipherment
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - universal type object id (OID)
+			<li><tt>%3</tt> - OID length of %x3 (%d3) bytes
+			<li><tt>%4 %5 %6</tt> - OID 2.5.29.15 "KeyUsage"
+			<li><tt>%7</tt> - universal type boolean
+			<li><tt>%8</tt> - boolean length %x8 (%d8) bytes
+			<li><tt>%9</tt> - boolean value "true" (extension is critical)
+			<li><tt>%10</tt> - universal type octetstring
+			<li><tt>%11</tt> - octetstring length %x11 (%d11) bytes
+			<li>(octetstring is a DER document as follows):
+			<li><tt>%12</tt> - universal type bitstring
+			<li><tt>%13</tt> - bitstring length %x13 (%d13) bytes
+			<li><tt>%14</tt> - right-pad bitstring by %d14 bits
+			<li><tt>%15</tt> - bits 0 (digitalSignature) and 2 (keyEncipherment) are set
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Extension - Extended Key Usage</span>
+		<span class="bytes">
+%next 31
+%bytes
+		</span>
+		<div class="explanation">
+			Indicates the cert is valid as a TLS client cert and/or server cert.
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - universal type object id (OID)
+			<li><tt>%3</tt> - OID length of %x3 (%d3) bytes
+			<li><tt>%4 %5 %6</tt> - OID 2.5.29.25 "ExtendedKeyUsage"
+			<li><tt>%7</tt> - universal type octetstring
+			<li><tt>%8</tt> - octetstring length %x8 (%d8) bytes
+			<li>(octetstring is a DER document as follows):
+			<li><tt>%9</tt> - constructed universal type sequence
+			<li><tt>%10</tt> - sequence length %x10 (%d10) bytes
+			<li><tt>%11</tt> - universal type object id (OID)
+			<li><tt>%12</tt> - OID length of %x12 (%d12) bytes
+			<li><tt>%13 %14 %15 %16 %17 %18 %19 %20</tt> - OID 1.3.6.1.5.5.7.3.2 "id-kp-clientAuth"
+			<li><tt>%21</tt> - universal type object id (OID)
+			<li><tt>%22</tt> - OID length of %x22 (%d22) bytes
+			<li><tt>%23 %24 %25 %26 %27 %28 %29 %30</tt> - OID 1.3.6.1.5.5.7.3.2 "id-kp-serverAuth"
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Extension - Authority Key Identifier</span>
+		<span class="bytes">
+%next 33
+%bytes
+		</span>
+		<div class="explanation">
+			Indicates the CA's public key to be used to verify the certificate's signature.
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - universal type object id (OID)
+			<li><tt>%3</tt> - OID length of %x3 (%d3) bytes
+			<li><tt>%4 %5 %6</tt> - OID 2.5.29.23 "AuthorityKeyIdentifier"
+			<li><tt>%7</tt> - universal type octetstring
+			<li><tt>%8</tt> - octetstring length 0x18 (24) bytes
+			<li>(octetstring is a DER document as follows):
+			<li><tt>%9</tt> - constructed universal type sequence
+			<li><tt>%10</tt> - sequence length %x10 (%d10) bytes
+			<li><tt>%11</tt> - context-specific type [0]
+			<li><tt>%12</tt> - length of %x12 (%d12) bytes
+			<li><tt>%13 %14 ... %-2 %-1</tt> - octet string identifying the public key
+			</ul>
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Signature Algorithm</span>
+		<span class="bytes">
+%next 15
+%bytes
+		</span>
+		<div class="explanation">
+			The signature algorithm: SHA256 with RSA Encryption, null params.
+			<ul>
+			<li><tt>%0</tt> - constructed universal type sequence
+			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
+			<li><tt>%2</tt> - universal type object ID (OID)
+			<li><tt>%3</tt> - OID length of %x3 (%d3) bytes
+			<li><tt>%4 %5 %6 %7 %8 %9 %10 %11 %12</tt> - OID 1.2.840.113549.1.1.11 "Sha256WithRSAEncryption"
+			<li><tt>%13</tt> - universal type null (params)
+			<li><tt>%14</tt> - null length %x14 (%d14) bytes
+		</div>
+	</span>
+
+	<span class="string">
+		<span class="label">Signature</span>
+		<span class="bytes">
+%next 261
+%bytes
+		</span>
+		<div class="explanation">
+			The signature.
+			<ul>
+			<li><tt>%0</tt> - universal type bitstring
+			<li><tt>%1 %2 %3</tt> - long-form bitstring length 0x101 (257) bytes
+			<li><tt>%4</tt> - right-padded by 0x0 (0) bits
+			<li><tt>%5 %6 .. %-2 %-1</tt> - signature
+			</ul>
+		</div>
+	</span>
+</span>
+</div>
+%empty
+
+<div id="templates" style="display: none">
+    <div id="closeBtnTmpl">
+        <span class="close" onclick="ill.unselectAllStrings()">&times;</span>
+    </div>
+	<button id="annotateTmpl" class="annotate-toggle"
+		onclick="ill.toggleAnnotate(this.parentElement, event)">Annotations</button>
+</div>
+
+<a class="print-mode" href="#print" onclick="ill.printMode()">
+	[print]
+</a>
+</body>
+</html>

@@ -1,3 +1,4 @@
 /client/client
 /server/server
 .*.swp
+/generate/generator
