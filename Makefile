@@ -15,6 +15,7 @@ test:
 
 clean:
 	rm -f server/server client/client
+	rm -f generate/generator
 
 realclean: clean
 	go clean -cache

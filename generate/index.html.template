@@ -1983,7 +1983,7 @@ of (not shown) padding bytes and can be ignored.
 <div class="explanation">
 	The client sends an alert that it is closing the connection.
 </div>
-%file ../captures/caps/serveralert
+%file ../captures/caps/clientalert
 <span class="record-data">
 	<span class="string">
 		<span class="label">Record Header</span>
@@ -2064,7 +2064,7 @@ of (not shown) padding bytes and can be ignored.
 		</div>
 	</div>
 
-%file ../captures/caps/serveralertplain
+%file ../captures/caps/clientalertplain
 	<span class="string decrypted">
 		<span class="label">Alert Level</span>
 		<span class="bytes">
