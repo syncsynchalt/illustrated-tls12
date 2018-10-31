@@ -40,6 +40,8 @@ import (
  *   prints the 16-bit number {num}..{num+1} as decimal number
  * %ddd{num}
  *   prints the 24-bit number {num}..{num+2} as decimal number
+ * %stop
+ *   stop interpreting commands
  */
 
 func main() {
@@ -106,6 +108,11 @@ func main() {
 					fmt.Fprintf(writer, "\n")
 				}
 				i += end + 1
+			} else if len(line) >= 4 && line[0:4] == "stop" {
+				// %stop
+				i += end + 1
+				writer.Write([]byte(template[i:]))
+				i = len(template)
 			} else if len(line) > 3 && line[0:3] == "ddd" {
 				// %ddd{bytenum} (as decimal)
 				num, span := parseNumber(line[3:])
