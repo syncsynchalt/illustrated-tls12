@@ -34,12 +34,16 @@ import (
  *   prints the 16-bit number {num}..{num+1} as capital hex with leading "0x"
  * %xxx{num}
  *   prints the 24-bit number {num}..{num+2} as capital hex with leading "0x"
+ * %xxxx{num}
+ *   prints the 32-bit number {num}..{num+3} as capital hex with leading "0x"
  * %d{num}
  *   prints the numbered byte from current context as decimal number
  * %dd{num}
  *   prints the 16-bit number {num}..{num+1} as decimal number
  * %ddd{num}
  *   prints the 24-bit number {num}..{num+2} as decimal number
+ * %dddd{num}
+ *   prints the 32-bit number {num}..{num+3} as decimal number
  * %stop
  *   stop interpreting commands
  */
@@ -72,7 +76,7 @@ func main() {
 				end = len(template) - i
 			}
 			line := template[i+1 : i+end]
-			// fmt.Fprintf(os.Stderr, "command %%%s\n", line)
+			fmt.Fprintf(os.Stderr, "command %%%s\n", line)
 
 			if len(line) > 5 && line[0:5] == "file " {
 				// %file filename
@@ -113,6 +117,12 @@ func main() {
 				i += end + 1
 				writer.Write([]byte(template[i:]))
 				i = len(template)
+			} else if len(line) > 4 && line[0:4] == "dddd" {
+				// %dddd{bytenum} (as decimal)
+				num, span := parseNumber(line[4:])
+				val := int(context[num])<<24 | int(context[num+1])<<16 | int(context[num+2])<<8 | int(context[num+3])
+				fmt.Fprintf(writer, "%d", val)
+				i += 1 + 4 + span
 			} else if len(line) > 3 && line[0:3] == "ddd" {
 				// %ddd{bytenum} (as decimal)
 				num, span := parseNumber(line[3:])
@@ -135,6 +145,12 @@ func main() {
 				num, span := parseNumber(line[1:])
 				fmt.Fprintf(writer, "%02x", context[len(context)-num])
 				i += 1 + 1 + span
+			} else if len(line) > 4 && line[0:4] == "xxxx" {
+				// %xxxx{bytenum} (as 0xHex)
+				num, span := parseNumber(line[4:])
+				val := int(context[num])<<24 | int(context[num+1])<<16 | int(context[num+2])<<8 | int(context[num+3])
+				fmt.Fprintf(writer, "0x%X", val)
+				i += 1 + 4 + span
 			} else if len(line) > 3 && line[0:3] == "xxx" {
 				// %xxx{bytenum} (as 0xHex)
 				num, span := parseNumber(line[3:])
