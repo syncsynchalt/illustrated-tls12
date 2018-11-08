@@ -7,3 +7,5 @@ Published at https://tls.ulfheim.net
 - `client/main.go`: client code
 - `tlscopy/`: copy of golang's `crypto/tls/` lib, for ease of extracting secret values
 - `captures/`: PCAP and keylog files
+
+See also https://github.com/syncsynchalt/illustrated-tls13
