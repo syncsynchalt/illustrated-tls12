@@ -157,22 +157,22 @@
 			client, with highest preference first.
 			<ul>
 			<li><tt>%0 %1</tt> - %xx0 (%dd0) bytes of cipher suite data
-			<li><tt>cc a8</tt> - assigned value for <tt>ECDHE-RSA-CHACHA20-POLY1305-SHA256</tt>
-			<li><tt>cc a9</tt> - assigned value for <tt>ECDHE-ECDSA-CHACHA20-POLY1305-SHA256</tt>
-			<li><tt>c0 2f</tt> - assigned value for <tt>ECDHE-RSA-AES128-GCM-SHA256</tt>
-			<li><tt>c0 30</tt> - assigned value for <tt>ECDHE-RSA-AES256-GCM-SHA384</tt>
-			<li><tt>c0 2b</tt> - assigned value for <tt>ECDHE-ECDSA-AES128-GCM-SHA256</tt>
-			<li><tt>c0 2c</tt> - assigned value for <tt>ECDHE-ECDSA-AES256-GCM-SHA384</tt>
-			<li><tt>c0 13</tt> - assigned value for <tt>ECDHE-RSA-AES128-SHA</tt>
-			<li><tt>c0 09</tt> - assigned value for <tt>ECDHE-ECDSA-AES128-SHA</tt>
-			<li><tt>c0 14</tt> - assigned value for <tt>ECDHE-RSA-AES256-SHA</tt>
-			<li><tt>c0 0a</tt> - assigned value for <tt>ECDHE-ECDSA-AES256-SHA</tt>
-			<li><tt>00 9c</tt> - assigned value for <tt>RSA-AES128-GCM-SHA256</tt>
-			<li><tt>00 9d</tt> - assigned value for <tt>RSA-AES256-GCM-SHA384</tt>
-			<li><tt>00 2f</tt> - assigned value for <tt>RSA-AES128-SHA</tt>
-			<li><tt>00 35</tt> - assigned value for <tt>RSA-AES256-SHA</tt>
-			<li><tt>c0 12</tt> - assigned value for <tt>ECDHE-RSA-3DES-EDE-SHA</tt>
-			<li><tt>00 0a</tt> - assigned value for <tt>RSA-3DES-EDE-SHA</tt>
+			<li><tt>cc a8</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256</tt>
+			<li><tt>cc a9</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256</tt>
+			<li><tt>c0 2f</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</tt>
+			<li><tt>c0 30</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</tt>
+			<li><tt>c0 2b</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256</tt>
+			<li><tt>c0 2c</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384</tt>
+			<li><tt>c0 13</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</tt>
+			<li><tt>c0 09</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA</tt>
+			<li><tt>c0 14</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</tt>
+			<li><tt>c0 0a</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA</tt>
+			<li><tt>00 9c</tt> - assigned value for <tt>TLS_RSA_WITH_AES_128_GCM_SHA256</tt>
+			<li><tt>00 9d</tt> - assigned value for <tt>TLS_RSA_WITH_AES_256_GCM_SHA384</tt>
+			<li><tt>00 2f</tt> - assigned value for <tt>TLS_RSA_WITH_AES_128_CBC_SHA</tt>
+			<li><tt>00 35</tt> - assigned value for <tt>TLS_RSA_WITH_AES_256_CBC_SHA</tt>
+			<li><tt>c0 12</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</tt>
+			<li><tt>00 0a</tt> - assigned value for <tt>TLS_RSA_WITH_3DES_EDE_CBC_SHA</tt>
 			</ul>
 		</div>
 	</span>
@@ -524,7 +524,7 @@
 		</span>
 		<div class="explanation">
 			The server has selected cipher suite 0xC013
-			(ECDHE-RSA-AES128-CBC-SHA) from the
+			(TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) from the
 			list of options given by the client.
 		</div>
 	</span>
