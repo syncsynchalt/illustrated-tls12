@@ -26,10 +26,10 @@ button {
 	border: 1px solid black !important;
 	box-shadow: none !important;
 	max-width: none !important;
-	margin: 1em 0 !important;
+	margin: 1em 0;
 }
 
-.client > .label::after, .server > .label::after {
+.rec-label:after {
 	content: "" !important;
 }
 
@@ -37,6 +37,10 @@ button {
 	background-color: #fff !important;
 	box-shadow: none !important;
 	border: 2px solid black !important;
+}
+
+.record.annotate .string > .explanation:before {
+	display: none;
 }
 
 pre code {

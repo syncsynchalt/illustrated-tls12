@@ -26,10 +26,11 @@
 	exploring.</p>
 	</div>
 
+<div class="rec-outer">
 <div class="record client">
-<div class="label">Client Hello</div>
-<image class="illustration" src="images/key1.png" width="135" height="250"/>
-<div class="explanation">
+<div class="rec-label">Client Hello</div>
+<img class="illustration" src="images/key1.png" width="135" height="250"/>
+<div class="rec-explanation">
 	The session begins with the client saying "Hello".
 	The client provides the following:
 	<ul>
@@ -390,11 +391,13 @@
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record server">
-<div class="label">Server Hello</div>
-<image class="illustration" src="images/key2.png" width="124" height="250"/>
-<div class="explanation">
+<div class="rec-label">Server Hello</div>
+<img class="illustration" src="images/key2.png" width="124" height="250"/>
+<div class="rec-explanation">
 	The server says "Hello" back.  The server provides the following:
 	<ul>
 	<li>protocol version
@@ -555,11 +558,13 @@
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record server">
-<div class="label">Server Certificate</div>
-<image class="illustration" src="images/key3.png" width="130" height="250"/>
-<div class="explanation">
+<div class="rec-label">Server Certificate</div>
+<img class="illustration" src="images/key3.png" width="130" height="250"/>
+<div class="rec-explanation">
 	The server provides a certificate containing the following:
 	<ul>
 	<li>the hostname of the server
@@ -680,11 +685,13 @@
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="calculation server">
-<div class="label">Server Key Exchange Generation</div>
-<image class="illustration" src="images/key4.png" width="106" height="250"/>
-<div class="explanation">
+<div class="rec-label">Server Key Exchange Generation</div>
+<img class="illustration" src="images/key4.png" width="106" height="250"/>
+<div class="rec-explanation">
 	The server must calculate a private/public keypair for key
 	exchange.  The server has chosen to use an elliptical curve
 	method of key exchange, using the x25519 curve.
@@ -721,11 +728,13 @@ pub:
 	</codesample>
 </div>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record server">
-<div class="label">Server Key Exchange</div>
-<image class="illustration" src="images/key5.png" width="138" height="250"/>
-<div class="explanation">
+<div class="rec-label">Server Key Exchange</div>
+<img class="illustration" src="images/key5.png" width="138" height="250"/>
+<div class="rec-explanation">
 	The server provides information for key exchange.  As part of the
 	key exchange process both the server and the client will have a
 	keypair of public and private keys, and will send the other party
@@ -865,10 +874,12 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record server">
-<div class="label">Server Hello Done</div>
-<div class="explanation">
+<div class="rec-label">Server Hello Done</div>
+<div class="rec-explanation">
 	The server indicates it's finished with its half of the handshake.
 </div>
 <span class="record-data">
@@ -906,11 +917,13 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="calculation client">
-<div class="label">Client Key Exchange Generation</div>
-<image class="illustration" src="images/key6.png" width="105" height="250"/>
-<div class="explanation">
+<div class="rec-label">Client Key Exchange Generation</div>
+<img class="illustration" src="images/key6.png" width="105" height="250"/>
+<div class="rec-explanation">
 	The client must calculate a private/public keypair for key
 	exchange.  It will do this for the elliptical curve
 	method of key exchange, using the x25519 curve.
@@ -947,10 +960,13 @@ pub:
 	</codesample>
 </div>
 </div>
+</div>
+
+<div class="rec-outer">
 <div class="record client">
-<div class="label">Client Key Exchange</div>
-<image class="illustration" src="images/key7.png" width="116" height="250"/>
-<div class="explanation">
+<div class="rec-label">Client Key Exchange</div>
+<img class="illustration" src="images/key7.png" width="116" height="250"/>
+<div class="rec-explanation">
 	The client provides information for key exchange.  As part of the
 	key exchange process both the server and the client will generate a
 	keypair of public and private keys, and will send the other party
@@ -1015,11 +1031,13 @@ pub:
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="calculation client">
-<div class="label">Client Encryption Keys Calculation</div>
-<image class="illustration" src="images/key8.png" width="97" height="250"/>
-<div class="explanation">
+<div class="rec-label">Client Encryption Keys Calculation</div>
+<img class="illustration" src="images/key8.png" width="97" height="250"/>
+<div class="rec-explanation">
 	The client now has the information to calculate the encryption
 	keys that will be used by each side.  It uses the following
 	information in this calculation:
@@ -1191,10 +1209,12 @@ $ hexdump /tmp/server_iv
 	</ul>
 </div>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record client">
-<div class="label">Client Change Cipher Spec</div>
-<div class="explanation">
+<div class="rec-label">Client Change Cipher Spec</div>
+<div class="rec-explanation">
 	The client indicates that it has calculated the shared
 	encryption keys and that all following messages from the
 	client will be encrypted with the client write key.
@@ -1222,10 +1242,12 @@ $ hexdump /tmp/server_iv
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record client">
-<div class="label">Client Handshake Finished</div>
-<div class="explanation">
+<div class="rec-label">Client Handshake Finished</div>
+<div class="rec-explanation">
 	To verify that the handshake was successful and not tampered
 	with, the client calculates verification data and encrypts
 	it with the client write key.
@@ -1378,11 +1400,13 @@ $ hexdump /tmp/verify_data
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="calculation server">
-<div class="label">Server Encryption Keys Calculation</div>
-<image class="illustration" src="images/key9.png" width="97" height="250"/>
-<div class="explanation">
+<div class="rec-label">Server Encryption Keys Calculation</div>
+<img class="illustration" src="images/key9.png" width="97" height="250"/>
+<div class="rec-explanation">
 	The server now has the information to calculate the encryption
 	keys that will be used by each side.  It uses the following
 	information in this calculation:
@@ -1555,10 +1579,12 @@ $ hexdump /tmp/server_iv
 	</ul>
 </div>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record server">
-<div class="label">Server Change Cipher Spec</div>
-<div class="explanation">
+<div class="rec-label">Server Change Cipher Spec</div>
+<div class="rec-explanation">
 	The server indicates that it has calculated the shared
 	encryption keys and that all following messages from the
 	server will be encrypted with the server write key.
@@ -1586,10 +1612,12 @@ $ hexdump /tmp/server_iv
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record server">
-<div class="label">Server Handshake Finished</div>
-<div class="explanation">
+<div class="rec-label">Server Handshake Finished</div>
+<div class="rec-explanation">
 	To verify that the handshake was successful and not tampered
 	with, the server calculates verification data and encrypts
 	it with the server write key.
@@ -1742,10 +1770,12 @@ $ hexdump /tmp/verify_data
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record client">
-<div class="label">Client Application Data</div>
-<div class="explanation">
+<div class="rec-label">Client Application Data</div>
+<div class="rec-explanation">
 	The client sends the data "ping".
 </div>
 <span class="record-data">
@@ -1835,10 +1865,12 @@ of (not shown) padding bytes and can be ignored.
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record server">
-<div class="label">Server Application Data</div>
-<div class="explanation">
+<div class="rec-label">Server Application Data</div>
+<div class="rec-explanation">
 	The server replies with the data "pong".
 </div>
 <span class="record-data">
@@ -1928,10 +1960,12 @@ of (not shown) padding bytes and can be ignored.
 	</span>
 </span>
 </div>
+</div>
 
+<div class="rec-outer">
 <div class="record client">
-<div class="label">Client Close Notify</div>
-<div class="explanation">
+<div class="rec-label">Client Close Notify</div>
+<div class="rec-explanation">
 	The client sends an alert that it is closing the connection.
 </div>
 <span class="record-data">
@@ -2037,6 +2071,7 @@ of (not shown) padding bytes and can be ignored.
 		</div>
 	</span>
 </span>
+</div>
 </div>
 
 	<div class="outerblock">

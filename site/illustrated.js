@@ -34,20 +34,20 @@
 		} else {
 			ill.closeAllCode();
 		}
-		if (event) { event.stopPropagation(); }
+		ill.cancel(event);
 		ill.ensureElementInView(element);
 	};
 
 	ill.selectRecord = function(element, event) {
 		ill.unselectAllRecords();
 		element.classList.add("selected");
-		if (event) { event.stopPropagation(); }
+		ill.cancel(event);
 		ill.ensureElementInView(element);
 	};
 
 	ill.showCode = function(element, event) {
 		element.parentNode.classList.add("show");
-		if (event) { event.stopPropagation(); }
+		ill.cancel(event);
 	};
 
 	ill.closeAllCode = function() {
@@ -71,7 +71,7 @@
 	};
 
 	ill.addToggleAnnotations = function(record) {
-		let expl = record.querySelector(".explanation"),
+		let expl = record.querySelector(".rec-explanation"),
 			copy = document.getElementById("annotateTmpl").cloneNode(true);
 		expl.insertAdjacentElement("afterend", copy);
 	};
@@ -95,8 +95,6 @@
 		// open everything up
 		[].forEach.call(document.querySelectorAll(".record, .calculation"), function(el){
 			el.classList.add("selected");
-		});
-		[].forEach.call(document.querySelectorAll(".record, .calculation"), function(el){
 			el.classList.add("annotate");
 		});
 		[].forEach.call(document.querySelectorAll("codesample"), function(el){
@@ -118,7 +116,7 @@
 				}
 			};
 		});
-		[].forEach.call(document.querySelectorAll(".record > .label, .calculation > .label"), function(el) {
+		[].forEach.call(document.querySelectorAll(".rec-label"), function(el) {
 			el.onclick = function(event) {
 				ill.toggleRecord(el.parentNode, event);
 			};

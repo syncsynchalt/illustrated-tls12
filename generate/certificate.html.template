@@ -6,6 +6,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="format-detection" content="telephone=no">
+	<meta name="title" content="The Illustrated Certificate"/>
+	<meta name="description" content="Every byte of a certificate explained"/>
 	<link rel="stylesheet" href="frombootstrap.css">
 	<link rel="stylesheet" href="illustrated.css">
 	<script src="illustrated.js"></script>
@@ -13,9 +15,10 @@
 
 <body class="certificate">
 <div class="container">
+<div class="rec-outer">
 <div class="record server selected">
-<div class="label">Server Certificate Detail</div>
-<div class="explanation">
+<div class="rec-label">Server Certificate Detail</div>
+<div class="rec-explanation">
 	The certificate is in ASN.1 DER binary encoding.  This encoding consists of records in the following sequence:
 	type tag, length, data.
 	<br/><br/>
@@ -36,7 +39,7 @@
 %bytes
 		</span>
 		<div class="explanation">
-			Sequence of three entries follows, the certificate info, the signature algorithm, and the signature.
+			Sequence of three entries follows: the certificate info, the signature algorithm, and the signature.
 			<ul>
 			<li><tt>30</tt> - constructed universal type sequence
 			<li><tt>%1 %2 %3</tt> - long-form length of 0x321 (801) bytes
@@ -417,6 +420,7 @@
 		</div>
 	</span>
 </span>
+</div>
 </div>
 %empty
 
