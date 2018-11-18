@@ -20,9 +20,9 @@
 	<h3>Every byte of a TLS connection explained and reproduced.</h3>
 
 	<div class="outerblock">
-	<p>In this demonstration a client has connected to a server,
-	negotiated a TLS 1.2 session, sent "ping", received "pong",
-	and then terminated the session. Click below to begin
+	<p>In this demonstration a client connects to a server,
+	negotiates a TLS 1.2 session, sends "ping", receives "pong",
+	and then terminates the session. Click below to begin
 	exploring.</p>
 	</div>
 
@@ -58,10 +58,10 @@
 			<ul>
 			<li><tt>%0</tt> - type is 0x16 (handshake record)
 			<li><tt>%1 %2</tt> - protocol version is 3.1 (also known as TLS 1.0)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of handshake message follows
 			</ul>
 			Interestingly the version is 3.1 (TLS 1.0) instead
-			of the expected 3.3 (TLS 1.2).  Looking through the
+			of the expected "3,3" (TLS 1.2).  Looking through the
 			golang crypto/tls library we find the following
 			comment:
 <pre><code>if vers == 0 {
@@ -69,7 +69,6 @@
     // greater than TLS 1.0 for the initial ClientHello.
     vers = VersionTLS10
 }</code></pre>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -83,9 +82,8 @@
 			Each handshake message starts with a type and a length.
 			<ul>
 			<li><tt>%0</tt> - handshake message type 0x01 (client hello)
-			<li><tt>%1 %2 %3</tt> - payload length of %xxx1 (%ddd1) bytes
+			<li><tt>%1 %2 %3</tt> - %xxx1 (%ddd1) bytes of client hello follows
 			</ul>
-			All data following this header is the payload for this message.
 		</div>
 	</span>
 
@@ -96,12 +94,13 @@
 %bytes
 		</span>
 		<div class="explanation">
-			The protocol version of 3.3 (meaning TLS 1.2) is given.
+			The protocol version of "3,3" (meaning TLS 1.2) is given.
 			<br/><br/>
-			This choice of version number (3.3 rather
-			than 1.2) is due to TLS 1.0 being a minor
-			revision of the SSL 3.0 protocol, thus being
-			assigned version 3.1.
+			The unusual version number ("3,3" representing
+			TLS 1.2) is due to TLS 1.0 being a minor
+			revision of the SSL 3.0 protocol.  Therefore
+			TLS 1.0 is represented by "3,1", TLS 1.1 is
+			"3,2", and so on.
 		</div>
 	</span>
 
@@ -112,13 +111,14 @@
 %bytes
 		</span>
 		<div class="explanation">
-			The client provides 32 bytes of cryptographically secure random data.
-			In this example we've made the random data predictable to make it easier to recognize.
+			The client provides 32 bytes of random data.
+			In this example we've made the random data a predictable string.
 			<br/><br/>
 			The TLS 1.2 spec says that the first 4 bytes
 			should be the current time in seconds-since-1970
-			but this is now recommended against as it enables
-			fingerprinting of hosts and servers.
+			but this is
+			<a href="https://tools.ietf.org/html/draft-mathewson-no-gmtunixtime-00">now recommended against</a>
+			as it enables fingerprinting of hosts and servers.
 		</div>
 	</span>
 
@@ -153,7 +153,7 @@
 			The client provides an ordered list of which
 			cryptographic methods it will support for
 			key exchange, encryption with that exchanged
-			key, and message authentication method.
+			key, and message authentication.
 			The list is in the order preferred by the
 			client, with highest preference first.
 			<ul>
@@ -188,14 +188,15 @@
 			The client provides an ordered list of which
 			compression methods it will support.  This
 			compression would be applied before encryption
-			(as properly encrypted data is usually incompressible).
+			(as encrypted data is usually incompressible).
 			<ul>
-			<li><tt>%0</tt> - %x0 (%d0) bytes of compression methods
+			<li><tt>%0</tt> - %x0 (%d0) bytes of compression methods follows
 			<li><tt>00</tt> - assigned value for no compression
 			</ul>
 			Compression has characteristics that can weaken
-			the security of the encrypted data so this feature
-			has been removed from future TLS protocols.
+			the security of the encrypted data
+			(see <a href="https://en.wikipedia.org/wiki/CRIME">CRIME</a>).
+			so this feature has been removed from future TLS protocols.
 		</div>
 	</span>
 
@@ -239,7 +240,7 @@
 			HTTP request was made.
 			<ul>
 				<li><tt>00 00</tt> - assigned value for extension "server name"
-				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of extension data follows
+				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of "server name" extension data follows
 				<li><tt>%4 %5</tt> - %xx4 (%dd4) bytes of first (and only) list entry follows
 				<li><tt>%6</tt> - list entry is type 0x00 "DNS hostname"
 				<li><tt>%7 %8</tt> - %xx7 (%dd7) bytes of hostname follows
@@ -270,7 +271,7 @@
 			populated with data.
 			<ul>
 				<li><tt>00 05</tt> - assigned value for extension "status request"
-				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of extension data follows
+				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of "status request" extension data follows
 				<li><tt>01</tt> - assigned value for "certificate status type: OCSP"
 				<li><tt>%5 %6</tt> - %xx5 (%dd5) bytes of responderID information
 				<li><tt>%7 %8</tt> - %xx7 (%dd7) bytes of request extension information
@@ -286,14 +287,14 @@
 		</span>
 		<div class="explanation">
 			The client has indicated that it supports
-			elliptic curve (EC) cryptography for 4 curves.
-			To make this extension more generic for
-			other cryptography types it now calls these
-			"supported groups" instead of "supported
-			curves".
+			elliptic curve (EC) cryptography for 4
+			curves.  This extension was originally
+			named "elliptic curves" but has been renamed
+			"supported groups" to be generic to other
+			cryptography types.
 			<ul>
 				<li><tt>00 0a</tt> - assigned value for extension "supported groups"
-				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of extension data follows
+				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of "supported groups" extension data follows
 				<li><tt>%4 %5</tt> - %xx4 (%dd4) bytes of data are in the curves list
 				<li><tt>00 1d</tt> - assigned value for the curve "x25519"
 				<li><tt>00 17</tt> - assigned value for the curve "secp256r1"
@@ -323,7 +324,7 @@
 			so this extension would not be sent.
 			<ul>
 				<li><tt>00 0b</tt> - assigned value for extension "EC points format"
-				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of extension data follows
+				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of "EC points format" extension data follows
 				<li><tt>%4</tt> - %x4 (%d4) bytes of data are in the supported formats list
 				<li><tt>00</tt> - assigned value for uncompressed form
 			</ul>
@@ -342,11 +343,13 @@
 			as SHA-256 while still supporting earlier
 			implementations that used MD5 and SHA1.
 			This extension indicates which signature
-			algorithms the client is capable
-			of using.
+			algorithms the client is capable of
+			understanding and may influence the choice
+			of certificate that the server sends to the
+			client.
 			<ul>
 				<li><tt>00 0d</tt> - assigned value for extension "Signature Algorithms"
-				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of extension data follows
+				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of "Signature Algorithms" extension data follows
 				<li><tt>%4 %5</tt> - %xx4 (%dd4) bytes of data are in the following list of algorithms
 				<li><tt>04 01</tt> - assigned value for RSA/PKCS1/SHA256
 				<li><tt>04 03</tt> - assigned value for ECDSA/SECP256r1/SHA256
@@ -367,13 +370,15 @@
 %bytes
 		</span>
 		<div class="explanation">
-			The presence of this extension prevents a type of attack performed with TLS renegotiation.
+			The presence of this extension prevents
+			<a href="https://kryptera.se/Renegotiating%%20TLS.pdf">a type of attack</a>
+			performed with TLS renegotiation.
 			<br/><br/>
 			The ability to renegotiate a connection has been removed from the next version of this
-			protocol (TLS 1.3) so this will no longer be necessary.
+			protocol (TLS 1.3) so this extension will no longer be necessary in the future.
 			<ul>
 				<li><tt>ff 01</tt> - assigned value for extension "Renegotiation Info"
-				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of extension data follows
+				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of "Renegotiation Info" extension data follows
 				<li><tt>00</tt> - length of renegotiation data is zero, because this is a new connection
 			</ul>
 		</div>
@@ -397,10 +402,12 @@
 			did not provide first.  Therefore the client
 			sends an empty form of the extension, and
 			the server replies with the extension
-			populated with data.
+			populated with data, or changes behavior
+			based on the client having sent the
+			extension.
 			<ul>
 				<li><tt>00 12</tt> - assigned value for extension "signed certificate timestamp"
-				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of extension data follows
+				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of "signed certificate timestamp" extension data follows
 			</ul>
 		</div>
 	</span>
@@ -416,11 +423,11 @@
 <div class="rec-explanation">
 	The server says "Hello" back.  The server provides the following:
 	<ul>
-	<li>protocol version
+	<li>the selected protocol version
 	<li>server random data (used later in the handshake)
-	<li>a session id
-	<li>a selected cipher suite
-	<li>a selected compression method
+	<li>the session id
+	<li>the selected cipher suite
+	<li>the selected compression method
 	<li>a list of extensions
 	</ul>
 </div>
@@ -439,10 +446,9 @@
 			and a length.
 			<ul>
 			<li><tt>%0</tt> - type is 0x16 (handshake record)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of handshake message follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -455,10 +461,9 @@
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
 			<ul>
-			<li><tt>02</tt> - handshake message type 0x02 (server hello)
-			<li><tt>%1 %2 %3</tt> - payload length of %xxx1 (%ddd1) bytes
+			<li><tt>%0</tt> - handshake message type 0x02 (server hello)
+			<li><tt>%1 %2 %3</tt> - %xxx1 (%ddd1) bytes of server hello data follows
 			</ul>
-			All data following this header is the payload for this message.
 		</div>
 	</span>
 
@@ -469,13 +474,13 @@
 %bytes
 		</span>
 		<div class="explanation">
-			The protocol version of 3.3 (TLS 1.2) is given.
+			The protocol version of "3,3" (TLS 1.2) is given.
 			<br/><br/>
-			The reason for this version number (3.3
-			rather than 1.2) is that TLS 1.0 was a minor
-			revision of the SSL 3.0 protocol created
-			by Netscape, therefore it was assigned
-			version 3.1.
+			The unusual version number ("3,3" representing
+			TLS 1.2) is due to TLS 1.0 being a minor
+			revision of the SSL 3.0 protocol.  Therefore
+			TLS 1.0 is represented by "3,1", TLS 1.1 is
+			"3,2", and so on.
 		</div>
 	</span>
 
@@ -486,13 +491,14 @@
 %bytes
 		</span>
 		<div class="explanation">
-			The server provides 32 bytes of cryptographically secure random data.
-			In this example we've made the random data predictable to make it easier to recognize.
+			The server provides 32 bytes of random data.
+			In this example we've made the random data a predictable string.
 			<br/><br/>
 			The TLS 1.2 spec says that the first 4 bytes
 			should be the current time in seconds-since-1970
-			but this is now recommended against as it enables
-			fingerprinting of hosts and servers.
+			but this is
+			<a href="https://tools.ietf.org/html/draft-mathewson-no-gmtunixtime-00">now recommended against</a>
+			as it enables fingerprinting of hosts and servers.
 		</div>
 	</span>
 
@@ -514,7 +520,7 @@
 			network round-trip time so it is performed
 			whenever possible.
 			<ul>
-			<li><tt>00</tt> - length of zero (no session id is provided)
+			<li><tt>00</tt> - length of zero (no session id is used)
 			</ul>
 		</div>
 	</span>
@@ -571,13 +577,15 @@
 %bytes
 		</span>
 		<div class="explanation">
-			The presence of this extension prevents a type of attack performed with TLS renegotiation.
+			The presence of this extension prevents
+			<a href="https://kryptera.se/Renegotiating%%20TLS.pdf">a type of attack</a>
+			performed with TLS renegotiation.
 			<br/><br/>
 			The ability to renegotiate a connection has been removed from the next version of this
-			protocol (TLS 1.3) so this will no longer be necessary.
+			protocol (TLS 1.3) so this extension will no longer be necessary in the future.
 			<ul>
 				<li><tt>ff 01</tt> - assigned value for extension "Renegotiation Info"
-				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of extension data follows
+				<li><tt>%2 %3</tt> - %xx2 (%dd2) bytes of "Renegotiation Info" extension data follows
 				<li><tt>%4</tt> - length of renegotiation data is zero, because this is a new connection
 			</ul>
 		</div>
@@ -614,11 +622,10 @@
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x16 (handshake record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of handshake message follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -631,10 +638,9 @@
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
 			<ul>
-			<li><tt>0b</tt> - handshake message type 0x0B (certificate)
-			<li><tt>%1 %2 %3</tt> - payload length of %xxx1 (%ddd1) bytes
+			<li><tt>%0</tt> - handshake message type 0x0B (certificate)
+			<li><tt>%1 %2 %3</tt> - %xxx1 (%ddd1) of certificate message follows
 			</ul>
-			All data following this header is the payload for this message.
 		</div>
 	</span>
 
@@ -648,7 +654,7 @@
 			The certificate message begins with the
 			length of all certificate data that will follow.
 			<ul>
-			<li><tt>%0 %1 %2</tt> - %xxx0 (%ddd0) bytes of certificates follow
+			<li><tt>%0 %1 %2</tt> - %xxx0 (%ddd0) bytes of certificate list follows
 			</ul>
 		</div>
 	</span>
@@ -700,13 +706,16 @@
 <div class="rec-label">Server Key Exchange Generation</div>
 <img class="illustration" src="images/key4.png" width="106" height="250"/>
 <div class="rec-explanation">
-	The server must calculate a private/public keypair for key
-	exchange.  The server has chosen to use an elliptical curve
-	method of key exchange, using the x25519 curve.
+	The server calculates a private/public keypair
+	for key exchange.  Key exchange is a mathematic technique
+	by which two parties can agree on the same number without
+	an eavesdropper being able to tell what that number is.
+	<br/><br/>
+	It will do this via an elliptical curve method, using the x25519 curve.
 	<br/><br/>
 	The private key is chosen by selecting an integer between
-	1 and 2<sup>256</sup>-1.  It does this by generating 32 bytes of
-	random data.  The
+	0 and 2<sup>256</sup>-1.  It does this by generating 32
+	bytes (256 bits) of random data.  The
 	<a href="files/server-ephemeral-private.key" download="server-ephemeral-private.key">private key</a>
 	selected is:
 
@@ -751,11 +760,11 @@ pub:
 	using a combination of each party's private key and the other party's
 	public key.
 	<br/><br/>
-	The parties had agreed on a cipher suite using ECDHE, meaning the
+	The parties have agreed on a cipher suite using ECDHE, meaning the
 	keypairs will be based on a selected <b>E</b>lliptic <b>C</b>urve,
-	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs will
-	be <b>E</b>phemeral rather than using the public/private key from
-	the certificate.
+	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs are
+	<b>E</b>phemeral (generated for each connection) rather
+	than using the public/private key from the certificate.
 </div>
 %file ../captures/caps/serverkeyexchange
 <span class="record-data">
@@ -771,11 +780,10 @@ pub:
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x16 (handshake record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of handshake message follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -789,9 +797,8 @@ pub:
 			Each handshake message starts with a type and a length.
 			<ul>
 			<li><tt>0c</tt> - handshake message type 0x0c (server key exchange)
-			<li><tt>%1 %2 %3</tt> - payload length of %xxx1 (%ddd1) bytes
+			<li><tt>%1 %2 %3</tt> - %xxx1 (%ddd1) bytes of server key exchange follows
 			</ul>
-			All data following this header is the payload for this message.
 		</div>
 	</span>
 
@@ -817,7 +824,7 @@ pub:
 %bytes
 		</span>
 		<div class="explanation">
-			The server provides its public key.
+			The server provides its public key from the step "Server Key Exchange Generation".
 			<ul>
 			<li><tt>%0</tt> - length of %x0 (%d0) bytes
 			<li><tt>%1 %2 ... %-2 %-1</tt> - public key
@@ -903,11 +910,10 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x16 (handshake record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of handshake message follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -921,7 +927,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 			Each handshake message starts with a type and a length.
 			<ul>
 			<li><tt>0e</tt> - handshake message type 0x0e (server hello done)
-			<li><tt>%1 %2 %3</tt> - payload length of %ddd1 bytes (no payload)
+			<li><tt>%1 %2 %3</tt> - %xxx1 (%ddd1) bytes of hello done follows
 			</ul>
 		</div>
 	</span>
@@ -935,23 +941,26 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 <div class="rec-label">Client Key Exchange Generation</div>
 <img class="illustration" src="images/key6.png" width="105" height="250"/>
 <div class="rec-explanation">
-	The client must calculate a private/public keypair for key
-	exchange.  It will do this for the elliptical curve
-	method of key exchange, using the x25519 curve.
+	The client calculates a private/public keypair
+	for key exchange.  Key exchange is a mathematic technique
+	by which two parties can agree on the same number without
+	an eavesdropper being able to tell what that number is.
+	<br/><br/>
+	It will do this via an elliptical curve method, using the x25519 curve.
 	<br/><br/>
 	The private key is chosen by selecting an integer between
-	1 and 2<sup>256</sup>-1.  It does this by generating 32 bytes of
-	random data.  The
+	0 and 2<sup>256</sup>-1.  It does this by generating 32
+	bytes (256 bits) of random data.  The
 	<a href="files/client-ephemeral-private.key" download="client-ephemeral-private.key">private key</a>
 	selected is:
 
-	<pre class="ind2"><tt class="longboi">202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f</tt></pre>
+<pre class="ind2"><tt class="longboi">202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f</tt></pre>
 
 	The <a href="files/client-ephemeral-public.key" download="client-ephemeral-public.key">public key</a>
 	is chosen by multiplying the point x=9 on the x25519 curve
 	by the private key.  The public key calculated is:
 
-	<pre class="ind2"><tt class="longboi">358072d6365880d1aeea329adf9121383851ed21a28e3b75e965d0d2cd166254</tt></pre>
+<pre class="ind2"><tt class="longboi">358072d6365880d1aeea329adf9121383851ed21a28e3b75e965d0d2cd166254</tt></pre>
 
 	The public key calculation can be confirmed at the command line:
 	<codesample>
@@ -979,17 +988,17 @@ pub:
 <img class="illustration" src="images/key7.png" width="116" height="250"/>
 <div class="rec-explanation">
 	The client provides information for key exchange.  As part of the
-	key exchange process both the server and the client will generate a
+	key exchange process both the server and the client will have a
 	keypair of public and private keys, and will send the other party
 	their public key.  The shared encryption key will then be generated
-	using a function of each party's private key and the other party's
+	using a combination of each party's private key and the other party's
 	public key.
 	<br/><br/>
-	The parties had agreed on a cipher suite using ECDHE, meaning the
+	The parties have agreed on a cipher suite using ECDHE, meaning the
 	keypairs will be based on a selected <b>E</b>lliptic <b>C</b>urve,
-	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs will
-	be <b>E</b>phemeral rather than using a public/private key from
-	the server certificate.
+	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs are
+	<b>E</b>phemeral (generated for each connection) rather
+	than using the public/private key from the certificate.
 </div>
 %file ../captures/caps/clientkeyexchange
 <span class="record-data">
@@ -1005,11 +1014,10 @@ pub:
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x16 (handshake record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of handshake message follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -1022,10 +1030,9 @@ pub:
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
 			<ul>
-			<li><tt>10</tt> - handshake message type 0x10 (client key exchange)
-			<li><tt>%1 %2 %3</tt> - payload length of %xxx1 (%ddd1) bytes
+			<li><tt>%0</tt> - handshake message type 0x10 (client key exchange)
+			<li><tt>%1 %2 %3</tt> - %xxx1 (%ddd1) bytes of client key exchange follows
 			</ul>
-			All data following this header is the payload for this message.
 		</div>
 	</span>
 
@@ -1036,7 +1043,7 @@ pub:
 %bytes
 		</span>
 		<div class="explanation">
-			The client provides its public key.
+			The client provides its public key from the step "Client Key Exchange Generation".
 			<ul>
 			<li><tt>%0</tt> - length of %x0 (%d0) bytes
 			<li><tt>%1 %2 ... %-2 %-1</tt> - public key
@@ -1250,9 +1257,9 @@ $ hexdump /tmp/server_iv
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>14</tt> - type is 0x14 (ChangeCipherSpec record)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x14 (ChangeCipherSpec record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of change cipher spec follows
 			<li><tt>%5</tt> - the payload of this message is defined as the byte 0x01
 			</ul>
 		</div>
@@ -1287,11 +1294,10 @@ $ hexdump /tmp/server_iv
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x16 (handshake record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of handshake message follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -1367,10 +1373,9 @@ of (not shown) padding bytes and can be ignored.
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
 			<ul>
-			<li><tt>14</tt> - handshake message type 0x14 (finished)
-			<li><tt>%1 %2 %3</tt> - payload length of %xxx1 (%ddd1) bytes
+			<li><tt>%0</tt> - handshake message type 0x14 (finished)
+			<li><tt>%1 %2 %3</tt> - %xxx1 (%ddd1) bytes of handshake finished follows
 			</ul>
-			All data following this header is the payload for this message.
 		</div>
 	</span>
 
@@ -1630,9 +1635,9 @@ $ hexdump /tmp/server_iv
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>14</tt> - type is 0x14 (ChangeCipherSpec record)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x14 (ChangeCipherSpec record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of change cipher spec follows
 			<li><tt>%5</tt> - the payload of this message is defined as the byte 0x01
 			</ul>
 		</div>
@@ -1667,11 +1672,10 @@ $ hexdump /tmp/server_iv
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x16 (handshake record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of handshake message follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -1747,10 +1751,9 @@ of (not shown) padding bytes and can be ignored.
 		<div class="explanation">
 			Each handshake message starts with a type and a length.
 			<ul>
-			<li><tt>14</tt> - handshake message type 0x14 (finished)
-			<li><tt>%1 %2 %3</tt> - payload length of %xxx1 (%ddd1) bytes
+			<li><tt>%0</tt> - handshake message type 0x14 (finished)
+			<li><tt>%1 %2 %3</tt> - %xxx1 (%ddd1) bytes of handshake finished follows
 			</ul>
-			All data following this header is the payload for this message.
 		</div>
 	</span>
 
@@ -1827,11 +1830,10 @@ $ hexdump /tmp/verify_data
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>17</tt> - type is 0x17 (application data)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x17 (application data)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of application data follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -1929,11 +1931,10 @@ of (not shown) padding bytes and can be ignored.
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>17</tt> - type is 0x17 (application data)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x17 (application data)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of application data follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
@@ -2031,11 +2032,10 @@ of (not shown) padding bytes and can be ignored.
 			of data with a type, a protocol version,
 			and a length.
 			<ul>
-			<li><tt>15</tt> - type is 0x15 (alert record)
-			<li><tt>%1 %2</tt> - protocol version is 3.3 (TLS 1.2)
-			<li><tt>%3 %4</tt> - the length of the record payload is %xx3 (%dd3) bytes
+			<li><tt>%0</tt> - type is 0x15 (alert record)
+			<li><tt>%1 %2</tt> - protocol version is "3,3" (TLS 1.2)
+			<li><tt>%3 %4</tt> - %xx3 (%dd3) bytes of alert data follows
 			</ul>
-			All data following this header is the payload for this record.
 		</div>
 	</span>
 
