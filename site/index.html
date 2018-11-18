@@ -1322,20 +1322,30 @@ $ hexkey=f656d037b173ef3e11169f27231a84b6
 ### IV for this record
 $ hexiv=404142434445464748494a4b4c4d4e4f
 ### encrypted data
-$ echo -en '\x22\x7b\xc9\xba\x81\xef\x30\xf2'  > /tmp/msg1
-$ echo -en '\xa8\xa7\x8f\xf1\xdf\x50\x84\x4d' >> /tmp/msg1
-$ echo -en '\x58\x04\xb7\xee\xb2\xe2\x14\xc3' >> /tmp/msg1
-$ echo -en '\x2b\x68\x92\xac\xa3\xdb\x7b\x78' >> /tmp/msg1
-$ echo -en '\x07\x7f\xdd\x90\x06\x7c\x51\x6b' >> /tmp/msg1
-$ echo -en '\xac\xb3\xba\x90\xde\xdf\x72\x0f' >> /tmp/msg1
-$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+$ echo '22 7b c9 ba 81 ef 30 f2 a8 a7 8f f1 df 50 84 4d'  > /tmp/msg1
+$ echo '58 04 b7 ee b2 e2 14 c3 2b 68 92 ac a3 db 7b 78' >> /tmp/msg1
+$ echo '07 7f dd 90 06 7c 51 6b ac b3 ba 90 de df 72 0f' >> /tmp/msg1
+$ xxd -r -p /tmp/msg1 \
+  | openssl enc -d -nopad -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
 
 0000000 14 00 00 0c cf 91 96 26 f1 36 0c 53 6a aa d7 3a
 0000010 a5 a0 3d 23 30 56 e4 ac 6e ba 7f d9 e5 31 7f ac
-0000020 2d b5 b7 0e 0b
+0000020 2d b5 b7 0e 0b 0b 0b 0b 0b 0b 0b 0b 0b 0b 0b 0b
 
-The last 21 bytes contain a MAC and the number
-of (not shown) padding bytes and can be ignored.
+The last 32 bytes contain a 20-byte MAC and padding to bring the data to a
+multiple of 16 bytes.  The 20-byte MAC can be reproduced as follows:
+
+### from https://tools.ietf.org/html/rfc2246#section-6.2.3.1
+$ sequence='0000000000000000'
+$ rechdr='16 03 03'
+$ datalen='00 10'
+$ data='14 00 00 0c cf 91 96 26 f1 36 0c 53 6a aa d7 3a'
+### from "Encryption Keys Calculation"
+$ mackey=1b7d117c7d5f690bc263cae8ef60af0f1878acc2
+$ echo $sequence $rechdr $datalen $data | xxd -r -p \
+  | openssl dgst -sha1 -mac HMAC -macopt hexkey:$mackey
+
+a5a03d233056e4ac6eba7fd9e5317fac2db5b70e
 </code></pre>
 			</codesample>
 		</div>
@@ -1690,20 +1700,30 @@ $ hexkey=752a18e7a9fcb7cbcdd8f98dd8f769eb
 ### IV for this record
 $ hexiv=5152535455565758595a5b5c5d5e5f60
 ### encrypted data
-$ echo -en '\x18\xe0\x75\x31\x7b\x10\x03\x15'  > /tmp/msg1
-$ echo -en '\xf6\x08\x1f\xcb\xf3\x13\x78\x1a' >> /tmp/msg1
-$ echo -en '\xac\x73\xef\xe1\x9f\xe2\x5b\xa1' >> /tmp/msg1
-$ echo -en '\xaf\x59\xc2\x0b\xe9\x4f\xc0\x1b' >> /tmp/msg1
-$ echo -en '\xda\x2d\x68\x00\x29\x8b\x73\xa7' >> /tmp/msg1
-$ echo -en '\xe8\x49\xd7\x4b\xd4\x94\xcf\x7d' >> /tmp/msg1
-$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+$ echo '18 e0 75 31 7b 10 03 15 f6 08 1f cb f3 13 78 1a'  > /tmp/msg1
+$ echo 'ac 73 ef e1 9f e2 5b a1 af 59 c2 0b e9 4f c0 1b' >> /tmp/msg1
+$ echo 'da 2d 68 00 29 8b 73 a7 e8 49 d7 4b d4 94 cf 7d' >> /tmp/msg1
+$ xxd -r -p /tmp/msg1 \
+  | openssl enc -d -nopad -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
 
 0000000 14 00 00 0c 84 4d 3c 10 74 6d d7 22 f9 2f 0c 7e
 0000010 20 c4 97 46 d2 a3 0f 23 57 39 90 58 07 53 52 43
-0000020 af f2 bf e0 0b
+0000020 af f2 bf e0 0b 0b 0b 0b 0b 0b 0b 0b 0b 0b 0b 0b
 
-The last 21 bytes contain a MAC and the number
-of (not shown) padding bytes and can be ignored.
+The last 32 bytes contain a 20-byte MAC and padding to bring the data to a
+multiple of 16 bytes.  The 20-byte MAC can be reproduced as follows:
+
+### from https://tools.ietf.org/html/rfc2246#section-6.2.3.1
+$ sequence='0000000000000000'
+$ rechdr='16 03 03'
+$ datalen='00 10'
+$ data='14 00 00 0c 84 4d 3c 10 74 6d d7 22 f9 2f 0c 7e'
+### from "Encryption Keys Calculation"
+$ mackey=2ad8bdd8c601a617126f63540eb20906f781fad2
+$ echo $sequence $rechdr $datalen $data | xxd -r -p \
+  | openssl dgst -sha1 -mac HMAC -macopt hexkey:$mackey
+
+20c49746d2a30f235739905807535243aff2bfe0
 </code></pre>
 			</codesample>
 		</div>
@@ -1840,17 +1860,28 @@ $ hexkey=f656d037b173ef3e11169f27231a84b6
 ### IV for this record
 $ hexiv=000102030405060708090a0b0c0d0e0f
 ### encrypted data
-$ echo -en '\x6c\x42\x1c\x71\xc4\x2b\x18\x3b' >  /tmp/msg1
-$ echo -en '\xfa\x06\x19\x5d\x13\x3d\x0a\x09' >> /tmp/msg1
-$ echo -en '\xd0\x0f\xc7\xcb\x4e\x0f\x5d\x1c' >> /tmp/msg1
-$ echo -en '\xda\x59\xd1\x47\xec\x79\x0c\x99' >> /tmp/msg1
-$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+$ echo '6c 42 1c 71 c4 2b 18 3b fa 06 19 5d 13 3d 0a 09'  > /tmp/msg1
+$ echo 'd0 0f c7 cb 4e 0f 5d 1c da 59 d1 47 ec 79 0c 99' >> /tmp/msg1
+$ xxd -r -p /tmp/msg1 \
+  | openssl enc -d -nopad -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
 
 0000000 70 69 6e 67 60 10 12 49 f7 4a 03 77 c9 ca cf 63
-0000010 09 75 13 70 d8 0c fc aa 07
+0000010 09 75 13 70 d8 0c fc aa 07 07 07 07 07 07 07 07
 
-The last 21 bytes contain a MAC and the number
-of (not shown) padding bytes and can be ignored.
+The last 28 bytes contain a 20-byte MAC and padding to bring the data to a
+multiple of 16 bytes.  The 20-byte MAC can be reproduced as follows:
+
+### from https://tools.ietf.org/html/rfc2246#section-6.2.3.1
+$ sequence='0000000000000001'
+$ rechdr='17 03 03'
+$ datalen='00 04'
+$ data='70 69 6e 67'
+### from "Encryption Keys Calculation"
+$ mackey=1b7d117c7d5f690bc263cae8ef60af0f1878acc2
+$ echo $sequence $rechdr $datalen $data | xxd -r -p \
+  | openssl dgst -sha1 -mac HMAC -macopt hexkey:$mackey
+
+60101249f74a0377c9cacf6309751370d80cfcaa
 </code></pre>
 			</codesample>
 		</div>
@@ -1934,17 +1965,28 @@ $ hexkey=752a18e7a9fcb7cbcdd8f98dd8f769eb
 ### IV for this record
 $ hexiv=6162636465666768696a6b6c6d6e6f70
 ### encrypted data
-$ echo -en '\x97\x83\x48\x8a\xf5\xfa\x20\xbf' >  /tmp/msg1
-$ echo -en '\x7a\x2e\xf6\x9d\xeb\xb5\x34\xdb' >> /tmp/msg1
-$ echo -en '\x9f\xb0\x7a\x8c\x27\x21\xde\xe5' >> /tmp/msg1
-$ echo -en '\x40\x9f\x77\xaf\x0c\x3d\xde\x56' >> /tmp/msg1
-$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+$ echo '97 83 48 8a f5 fa 20 bf 7a 2e f6 9d eb b5 34 db'  > /tmp/msg1
+$ echo '9f b0 7a 8c 27 21 de e5 40 9f 77 af 0c 3d de 56' >> /tmp/msg1
+$ xxd -r -p /tmp/msg1 \
+  | openssl enc -d -nopad -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
 
 0000000 70 6f 6e 67 5a c7 99 dc cf dc 0f af 95 2b dc 91
-0000010 18 af 20 0e e3 1c 51 05 07                     
+0000010 18 af 20 0e e3 1c 51 05 07 07 07 07 07 07 07 07
 
-The last 21 bytes contain a MAC and the number
-of (not shown) padding bytes and can be ignored.
+The last 28 bytes contain a 20-byte MAC and padding to bring the data to a
+multiple of 16 bytes.  The 20-byte MAC can be reproduced as follows:
+
+### from https://tools.ietf.org/html/rfc2246#section-6.2.3.1
+$ sequence='0000000000000001'
+$ rechdr='17 03 03'
+$ datalen='00 04'
+$ data='70 6f 6e 67'
+### from "Encryption Keys Calculation"
+$ mackey=2ad8bdd8c601a617126f63540eb20906f781fad2
+$ echo $sequence $rechdr $datalen $data | xxd -r -p \
+  | openssl dgst -sha1 -mac HMAC -macopt hexkey:$mackey
+
+5ac799dccfdc0faf952bdc9118af200ee31c5105
 </code></pre>
 			</codesample>
 		</div>
@@ -2028,17 +2070,28 @@ $ hexkey=f656d037b173ef3e11169f27231a84b6
 ### IV for this record
 $ hexiv=101112131415161718191a1b1c1d1e1f
 ### encrypted data
-$ echo -en '\x0d\x83\xf9\x79\x04\x75\x0d\xd8' >  /tmp/msg1
-$ echo -en '\xfd\x8a\xa1\x30\x21\x86\x32\x63' >> /tmp/msg1
-$ echo -en '\x4f\xd0\x65\xe4\x62\x83\x79\xb8' >> /tmp/msg1
-$ echo -en '\x8b\xbf\x9e\xfd\x12\x87\xa6\x2d' >> /tmp/msg1
-$ cat /tmp/msg1 | openssl enc -d -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
+$ echo '0d 83 f9 79 04 75 0d d8 fd 8a a1 30 21 86 32 63'  > /tmp/msg1
+$ echo '4f d0 65 e4 62 83 79 b8 8b bf 9e fd 12 87 a6 2d' >> /tmp/msg1
+$ xxd -r -p /tmp/msg1 \
+  | openssl enc -d -nopad -aes-128-cbc -K $hexkey -iv $hexiv | hexdump
 
 0000000 01 00 92 79 9c ba 81 9f 31 07 44 c5 59 62 2b e4
-0000010 2b ce 3d 6a 41 fb 09
+0000010 2b ce 3d 6a 41 fb 09 09 09 09 09 09 09 09 09 09
 
-The last 21 bytes contain a MAC and the number
-of (not shown) padding bytes and can be ignored.
+The last 30 bytes contain a 20-byte and padding to bring the data to a
+multiple of 16 bytes.  The 20-byte MAC can be reproduced as follows:
+
+### from https://tools.ietf.org/html/rfc2246#section-6.2.3.1
+$ sequence='0000000000000002'
+$ rechdr='15 03 03'
+$ datalen='00 02'
+$ data='01 00'
+### from "Encryption Keys Calculation"
+$ mackey=1b7d117c7d5f690bc263cae8ef60af0f1878acc2
+$ echo $sequence $rechdr $datalen $data | xxd -r -p \
+  | openssl dgst -sha1 -mac HMAC -macopt hexkey:$mackey
+
+92799cba819f310744c559622be42bce3d6a41fb
 </code></pre>
 			</codesample>
 		</div>
