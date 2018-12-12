@@ -1943,7 +1943,7 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
  97 83 48 8a f5 fa 20 bf 7a 2e f6 9d eb b5 34 db 9f b0 7a 8c 27 21 de e5 40 9f 77 af 0c 3d de 56
 		</span>
 		<div class="explanation">
-			This data is encrypted with the client write
+			This data is encrypted with the server write
 			key.  Because it contains a message
 			authentication code (MAC) and padding it
 			is larger than the decrypted data.
@@ -1956,7 +1956,7 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 		<div class="label">Decryption</div>
 		<div class="explanation">
 			This data can be decrypted using the encryption
-			IV and the client write key that was generated
+			IV and the server write key that was generated
 			in the step "Server Encryption Keys
 			Calculation".
 			<codesample>
