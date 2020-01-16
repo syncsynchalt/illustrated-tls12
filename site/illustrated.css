@@ -30,7 +30,7 @@ h1:after {
 	content: "\00a0❧";
 }
 h1:before {
-	content: "❧\00a0";
+	content: "☙\00a0";
 }
 h1, h3 {
 	text-align: center;
