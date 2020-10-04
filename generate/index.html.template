@@ -1798,7 +1798,7 @@ a1 = HMAC-SHA256(key=MasterSecret, data=a0)
 p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
 verify_data = p1[first 12 bytes]
 </pre>
-			The verify data calculated from this hash is <tt class="longboi">a0744dd49a212f152b3c060d</tt>.
+			The verify data calculated from this hash is <tt class="longboi">%0%1%2%3%4%5%6%7%8%9%10%11</tt>.
 			We can show this on the command line:
 			<codesample>
 			<pre><code>### set up our MasterSecret as a hex string
