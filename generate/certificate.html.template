@@ -342,7 +342,7 @@
 			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
 			<li><tt>%2</tt> - universal type object id (OID)
 			<li><tt>%3</tt> - OID length of %x3 (%d3) bytes
-			<li><tt>%4 %5 %6</tt> - OID 2.5.29.25 "ExtendedKeyUsage"
+			<li><tt>%4 %5 %6</tt> - OID 2.5.29.37 "ExtendedKeyUsage"
 			<li><tt>%7</tt> - universal type octetstring
 			<li><tt>%8</tt> - octetstring length %x8 (%d8) bytes
 			<li>(octetstring is a DER document as follows):
@@ -371,7 +371,7 @@
 			<li><tt>%1</tt> - sequence length of %x1 (%d1) bytes
 			<li><tt>%2</tt> - universal type object id (OID)
 			<li><tt>%3</tt> - OID length of %x3 (%d3) bytes
-			<li><tt>%4 %5 %6</tt> - OID 2.5.29.23 "AuthorityKeyIdentifier"
+			<li><tt>%4 %5 %6</tt> - OID 2.5.29.35 "AuthorityKeyIdentifier"
 			<li><tt>%7</tt> - universal type octetstring
 			<li><tt>%8</tt> - octetstring length 0x18 (24) bytes
 			<li>(octetstring is a DER document as follows):
