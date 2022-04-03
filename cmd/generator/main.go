@@ -44,6 +44,22 @@ import (
  *   prints the 24-bit number {num}..{num+2} as decimal number
  * %dddd{num}
  *   prints the 32-bit number {num}..{num+3} as decimal number
+ * %n{num}
+ *   prints the numbered byte from current context as capital hex with leading "0x"
+ *   then in parenthetical decimal, unless the number is less than 0x0a in which case
+ *   it only prints the decimal number (since it's the same in hex and dec).
+ * %nn{num}
+ *   prints the 16-bit number {num}..{num+1} as capital hex with leading "0x"
+ *   then in parenthetical decimal, unless the number is less than 0x0a in which case
+ *   it only prints the decimal number (since it's the same in hex and dec).
+ * %nnn{num}
+ *   prints the 24-bit number {num}..{num+2} as capital hex with leading "0x"
+ *   then in parenthetical decimal, unless the number is less than 0x0a in which case
+ *   it only prints the decimal number (since it's the same in hex and dec).
+ * %nnnn{num}
+ *   prints the 32-bit number {num}..{num+3} as capital hex with leading "0x"
+ *   then in parenthetical decimal, unless the number is less than 0x0a in which case
+ *   it only prints the decimal number (since it's the same in hex and dec).
  * %stop
  *   stop interpreting commands
  */
@@ -167,6 +183,46 @@ func main() {
 				// %x{bytenum} (as 0xHex)
 				num, span := parseNumber(line[1:])
 				fmt.Fprintf(writer, "0x%X", context[num])
+				i += 1 + 1 + span
+			} else if len(line) > 4 && line[0:4] == "nnnn" {
+				// %nnnn{bytenum} (as 0xHex (dec))
+				num, span := parseNumber(line[4:])
+				val := int(context[num])<<24 | int(context[num+1])<<16 | int(context[num+2])<<8 | int(context[num+3])
+				if (val >= 0 && val < 10) {
+					fmt.Fprintf(writer, "%d", val)
+				} else {
+					fmt.Fprintf(writer, "0x%X (%d)", val, val)
+				}
+				i += 1 + 4 + span
+			} else if len(line) > 3 && line[0:3] == "nnn" {
+				// %nnn{bytenum} (as 0xHex (dec))
+				num, span := parseNumber(line[3:])
+				val := int(context[num])<<16 | int(context[num+1])<<8 | int(context[num+2])
+				if (val >= 0 && val < 10) {
+					fmt.Fprintf(writer, "%d", val)
+				} else {
+					fmt.Fprintf(writer, "0x%X (%d)", val, val)
+				}
+				i += 1 + 3 + span
+			} else if len(line) > 2 && line[0:2] == "nn" {
+				// %nn{bytenum} (as 0xHex (dec))
+				num, span := parseNumber(line[2:])
+				val := int(context[num])<<8 | int(context[num+1])
+				if (val >= 0 && val < 10) {
+					fmt.Fprintf(writer, "%d", val)
+				} else {
+					fmt.Fprintf(writer, "0x%X (%d)", val, val)
+				}
+				i += 1 + 2 + span
+			} else if len(line) > 1 && line[0] == 'n' {
+				// %n{bytenum} (as 0xHex (dec))
+				num, span := parseNumber(line[1:])
+				var val = context[num]
+				if (val >= 0 && val < 10) {
+					fmt.Fprintf(writer, "%d", val)
+				} else {
+					fmt.Fprintf(writer, "0x%X (%d)", val, val)
+				}
 				i += 1 + 1 + span
 			} else if len(line) >= 1 && isNum(line[0]) {
 				// %{bytenum} (as hex)
