@@ -353,7 +353,7 @@
 				<li><tt>%4 %5</tt> - %xx4 (%dd4) bytes of data are in the following list of algorithms
 				<li><tt>04 01</tt> - assigned value for RSA/PKCS1/SHA256
 				<li><tt>04 03</tt> - assigned value for ECDSA/SECP256r1/SHA256
-				<li><tt>05 01</tt> - assigned value for RSA/PKCS1/SHA386
+				<li><tt>05 01</tt> - assigned value for RSA/PKCS1/SHA384
 				<li><tt>05 03</tt> - assigned value for ECDSA/SECP384r1/SHA384
 				<li><tt>06 01</tt> - assigned value for RSA/PKCS1/SHA512
 				<li><tt>06 03</tt> - assigned value for ECDSA/SECP521r1/SHA512
