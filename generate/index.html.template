@@ -8,9 +8,9 @@
 	<meta name="format-detection" content="telephone=no"/>
 	<meta name="title" content="The Illustrated TLS 1.2 Connection"/>
 	<meta name="description" content="Every byte of a TLS connection explained and reproduced"/>
-	<link rel="stylesheet" href="frombootstrap.css"/>
-	<link rel="stylesheet" href="illustrated.css"/>
-	<script src="illustrated.js"></script>
+	<link rel="stylesheet" href="frombootstrap.css?bustin"/>
+	<link rel="stylesheet" href="illustrated.css?bustin"/>
+	<script src="illustrated.js?bustin"></script>
 
 	<!-- Facebook Meta Tags -->
 	<meta property="og:url" content="https://tls12.ulfheim.net/">
