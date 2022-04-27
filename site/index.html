@@ -739,7 +739,7 @@
 
 	The <a href="files/server-ephemeral-public.key" download="server-ephemeral-public.key">public key</a>
 	is chosen by "adding" the point represented by x=9 on the x25519 curve
-	to itself "private key" number of times.<super><a href="https://en.wikipedia.org/wiki/Lions%27_Commentary_on_UNIX_6th_Edition,_with_Source_Code#%22You_are_not_expected_to_understand_this%22">*</a></super>
+	to itself "private key" number of times (you don't need to understand this).
 	The public key calculated is:
 
 <pre class="ind2"><tt class="longboi">9fd7ad6dcff4298dd3f96d5b1b2af910a0535b1488d7f8fabb349a982880b615</tt></pre>
@@ -976,7 +976,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 
 	The <a href="files/client-ephemeral-public.key" download="client-ephemeral-public.key">public key</a>
 	is chosen by "adding" the point represented by x=9 on the x25519 curve
-	to itself "private key" number of times.<super><a href="https://en.wikipedia.org/wiki/Lions%27_Commentary_on_UNIX_6th_Edition,_with_Source_Code#%22You_are_not_expected_to_understand_this%22">*</a></super>
+	to itself "private key" number of times (you don't need to understand this).
 	The public key calculated is:
 
 <pre class="ind2"><tt class="longboi">358072d6365880d1aeea329adf9121383851ed21a28e3b75e965d0d2cd166254</tt></pre>
