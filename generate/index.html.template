@@ -741,7 +741,7 @@
 	for key exchange.  Key exchange is a technique
 	where two parties can agree on the same number without
 	an eavesdropper being able to tell what the number is.
-	It will do this via an elliptical curve method, using the x25519 curve.
+	It will do this via an elliptic curve method, using the x25519 curve.
 	<p>
 	Explaining and understanding the details of ECDHE key exchange
 	is outside the scope of this document. I found Andrea Corbellini's
@@ -981,7 +981,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 	for key exchange.  Key exchange is a technique
 	where two parties can agree on the same number without
 	an eavesdropper being able to tell what the number is.
-	It will do this via an elliptical curve method, using the x25519 curve.
+	It will do this via an elliptic curve method, using the x25519 curve.
 	<p>
 	Explaining and understanding the details of ECDHE key exchange
 	is outside the scope of this document. I found Andrea Corbellini's
