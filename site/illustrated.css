@@ -414,7 +414,9 @@ button.annotate-toggle:active {
 	border-bottom: 1px solid grey;
 	background-color: #FFEFD5;
 	color: #555;
-	font-size: 0.9em;
+	line-height: 20px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
 	text-align: right;
 }
 .header a, .header a:visited, .header a:hover {
