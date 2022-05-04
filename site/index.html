@@ -2,432 +2,432 @@
 <html>
 
 <head>
-	<title>The Illustrated TLS Connection: Every Byte Explained</title>
-	<meta charset="utf-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-	<meta name="format-detection" content="telephone=no"/>
-	<meta name="title" content="The Illustrated TLS 1.2 Connection"/>
-	<meta name="description" content="Every byte of a TLS connection explained and reproduced"/>
-	<link rel="stylesheet" href="frombootstrap.css?bustin"/>
-	<link rel="stylesheet" href="illustrated.css?bustin"/>
-	<script src="illustrated.js?bustin"></script>
+    <title>The Illustrated TLS Connection: Every Byte Explained</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="title" content="The Illustrated TLS 1.2 Connection"/>
+    <meta name="description" content="Every byte of a TLS connection explained and reproduced"/>
+    <link rel="stylesheet" href="frombootstrap.css?bustin"/>
+    <link rel="stylesheet" href="illustrated.css?bustin"/>
+    <script src="illustrated.js?bustin"></script>
 
-	<!-- Facebook Meta Tags -->
-	<meta property="og:url" content="https://tls12.ulfheim.net/">
-	<meta property="og:type" content="website">
-	<meta property="og:title" content="The Illustrated TLS 1.2 Connection">
-	<meta property="og:description" content="Every byte of a TLS connection explained and reproduced">
-	<meta property="og:image" content="https://tls12.ulfheim.net/images/og.png?bustin">
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://tls12.ulfheim.net/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Illustrated TLS 1.2 Connection">
+    <meta property="og:description" content="Every byte of a TLS connection explained and reproduced">
+    <meta property="og:image" content="https://tls12.ulfheim.net/images/og.png?bustin">
 
-	<!-- Twitter Meta Tags -->
-	<meta name="twitter:card" content="summary_large_image">
-	<meta property="twitter:domain" content="tls12.ulfheim.net">
-	<meta property="twitter:url" content="https://tls12.ulfheim.net/">
-	<meta name="twitter:title" content="The Illustrated TLS 1.2 Connection">
-	<meta name="twitter:description" content="Every byte of a TLS connection explained and reproduced">
-	<meta name="twitter:image" content="https://tls12.ulfheim.net/images/og.png?bustin">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="tls12.ulfheim.net">
+    <meta property="twitter:url" content="https://tls12.ulfheim.net/">
+    <meta name="twitter:title" content="The Illustrated TLS 1.2 Connection">
+    <meta name="twitter:description" content="Every byte of a TLS connection explained and reproduced">
+    <meta name="twitter:image" content="https://tls12.ulfheim.net/images/og.png?bustin">
 
-	<!-- favicons -->
-	<link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-	<link rel="manifest" href="favicon/site.webmanifest">
-	<link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
-	<link rel="shortcut icon" href="favicon.ico">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="msapplication-config" content="favicon/browserconfig.xml">
-	<meta name="theme-color" content="#ffffff">
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body class="illustrated">
 <div class="header">
-	<a href="https://quic.ulfheim.net">QUIC</a>
-	<a href="https://x25519.ulfheim.net">X25519</a>
-	<a href="https://tls13.ulfheim.net">TLS 1.3</a>
-	<a class="this-page" href="https://tls12.ulfheim.net">TLS 1.2</a>
+    <a href="https://quic.ulfheim.net">QUIC</a>
+    <a href="https://x25519.ulfheim.net">X25519</a>
+    <a href="https://tls13.ulfheim.net">TLS 1.3</a>
+    <a class="this-page" href="https://tls12.ulfheim.net">TLS 1.2</a>
 </div>
 <div class="container">
-	<h1>The Illustrated TLS 1.2 Connection</h1>
+    <h1>The Illustrated TLS 1.2 Connection</h1>
 
-	<h3>Every byte explained and reproduced</h3>
+    <h3>Every byte explained and reproduced</h3>
 
-	<div class="outerblock">
-	<p>In this demonstration a client connects to a server,
-	negotiates a TLS 1.2 session, sends "ping", receives "pong",
-	and then terminates the session. Click below to begin
-	exploring.</p>
-	</div>
+    <div class="outerblock">
+    <p>In this demonstration a client connects to a server,
+    negotiates a TLS 1.2 session, sends "ping", receives "pong",
+    and then terminates the session. Click below to begin
+    exploring.</p>
+    </div>
 
 <div class="rec-outer">
 <div class="record client">
 <div class="rec-label">Client Hello</div>
 <img class="illustration" src="images/key1.png" width="135" height="250"/>
 <div class="rec-explanation">
-	The session begins with the client saying "Hello".
-	The client provides the following:
-	<ul>
-	<li>protocol version
-	<li>client random data (used later in the handshake)
-	<li>an optional session id to resume
-	<li>a list of cipher suites
-	<li>a list of compression methods
-	<li>a list of extensions
-	</ul>
+    The session begins with the client saying "Hello".
+    The client provides the following:
+    <ul>
+    <li>protocol version
+    <li>client random data (used later in the handshake)
+    <li>an optional session id to resume
+    <li>a list of cipher suites
+    <li>a list of compression methods
+    <li>a list of extensions
+    </ul>
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  16 03 01 00 a5
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 01</tt> - protocol version is 3.1 (also known as TLS 1.0)
-			<li><tt>00 a5</tt> - 0xA5 (165) bytes of handshake message follows
-			</ul>
-			Interestingly the version is 3.1 (TLS 1.0) instead
-			of the expected "3,3" (TLS 1.2).  Looking through the
-			golang crypto/tls library we find the following
-			comment:
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>16</tt> - type is 0x16 (handshake record)
+            <li><tt>03 01</tt> - protocol version is 3.1 (also known as TLS 1.0)
+            <li><tt>00 a5</tt> - 0xA5 (165) bytes of handshake message follows
+            </ul>
+            Interestingly the version is 3.1 (TLS 1.0) instead
+            of the expected "3,3" (TLS 1.2).  Looking through the
+            golang crypto/tls library we find the following
+            comment:
 <pre><code>if vers == 0 {
     // Some TLS servers fail if the record version is
     // greater than TLS 1.0 for the initial ClientHello.
     vers = VersionTLS10
 }</code></pre>
-		</div>
-	</span>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Handshake Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Handshake Header</span>
+        <span class="bytes">
  01 00 00 a1
-		</span>
-		<div class="explanation">
-			Each handshake message starts with a type and a length.
-			<ul>
-			<li><tt>01</tt> - handshake message type 0x01 (client hello)
-			<li><tt>00 00 a1</tt> - 0xA1 (161) bytes of client hello follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            Each handshake message starts with a type and a length.
+            <ul>
+            <li><tt>01</tt> - handshake message type 0x01 (client hello)
+            <li><tt>00 00 a1</tt> - 0xA1 (161) bytes of client hello follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Client Version</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Client Version</span>
+        <span class="bytes">
  03 03
-		</span>
-		<div class="explanation">
-			The protocol version of "3,3" (meaning TLS 1.2) is given.
-			<br/><br/>
-			The unusual version number ("3,3" representing
-			TLS 1.2) is due to TLS 1.0 being a minor
-			revision of the SSL 3.0 protocol.  Therefore
-			TLS 1.0 is represented by "3,1", TLS 1.1 is
-			"3,2", and so on.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The protocol version of "3,3" (meaning TLS 1.2) is given.
+            <br/><br/>
+            The unusual version number ("3,3" representing
+            TLS 1.2) is due to TLS 1.0 being a minor
+            revision of the SSL 3.0 protocol.  Therefore
+            TLS 1.0 is represented by "3,1", TLS 1.1 is
+            "3,2", and so on.
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Client Random</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Client Random</span>
+        <span class="bytes">
  00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
-		</span>
-		<div class="explanation">
-			The client provides 32 bytes of random data.
-			In this example we've made the random data a predictable string.
-			<br/><br/>
-			The TLS 1.2 spec says that the first 4 bytes
-			should be the current time in seconds-since-1970
-			but this is
-			<a href="https://tools.ietf.org/html/draft-mathewson-no-gmtunixtime-00">now recommended against</a>
-			as it enables fingerprinting of hosts and servers.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client provides 32 bytes of random data.
+            In this example we've made the random data a predictable string.
+            <br/><br/>
+            The TLS 1.2 spec says that the first 4 bytes
+            should be the current time in seconds-since-1970
+            but this is
+            <a href="https://tools.ietf.org/html/draft-mathewson-no-gmtunixtime-00">now recommended against</a>
+            as it enables fingerprinting of hosts and servers.
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Session ID</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Session ID</span>
+        <span class="bytes">
  00
-		</span>
-		<div class="explanation">
-			The client can provide the ID of a previous
-			TLS session against this server which it
-			is able to resume.  For this to work both
-			the server and client will have remembered
-			key information from the previous connection
-			in memory.  Resuming a connection saves a
-			lot of computation and network round-trip
-			time so it is performed whenever possible.
-			<ul>
-			<li><tt>00</tt> - length of zero (no session id is provided)
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client can provide the ID of a previous
+            TLS session against this server which it
+            is able to resume.  For this to work both
+            the server and client will have remembered
+            key information from the previous connection
+            in memory.  Resuming a connection saves a
+            lot of computation and network round-trip
+            time so it is performed whenever possible.
+            <ul>
+            <li><tt>00</tt> - length of zero (no session id is provided)
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Cipher Suites</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Cipher Suites</span>
+        <span class="bytes">
  00 20 cc a8 cc a9 c0 2f c0 30 c0 2b c0 2c c0 13 c0 09 c0 14 c0 0a 00 9c 00 9d 00 2f 00 35 c0 12
  00 0a
-		</span>
-		<div class="explanation">
-			The client provides an ordered list of which
-			cryptographic methods it will support for
-			key exchange, encryption with that exchanged
-			key, and message authentication.
-			The list is in the order preferred by the
-			client, with highest preference first.
-			<ul>
-			<li><tt>00 20</tt> - 0x20 (32) bytes of cipher suite data
-			<li><tt>cc a8</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256</tt>
-			<li><tt>cc a9</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256</tt>
-			<li><tt>c0 2f</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</tt>
-			<li><tt>c0 30</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</tt>
-			<li><tt>c0 2b</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256</tt>
-			<li><tt>c0 2c</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384</tt>
-			<li><tt>c0 13</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</tt>
-			<li><tt>c0 09</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA</tt>
-			<li><tt>c0 14</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</tt>
-			<li><tt>c0 0a</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA</tt>
-			<li><tt>00 9c</tt> - assigned value for <tt>TLS_RSA_WITH_AES_128_GCM_SHA256</tt>
-			<li><tt>00 9d</tt> - assigned value for <tt>TLS_RSA_WITH_AES_256_GCM_SHA384</tt>
-			<li><tt>00 2f</tt> - assigned value for <tt>TLS_RSA_WITH_AES_128_CBC_SHA</tt>
-			<li><tt>00 35</tt> - assigned value for <tt>TLS_RSA_WITH_AES_256_CBC_SHA</tt>
-			<li><tt>c0 12</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</tt>
-			<li><tt>00 0a</tt> - assigned value for <tt>TLS_RSA_WITH_3DES_EDE_CBC_SHA</tt>
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client provides an ordered list of which
+            cryptographic methods it will support for
+            key exchange, encryption with that exchanged
+            key, and message authentication.
+            The list is in the order preferred by the
+            client, with highest preference first.
+            <ul>
+            <li><tt>00 20</tt> - 0x20 (32) bytes of cipher suite data
+            <li><tt>cc a8</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256</tt>
+            <li><tt>cc a9</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256</tt>
+            <li><tt>c0 2f</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</tt>
+            <li><tt>c0 30</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</tt>
+            <li><tt>c0 2b</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256</tt>
+            <li><tt>c0 2c</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384</tt>
+            <li><tt>c0 13</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</tt>
+            <li><tt>c0 09</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA</tt>
+            <li><tt>c0 14</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA</tt>
+            <li><tt>c0 0a</tt> - assigned value for <tt>TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA</tt>
+            <li><tt>00 9c</tt> - assigned value for <tt>TLS_RSA_WITH_AES_128_GCM_SHA256</tt>
+            <li><tt>00 9d</tt> - assigned value for <tt>TLS_RSA_WITH_AES_256_GCM_SHA384</tt>
+            <li><tt>00 2f</tt> - assigned value for <tt>TLS_RSA_WITH_AES_128_CBC_SHA</tt>
+            <li><tt>00 35</tt> - assigned value for <tt>TLS_RSA_WITH_AES_256_CBC_SHA</tt>
+            <li><tt>c0 12</tt> - assigned value for <tt>TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA</tt>
+            <li><tt>00 0a</tt> - assigned value for <tt>TLS_RSA_WITH_3DES_EDE_CBC_SHA</tt>
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Compression Methods</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Compression Methods</span>
+        <span class="bytes">
  01 00
-		</span>
-		<div class="explanation">
-			The client provides an ordered list of which
-			compression methods it will support.  This
-			compression would be applied before encryption
-			(as encrypted data is usually incompressible).
-			<ul>
-			<li><tt>01</tt> - 0x1 (1) bytes of compression methods follows
-			<li><tt>00</tt> - assigned value for no compression
-			</ul>
-			Compression has characteristics that can weaken
-			the security of the encrypted data
-			(see <a href="https://en.wikipedia.org/wiki/CRIME">CRIME</a>).
-			so this feature has been removed from future TLS protocols.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client provides an ordered list of which
+            compression methods it will support.  This
+            compression would be applied before encryption
+            (as encrypted data is usually incompressible).
+            <ul>
+            <li><tt>01</tt> - 0x1 (1) bytes of compression methods follows
+            <li><tt>00</tt> - assigned value for no compression
+            </ul>
+            Compression has characteristics that can weaken
+            the security of the encrypted data
+            (see <a href="https://en.wikipedia.org/wiki/CRIME">CRIME</a>).
+            so this feature has been removed from future TLS protocols.
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extensions Length</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extensions Length</span>
+        <span class="bytes">
  00 58
-		</span>
-		<div class="explanation">
-			The client has provided a list of optional
-			extensions which the server can use to
-			take action or enable new features.
-			<ul>
-			<li><tt>00 58</tt> - the extensions will take 0x58 (88) bytes of data
-			</ul>
-			Each extension will start with two bytes
-			that indicate which extension it is, followed
-			by a two-byte content length field, followed
-			by the contents of the extension.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client has provided a list of optional
+            extensions which the server can use to
+            take action or enable new features.
+            <ul>
+            <li><tt>00 58</tt> - the extensions will take 0x58 (88) bytes of data
+            </ul>
+            Each extension will start with two bytes
+            that indicate which extension it is, followed
+            by a two-byte content length field, followed
+            by the contents of the extension.
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extension - Server Name</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extension - Server Name</span>
+        <span class="bytes">
  00 00 00 18 00 16 00 00 13 65 78 61 6d 70 6c 65 2e 75 6c 66 68 65 69 6d 2e 6e 65 74
-		</span>
-		<div class="explanation">
-			The client has provided the name of the
-			server it is contacting, also known as SNI
-			(Server Name Indication).
-			<br/><br/>
-			Without this extension a HTTPS server would
-			not be able to provide service for multiple
-			hostnames on a single IP address (virtual
-			hosts) because it couldn't know which
-			hostname's certificate to send until
-			after the TLS session was negotiated and the
-			HTTP request was made.
-			<ul>
-				<li><tt>00 00</tt> - assigned value for extension "server name"
-				<li><tt>00 18</tt> - 0x18 (24) bytes of "server name" extension data follows
-				<li><tt>00 16</tt> - 0x16 (22) bytes of first (and only) list entry follows
-				<li><tt>00</tt> - list entry is type 0x00 "DNS hostname"
-				<li><tt>00 13</tt> - 0x13 (19) bytes of hostname follows
-				<li><tt>65 78 61 ... 6e 65 74</tt> - "example.ulfheim.net"
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client has provided the name of the
+            server it is contacting, also known as SNI
+            (Server Name Indication).
+            <br/><br/>
+            Without this extension a HTTPS server would
+            not be able to provide service for multiple
+            hostnames on a single IP address (virtual
+            hosts) because it couldn't know which
+            hostname's certificate to send until
+            after the TLS session was negotiated and the
+            HTTP request was made.
+            <ul>
+                <li><tt>00 00</tt> - assigned value for extension "server name"
+                <li><tt>00 18</tt> - 0x18 (24) bytes of "server name" extension data follows
+                <li><tt>00 16</tt> - 0x16 (22) bytes of first (and only) list entry follows
+                <li><tt>00</tt> - list entry is type 0x00 "DNS hostname"
+                <li><tt>00 13</tt> - 0x13 (19) bytes of hostname follows
+                <li><tt>65 78 61 ... 6e 65 74</tt> - "example.ulfheim.net"
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extension - Status Request</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extension - Status Request</span>
+        <span class="bytes">
  00 05 00 05 01 00 00 00 00
-		</span>
-		<div class="explanation">
-			The client provides permission for the
-			server to provide OCSP information in its response.
-			OCSP can be used to check whether a certificate
-			has been revoked.
-			<br/><br/>
-			This form of the client sending an empty
-			extension is necessary because
-			it is a fatal error for the server
-			to reply with an extension that the client
-			did not provide first.  Therefore the client
-			sends an empty form of the extension, and
-			the server replies with the extension
-			populated with data.
-			<ul>
-				<li><tt>00 05</tt> - assigned value for extension "status request"
-				<li><tt>00 05</tt> - 0x5 (5) bytes of "status request" extension data follows
-				<li><tt>01</tt> - assigned value for "certificate status type: OCSP"
-				<li><tt>00 00</tt> - 0x0 (0) bytes of responderID information
-				<li><tt>00 00</tt> - 0x0 (0) bytes of request extension information
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client provides permission for the
+            server to provide OCSP information in its response.
+            OCSP can be used to check whether a certificate
+            has been revoked.
+            <br/><br/>
+            This form of the client sending an empty
+            extension is necessary because
+            it is a fatal error for the server
+            to reply with an extension that the client
+            did not provide first.  Therefore the client
+            sends an empty form of the extension, and
+            the server replies with the extension
+            populated with data.
+            <ul>
+                <li><tt>00 05</tt> - assigned value for extension "status request"
+                <li><tt>00 05</tt> - 0x5 (5) bytes of "status request" extension data follows
+                <li><tt>01</tt> - assigned value for "certificate status type: OCSP"
+                <li><tt>00 00</tt> - 0x0 (0) bytes of responderID information
+                <li><tt>00 00</tt> - 0x0 (0) bytes of request extension information
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extension - Supported Groups</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extension - Supported Groups</span>
+        <span class="bytes">
  00 0a 00 0a 00 08 00 1d 00 17 00 18 00 19
-		</span>
-		<div class="explanation">
-			The client has indicated that it supports
-			elliptic curve (EC) cryptography for 4
-			curves.  This extension was originally
-			named "elliptic curves" but has been renamed
-			"supported groups" to be generic to other
-			cryptography types.
-			<ul>
-				<li><tt>00 0a</tt> - assigned value for extension "supported groups"
-				<li><tt>00 0a</tt> - 0xA (10) bytes of "supported groups" extension data follows
-				<li><tt>00 08</tt> - 0x8 (8) bytes of data are in the curves list
-				<li><tt>00 1d</tt> - assigned value for the curve "x25519"
-				<li><tt>00 17</tt> - assigned value for the curve "secp256r1"
-				<li><tt>00 18</tt> - assigned value for the curve "secp384r1"
-				<li><tt>00 19</tt> - assigned value for the curve "secp521r1"
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client has indicated that it supports
+            elliptic curve (EC) cryptography for 4
+            curves.  This extension was originally
+            named "elliptic curves" but has been renamed
+            "supported groups" to be generic to other
+            cryptography types.
+            <ul>
+                <li><tt>00 0a</tt> - assigned value for extension "supported groups"
+                <li><tt>00 0a</tt> - 0xA (10) bytes of "supported groups" extension data follows
+                <li><tt>00 08</tt> - 0x8 (8) bytes of data are in the curves list
+                <li><tt>00 1d</tt> - assigned value for the curve "x25519"
+                <li><tt>00 17</tt> - assigned value for the curve "secp256r1"
+                <li><tt>00 18</tt> - assigned value for the curve "secp384r1"
+                <li><tt>00 19</tt> - assigned value for the curve "secp521r1"
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extension - EC Point Formats</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extension - EC Point Formats</span>
+        <span class="bytes">
  00 0b 00 02 01 00
-		</span>
-		<div class="explanation">
-			During elliptic curve (EC) cryptography the
-			client and server will exchange information
-			on the points selected, in either compressed
-			or uncompressed form.  This extension
-			indicates that the client can only parse
-			uncompressed information from the server.
-			<br/><br/>
-			In the next version of TLS the ability to
-			negotiate points does not exist (instead a
-			single point is pre-selected for each curve),
-			so this extension would not be sent.
-			<ul>
-				<li><tt>00 0b</tt> - assigned value for extension "EC points format"
-				<li><tt>00 02</tt> - 0x2 (2) bytes of "EC points format" extension data follows
-				<li><tt>01</tt> - 0x1 (1) bytes of data are in the supported formats list
-				<li><tt>00</tt> - assigned value for uncompressed form
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            During elliptic curve (EC) cryptography the
+            client and server will exchange information
+            on the points selected, in either compressed
+            or uncompressed form.  This extension
+            indicates that the client can only parse
+            uncompressed information from the server.
+            <br/><br/>
+            In the next version of TLS the ability to
+            negotiate points does not exist (instead a
+            single point is pre-selected for each curve),
+            so this extension would not be sent.
+            <ul>
+                <li><tt>00 0b</tt> - assigned value for extension "EC points format"
+                <li><tt>00 02</tt> - 0x2 (2) bytes of "EC points format" extension data follows
+                <li><tt>01</tt> - 0x1 (1) bytes of data are in the supported formats list
+                <li><tt>00</tt> - assigned value for uncompressed form
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extension - Signature Algorithms</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extension - Signature Algorithms</span>
+        <span class="bytes">
  00 0d 00 12 00 10 04 01 04 03 05 01 05 03 06 01 06 03 02 01 02 03
-		</span>
-		<div class="explanation">
-			As TLS has developed it has become necessary to
-			support stronger signature algorithms such
-			as SHA-256 while still supporting earlier
-			implementations that used MD5 and SHA1.
-			This extension indicates which signature
-			algorithms the client is capable of
-			understanding and may influence the choice
-			of certificate that the server sends to the
-			client.
-			<ul>
-				<li><tt>00 0d</tt> - assigned value for extension "Signature Algorithms"
-				<li><tt>00 12</tt> - 0x12 (18) bytes of "Signature Algorithms" extension data follows
-				<li><tt>00 10</tt> - 0x10 (16) bytes of data are in the following list of algorithms
-				<li><tt>04 01</tt> - assigned value for RSA/PKCS1/SHA256
-				<li><tt>04 03</tt> - assigned value for ECDSA/SECP256r1/SHA256
-				<li><tt>05 01</tt> - assigned value for RSA/PKCS1/SHA384
-				<li><tt>05 03</tt> - assigned value for ECDSA/SECP384r1/SHA384
-				<li><tt>06 01</tt> - assigned value for RSA/PKCS1/SHA512
-				<li><tt>06 03</tt> - assigned value for ECDSA/SECP521r1/SHA512
-				<li><tt>02 01</tt> - assigned value for RSA/PKCS1/SHA1
-				<li><tt>02 03</tt> - assigned value for ECDSA/SHA1
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            As TLS has developed it has become necessary to
+            support stronger signature algorithms such
+            as SHA-256 while still supporting earlier
+            implementations that used MD5 and SHA1.
+            This extension indicates which signature
+            algorithms the client is capable of
+            understanding and may influence the choice
+            of certificate that the server sends to the
+            client.
+            <ul>
+                <li><tt>00 0d</tt> - assigned value for extension "Signature Algorithms"
+                <li><tt>00 12</tt> - 0x12 (18) bytes of "Signature Algorithms" extension data follows
+                <li><tt>00 10</tt> - 0x10 (16) bytes of data are in the following list of algorithms
+                <li><tt>04 01</tt> - assigned value for RSA/PKCS1/SHA256
+                <li><tt>04 03</tt> - assigned value for ECDSA/SECP256r1/SHA256
+                <li><tt>05 01</tt> - assigned value for RSA/PKCS1/SHA384
+                <li><tt>05 03</tt> - assigned value for ECDSA/SECP384r1/SHA384
+                <li><tt>06 01</tt> - assigned value for RSA/PKCS1/SHA512
+                <li><tt>06 03</tt> - assigned value for ECDSA/SECP521r1/SHA512
+                <li><tt>02 01</tt> - assigned value for RSA/PKCS1/SHA1
+                <li><tt>02 03</tt> - assigned value for ECDSA/SHA1
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extension - Renegotiation Info</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extension - Renegotiation Info</span>
+        <span class="bytes">
  ff 01 00 01 00
-		</span>
-		<div class="explanation">
-			The presence of this extension prevents
-			<a href="https://kryptera.se/Renegotiating%20TLS.pdf">a type of attack</a>
-			performed with TLS renegotiation.
-			<br/><br/>
-			The ability to renegotiate a connection has been removed from the next version of this
-			protocol (TLS 1.3) so this extension will no longer be necessary in the future.
-			<ul>
-				<li><tt>ff 01</tt> - assigned value for extension "Renegotiation Info"
-				<li><tt>00 01</tt> - 0x1 (1) bytes of "Renegotiation Info" extension data follows
-				<li><tt>00</tt> - length of renegotiation data is zero, because this is a new connection
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The presence of this extension prevents
+            <a href="https://kryptera.se/Renegotiating%20TLS.pdf">a type of attack</a>
+            performed with TLS renegotiation.
+            <br/><br/>
+            The ability to renegotiate a connection has been removed from the next version of this
+            protocol (TLS 1.3) so this extension will no longer be necessary in the future.
+            <ul>
+                <li><tt>ff 01</tt> - assigned value for extension "Renegotiation Info"
+                <li><tt>00 01</tt> - 0x1 (1) bytes of "Renegotiation Info" extension data follows
+                <li><tt>00</tt> - length of renegotiation data is zero, because this is a new connection
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extension - SCT</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extension - SCT</span>
+        <span class="bytes">
  00 12 00 00
-		</span>
-		<div class="explanation">
-			The client provides permission for the
-			server to return a signed certificate
-			timestamp.
-			<br/><br/>
-			This form of the client sending an empty
-			extension is necessary because
-			it is a fatal error for the server
-			to reply with an extension that the client
-			did not provide first.  Therefore the client
-			sends an empty form of the extension, and
-			the server replies with the extension
-			populated with data, or changes behavior
-			based on the client having sent the
-			extension.
-			<ul>
-				<li><tt>00 12</tt> - assigned value for extension "signed certificate timestamp"
-				<li><tt>00 00</tt> - 0x0 (0) bytes of "signed certificate timestamp" extension data follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client provides permission for the
+            server to return a signed certificate
+            timestamp.
+            <br/><br/>
+            This form of the client sending an empty
+            extension is necessary because
+            it is a fatal error for the server
+            to reply with an extension that the client
+            did not provide first.  Therefore the client
+            sends an empty form of the extension, and
+            the server replies with the extension
+            populated with data, or changes behavior
+            based on the client having sent the
+            extension.
+            <ul>
+                <li><tt>00 12</tt> - assigned value for extension "signed certificate timestamp"
+                <li><tt>00 00</tt> - 0x0 (0) bytes of "signed certificate timestamp" extension data follows
+            </ul>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -437,165 +437,165 @@
 <div class="rec-label">Server Hello</div>
 <img class="illustration" src="images/key2.png" width="124" height="250"/>
 <div class="rec-explanation">
-	The server says "Hello" back.  The server provides the following:
-	<ul>
-	<li>the selected protocol version
-	<li>server random data (used later in the handshake)
-	<li>the session id
-	<li>the selected cipher suite
-	<li>the selected compression method
-	<li>a list of extensions
-	</ul>
+    The server says "Hello" back.  The server provides the following:
+    <ul>
+    <li>the selected protocol version
+    <li>server random data (used later in the handshake)
+    <li>the session id
+    <li>the selected cipher suite
+    <li>the selected compression method
+    <li>a list of extensions
+    </ul>
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  16 03 03 00 31
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 31</tt> - 0x31 (49) bytes of handshake message follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>16</tt> - type is 0x16 (handshake record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 31</tt> - 0x31 (49) bytes of handshake message follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Handshake Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Handshake Header</span>
+        <span class="bytes">
  02 00 00 2d
-		</span>
-		<div class="explanation">
-			Each handshake message starts with a type and a length.
-			<ul>
-			<li><tt>02</tt> - handshake message type 0x02 (server hello)
-			<li><tt>00 00 2d</tt> - 0x2D (45) bytes of server hello data follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            Each handshake message starts with a type and a length.
+            <ul>
+            <li><tt>02</tt> - handshake message type 0x02 (server hello)
+            <li><tt>00 00 2d</tt> - 0x2D (45) bytes of server hello data follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Server Version</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Server Version</span>
+        <span class="bytes">
  03 03
-		</span>
-		<div class="explanation">
-			The protocol version of "3,3" (TLS 1.2) is given.
-			<br/><br/>
-			The unusual version number ("3,3" representing
-			TLS 1.2) is due to TLS 1.0 being a minor
-			revision of the SSL 3.0 protocol.  Therefore
-			TLS 1.0 is represented by "3,1", TLS 1.1 is
-			"3,2", and so on.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The protocol version of "3,3" (TLS 1.2) is given.
+            <br/><br/>
+            The unusual version number ("3,3" representing
+            TLS 1.2) is due to TLS 1.0 being a minor
+            revision of the SSL 3.0 protocol.  Therefore
+            TLS 1.0 is represented by "3,1", TLS 1.1 is
+            "3,2", and so on.
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Server Random</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Server Random</span>
+        <span class="bytes">
  70 71 72 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f
-		</span>
-		<div class="explanation">
-			The server provides 32 bytes of random data.
-			In this example we've made the random data a predictable string.
-			<br/><br/>
-			The TLS 1.2 spec says that the first 4 bytes
-			should be the current time in seconds-since-1970
-			but this is
-			<a href="https://tools.ietf.org/html/draft-mathewson-no-gmtunixtime-00">now recommended against</a>
-			as it enables fingerprinting of hosts and servers.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server provides 32 bytes of random data.
+            In this example we've made the random data a predictable string.
+            <br/><br/>
+            The TLS 1.2 spec says that the first 4 bytes
+            should be the current time in seconds-since-1970
+            but this is
+            <a href="https://tools.ietf.org/html/draft-mathewson-no-gmtunixtime-00">now recommended against</a>
+            as it enables fingerprinting of hosts and servers.
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Session ID</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Session ID</span>
+        <span class="bytes">
  00
-		</span>
-		<div class="explanation">
-			The server can provide an ID for this session
-			which a client can provide on a later session
-			negotiation in an attempt to re-use the key
-			data and skip most of the TLS negotiation
-			process.  For this to work both the server
-			and client will store key information from
-			the previous connection in memory.  Resuming
-			a connection saves a lot of computation and
-			network round-trip time so it is performed
-			whenever possible.
-			<ul>
-			<li><tt>00</tt> - length of zero (no session id is used)
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server can provide an ID for this session
+            which a client can provide on a later session
+            negotiation in an attempt to re-use the key
+            data and skip most of the TLS negotiation
+            process.  For this to work both the server
+            and client will store key information from
+            the previous connection in memory.  Resuming
+            a connection saves a lot of computation and
+            network round-trip time so it is performed
+            whenever possible.
+            <ul>
+            <li><tt>00</tt> - length of zero (no session id is used)
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Cipher Suite</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Cipher Suite</span>
+        <span class="bytes">
  c0 13
-		</span>
-		<div class="explanation">
-			The server has selected cipher suite 0xC013
-			(TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) from the
-			list of options given by the client.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server has selected cipher suite 0xC013
+            (TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) from the
+            list of options given by the client.
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Compression Method</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Compression Method</span>
+        <span class="bytes">
  00
-		</span>
-		<div class="explanation">
-			The server has selected compression method
-			0x00 ("Null", which performs no compression)
-			from the list of options given by the client.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server has selected compression method
+            0x00 ("Null", which performs no compression)
+            from the list of options given by the client.
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extensions Length</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extensions Length</span>
+        <span class="bytes">
  00 05
-		</span>
-		<div class="explanation">
-			The server has returned a list of extensions
-			to the client.  Because the server is
-			forbidden from replying with an extension
-			that the client did not send in its hello
-			message, the server knows that the client
-			will support all extensions listed.
-			<ul>
-			<li><tt>00 05</tt> - the extensions will take 0x5 (5) bytes of data
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server has returned a list of extensions
+            to the client.  Because the server is
+            forbidden from replying with an extension
+            that the client did not send in its hello
+            message, the server knows that the client
+            will support all extensions listed.
+            <ul>
+            <li><tt>00 05</tt> - the extensions will take 0x5 (5) bytes of data
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Extension - Renegotiation Info</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Extension - Renegotiation Info</span>
+        <span class="bytes">
  ff 01 00 01 00
-		</span>
-		<div class="explanation">
-			The presence of this extension prevents
-			<a href="https://kryptera.se/Renegotiating%20TLS.pdf">a type of attack</a>
-			performed with TLS renegotiation.
-			<br/><br/>
-			The ability to renegotiate a connection has been removed from the next version of this
-			protocol (TLS 1.3) so this extension will no longer be necessary in the future.
-			<ul>
-				<li><tt>ff 01</tt> - assigned value for extension "Renegotiation Info"
-				<li><tt>00 01</tt> - 0x1 (1) bytes of "Renegotiation Info" extension data follows
-				<li><tt>00</tt> - length of renegotiation data is zero, because this is a new connection
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The presence of this extension prevents
+            <a href="https://kryptera.se/Renegotiating%20TLS.pdf">a type of attack</a>
+            performed with TLS renegotiation.
+            <br/><br/>
+            The ability to renegotiate a connection has been removed from the next version of this
+            protocol (TLS 1.3) so this extension will no longer be necessary in the future.
+            <ul>
+                <li><tt>ff 01</tt> - assigned value for extension "Renegotiation Info"
+                <li><tt>00 01</tt> - 0x1 (1) bytes of "Renegotiation Info" extension data follows
+                <li><tt>00</tt> - length of renegotiation data is zero, because this is a new connection
+            </ul>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -605,77 +605,77 @@
 <div class="rec-label">Server Certificate</div>
 <img class="illustration" src="images/key3.png" width="130" height="250"/>
 <div class="rec-explanation">
-	The server provides a certificate containing the following:
-	<ul>
-	<li>the hostname of the server
-	<li>the public key used by this server
-	<li>proof from a trusted third party that the owner of this hostname holds the private key for this public key
-	</ul>
-	<a href="certificate.html" target="_blank">Explore the server certificate</a>.
+    The server provides a certificate containing the following:
+    <ul>
+    <li>the hostname of the server
+    <li>the public key used by this server
+    <li>proof from a trusted third party that the owner of this hostname holds the private key for this public key
+    </ul>
+    <a href="certificate.html" target="_blank">Explore the server certificate</a>.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  16 03 03 03 2f
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>03 2f</tt> - 0x32F (815) bytes of handshake message follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>16</tt> - type is 0x16 (handshake record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>03 2f</tt> - 0x32F (815) bytes of handshake message follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Handshake Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Handshake Header</span>
+        <span class="bytes">
  0b 00 03 2b
-		</span>
-		<div class="explanation">
-			Each handshake message starts with a type and a length.
-			<ul>
-			<li><tt>0b</tt> - handshake message type 0x0B (certificate)
-			<li><tt>00 03 2b</tt> - 0x32B (811) of certificate message follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            Each handshake message starts with a type and a length.
+            <ul>
+            <li><tt>0b</tt> - handshake message type 0x0B (certificate)
+            <li><tt>00 03 2b</tt> - 0x32B (811) of certificate message follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Certificates Length</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Certificates Length</span>
+        <span class="bytes">
  00 03 28
-		</span>
-		<div class="explanation">
-			The certificate message begins with the
-			length of all certificate data that will follow.
-			<ul>
-			<li><tt>00 03 28</tt> - 0x328 (808) bytes of certificate list follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The certificate message begins with the
+            length of all certificate data that will follow.
+            <ul>
+            <li><tt>00 03 28</tt> - 0x328 (808) bytes of certificate list follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Certificate Length</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Certificate Length</span>
+        <span class="bytes">
  00 03 25
-		</span>
-		<div class="explanation">
-			The length of the first (and only) certificate.
-			<ul>
-			<li><tt>00 03 25</tt> - 0x325 (805) bytes of certificate follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The length of the first (and only) certificate.
+            <ul>
+            <li><tt>00 03 25</tt> - 0x325 (805) bytes of certificate follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Certificate</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Certificate</span>
+        <span class="bytes">
  30 82 03 21 30 82 02 09 a0 03 02 01 02 02 08 15 5a 92 ad c2 04 8f 90 30 0d 06 09 2a 86 48 86 f7
  0d 01 01 0b 05 00 30 22 31 0b 30 09 06 03 55 04 06 13 02 55 53 31 13 30 11 06 03 55 04 0a 13 0a
  45 78 61 6d 70 6c 65 20 43 41 30 1e 17 0d 31 38 31 30 30 35 30 31 33 38 31 37 5a 17 0d 31 39 31
@@ -702,25 +702,25 @@
  ae 34 8c e0 f3 4a b2 fb 9c 61 83 71 31 2b 19 10 41 64 1c 23 7f 11 a5 d6 5c 84 4f 04 04 84 99 38
  71 2b 95 9e d6 85 bc 5c 5d d6 45 ed 19 90 94 73 40 29 26 dc b4 0e 34 69 a1 59 41 e8 e2 cc a8 4b
  b6 08 46 36 a0
-		</span>
-		<div class="explanation">
-			The certificate is in ASN.1 DER
-			encoding.  The details of this format and
-			the content of this binary payload are
-			documented <a href="certificate.html" target="_blank">on another page</a>.
-			<a href="files/server.crt" download="server.crt">The certificate</a>
-			can be converted to the binary data in this message
-			at the command line:
-			<codesample>
+        </span>
+        <div class="explanation">
+            The certificate is in ASN.1 DER
+            encoding.  The details of this format and
+            the content of this binary payload are
+            documented <a href="certificate.html" target="_blank">on another page</a>.
+            <a href="files/server.crt" download="server.crt">The certificate</a>
+            can be converted to the binary data in this message
+            at the command line:
+            <codesample>
 <pre><code>$ openssl x509 -outform der &lt; server.crt | hexdump
 
 0000000 30 82 03 21 30 82 02 09 a0 03 02 01 02 02 08 15
 0000010 5a 92 ad c2 04 8f 90 30 0d 06 09 2a 86 48 86 f7
 ... snip ...
 </code></pre>
-			</codesample>
-		</div>
-	</span>
+            </codesample>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -730,32 +730,32 @@
 <div class="rec-label">Server Key Exchange Generation</div>
 <img class="illustration" src="images/key4.png" width="106" height="250"/>
 <div class="rec-explanation">
-	<p>The server calculates a private/public keypair
-	for key exchange.  Key exchange is a technique
-	where two parties can agree on the same number without
-	an eavesdropper being able to tell what it is.
-	<p>
-	An explanation of the key exchange can be found on my
-	<a href="https://x25519.ulfheim.net/">X25519 site</a>,
-	but doesn't need to be understood in depth for the rest
-	of this page.
-	<p>
-	The private key is chosen by selecting an integer between
-	0 and 2<sup>256</sup>-1.  It does this by generating 32
-	bytes (256 bits) of random data.  The
-	<a href="files/server-ephemeral-private.key" download="server-ephemeral-private.key">private key</a>
-	selected is:
+    <p>The server calculates a private/public keypair
+    for key exchange.  Key exchange is a technique
+    where two parties can agree on the same number without
+    an eavesdropper being able to tell what it is.
+    <p>
+    An explanation of the key exchange can be found on my
+    <a href="https://x25519.ulfheim.net/">X25519 site</a>,
+    but doesn't need to be understood in depth for the rest
+    of this page.
+    <p>
+    The private key is chosen by selecting an integer between
+    0 and 2<sup>256</sup>-1.  It does this by generating 32
+    bytes (256 bits) of random data.  The
+    <a href="files/server-ephemeral-private.key" download="server-ephemeral-private.key">private key</a>
+    selected is:
 
 <pre class="ind2"><tt class="longboi">909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeaf</tt></pre>
 
-	The <a href="files/server-ephemeral-public.key" download="server-ephemeral-public.key">public key</a>
-	is chosen as explained on <a href="https://x25519.ulfheim.net/">X25519 site</a>.
-	The public key calculated is:
+    The <a href="files/server-ephemeral-public.key" download="server-ephemeral-public.key">public key</a>
+    is chosen as explained on <a href="https://x25519.ulfheim.net/">X25519 site</a>.
+    The public key calculated is:
 
 <pre class="ind2"><tt class="longboi">9fd7ad6dcff4298dd3f96d5b1b2af910a0535b1488d7f8fabb349a982880b615</tt></pre>
 
-	The public key calculation can be confirmed with command line tools:
-	<codesample>
+    The public key calculation can be confirmed with command line tools:
+    <codesample>
 <pre><code>### requires openssl 1.1.0 or higher
 $ openssl pkey -noout -text &lt; server-ephemeral-private.key
 
@@ -769,7 +769,7 @@ pub:
     10:a0:53:5b:14:88:d7:f8:fa:bb:34:9a:98:28:80:
     b6:15
 </code></pre>
-	</codesample>
+    </codesample>
 </div>
 </div>
 </div>
@@ -779,84 +779,84 @@ pub:
 <div class="rec-label">Server Key Exchange</div>
 <img class="illustration" src="images/key5.png" width="138" height="250"/>
 <div class="rec-explanation">
-	The server provides information for key exchange.  As part of the
-	key exchange process both the server and the client will have a
-	keypair of public and private keys, and will send the other party
-	their public key.  The shared encryption key will then be generated
-	using a combination of each party's private key and the other party's
-	public key.
-	<br/><br/>
-	The parties have agreed on a cipher suite using ECDHE, meaning the
-	keypairs will be based on a selected <b>E</b>lliptic <b>C</b>urve,
-	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs are
-	<b>E</b>phemeral (generated for each connection) rather
-	than using the public/private key from the certificate.
+    The server provides information for key exchange.  As part of the
+    key exchange process both the server and the client will have a
+    keypair of public and private keys, and will send the other party
+    their public key.  The shared encryption key will then be generated
+    using a combination of each party's private key and the other party's
+    public key.
+    <br/><br/>
+    The parties have agreed on a cipher suite using ECDHE, meaning the
+    keypairs will be based on a selected <b>E</b>lliptic <b>C</b>urve,
+    <b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs are
+    <b>E</b>phemeral (generated for each connection) rather
+    than using the public/private key from the certificate.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  16 03 03 01 2c
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>01 2c</tt> - 0x12C (300) bytes of handshake message follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>16</tt> - type is 0x16 (handshake record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>01 2c</tt> - 0x12C (300) bytes of handshake message follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Handshake Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Handshake Header</span>
+        <span class="bytes">
  0c 00 01 28
-		</span>
-		<div class="explanation">
-			Each handshake message starts with a type and a length.
-			<ul>
-			<li><tt>0c</tt> - handshake message type 0x0c (server key exchange)
-			<li><tt>00 01 28</tt> - 0x128 (296) bytes of server key exchange follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            Each handshake message starts with a type and a length.
+            <ul>
+            <li><tt>0c</tt> - handshake message type 0x0c (server key exchange)
+            <li><tt>00 01 28</tt> - 0x128 (296) bytes of server key exchange follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Curve Info</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Curve Info</span>
+        <span class="bytes">
  03 00 1d
-		</span>
-		<div class="explanation">
-			The server chooses the elliptic curve that points will be calculated from.
-			<ul>
-			<li><tt>03</tt> - assigned value for "named_curve": the following bytes will identify a specific curve
-			<li><tt>00 1d</tt> - curve 0x001d ("curve x25519")
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server chooses the elliptic curve that points will be calculated from.
+            <ul>
+            <li><tt>03</tt> - assigned value for "named_curve": the following bytes will identify a specific curve
+            <li><tt>00 1d</tt> - curve 0x001d ("curve x25519")
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Public Key</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Public Key</span>
+        <span class="bytes">
  20 9f d7 ad 6d cf f4 29 8d d3 f9 6d 5b 1b 2a f9 10 a0 53 5b 14 88 d7 f8 fa bb 34 9a 98 28 80 b6
  15
-		</span>
-		<div class="explanation">
-			The server provides its public key from the step "Server Key Exchange Generation".
-			<ul>
-			<li><tt>20</tt> - length of 0x20 (32) bytes
-			<li><tt>9f d7 ... b6 15</tt> - public key
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server provides its public key from the step "Server Key Exchange Generation".
+            <ul>
+            <li><tt>20</tt> - length of 0x20 (32) bytes
+            <li><tt>9f d7 ... b6 15</tt> - public key
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Signature</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Signature</span>
+        <span class="bytes">
  04 01 01 00 04 02 b6 61 f7 c1 91 ee 59 be 45 37 66 39 bd c3 d4 bb 81 e1 15 ca 73 c8 34 8b 52 5b
  0d 23 38 aa 14 46 67 ed 94 31 02 14 12 cd 9b 84 4c ba 29 93 4a aa cc e8 73 41 4e c1 1c b0 2e 27
  2d 0a d8 1f 76 7d 33 07 67 21 f1 3b f3 60 20 cf 0b 1f d0 ec b0 78 de 11 28 be ba 09 49 eb ec e1
@@ -866,28 +866,28 @@ pub:
  87 85 8c 7b 94 c0 1c 2e 32 f2 91 76 9e ac ca 71 64 3b 8b 98 a9 63 df 0a 32 9b ea 4e d6 39 7e 8c
  d0 1a 11 0a b3 61 ac 5b ad 1c cd 84 0a 6c 8a 6e aa 00 1a 9d 7d 87 dc 33 18 64 35 71 22 6c 4d d2
  c2 ac 41 fb
-		</span>
-		<div class="explanation">
-			Because the server is generating ephemeral keys
-			it is not using the public key provided in
-			the server certificate.  To prove that the
-			server owns the server certificate (giving the certificate
-			validity in this TLS session), it signs the
-			ephemeral public key with the certificate's
-			private key.  This signature can be
-			validated with the certificate's public
-			key.
-			<ul>
-			<li><tt>04 01</tt> - reserved value for RSA signature with SHA256 hash
-			<li><tt>01 00</tt> - length of signature (0x100 or 256 bytes)
-			<li><tt>04 02 b6 ... ac 41 fb</tt> - the
-					computed signature for <tt>SHA256(client_hello_random
-					+ server_hello_random + curve_info + public_key)</tt>
-			</ul>
-			We can compute the signature ourselves using
-			the <a href="files/server.key" download="server.key">server's private key</a>,
-			at the command line:
-			<codesample>
+        </span>
+        <div class="explanation">
+            Because the server is generating ephemeral keys
+            it is not using the public key provided in
+            the server certificate.  To prove that the
+            server owns the server certificate (giving the certificate
+            validity in this TLS session), it signs the
+            ephemeral public key with the certificate's
+            private key.  This signature can be
+            validated with the certificate's public
+            key.
+            <ul>
+            <li><tt>04 01</tt> - reserved value for RSA signature with SHA256 hash
+            <li><tt>01 00</tt> - length of signature (0x100 or 256 bytes)
+            <li><tt>04 02 b6 ... ac 41 fb</tt> - the
+                    computed signature for <tt>SHA256(client_hello_random
+                    + server_hello_random + curve_info + public_key)</tt>
+            </ul>
+            We can compute the signature ourselves using
+            the <a href="files/server.key" download="server.key">server's private key</a>,
+            at the command line:
+            <codesample>
 <pre><code>### client random from Client Hello
 $ echo -en '\x00\x01\x02\x03\x04\x05\x06\x07'  > /tmp/compute
 $ echo -en '\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f' >> /tmp/compute
@@ -911,9 +911,9 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 ... snip ...
 00000f0 7d 87 dc 33 18 64 35 71 22 6c 4d d2 c2 ac 41 fb
 </code></pre>
-			</codesample>
-		</div>
-	</span>
+            </codesample>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -922,40 +922,40 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 <div class="record server">
 <div class="rec-label">Server Hello Done</div>
 <div class="rec-explanation">
-	The server indicates it's finished with its half of the handshake.
+    The server indicates it's finished with its half of the handshake.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  16 03 03 00 04
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 04</tt> - 0x4 (4) bytes of handshake message follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>16</tt> - type is 0x16 (handshake record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 04</tt> - 0x4 (4) bytes of handshake message follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Handshake Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Handshake Header</span>
+        <span class="bytes">
  0e 00 00 00
-		</span>
-		<div class="explanation">
-			Each handshake message starts with a type and a length.
-			<ul>
-			<li><tt>0e</tt> - handshake message type 0x0e (server hello done)
-			<li><tt>00 00 00</tt> - 0x0 (0) bytes of hello done follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            Each handshake message starts with a type and a length.
+            <ul>
+            <li><tt>0e</tt> - handshake message type 0x0e (server hello done)
+            <li><tt>00 00 00</tt> - 0x0 (0) bytes of hello done follows
+            </ul>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -965,32 +965,32 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 <div class="rec-label">Client Key Exchange Generation</div>
 <img class="illustration" src="images/key6.png" width="105" height="250"/>
 <div class="rec-explanation">
-	<p>The client calculates a private/public keypair
-	for key exchange.  Key exchange is a technique
-	where two parties can agree on the same number without
-	an eavesdropper being able to tell what it is.
-	<p>
-	An explanation of the key exchange can be found on my
-	<a href="https://x25519.ulfheim.net/">X25519 site</a>,
-	but doesn't need to be understood in depth for the rest
-	of this page.
-	<p>
-	The private key is chosen by selecting an integer between
-	0 and 2<sup>256</sup>-1.  It does this by generating 32
-	bytes (256 bits) of random data.  The
-	<a href="files/client-ephemeral-private.key" download="client-ephemeral-private.key">private key</a>
-	selected is:
+    <p>The client calculates a private/public keypair
+    for key exchange.  Key exchange is a technique
+    where two parties can agree on the same number without
+    an eavesdropper being able to tell what it is.
+    <p>
+    An explanation of the key exchange can be found on my
+    <a href="https://x25519.ulfheim.net/">X25519 site</a>,
+    but doesn't need to be understood in depth for the rest
+    of this page.
+    <p>
+    The private key is chosen by selecting an integer between
+    0 and 2<sup>256</sup>-1.  It does this by generating 32
+    bytes (256 bits) of random data.  The
+    <a href="files/client-ephemeral-private.key" download="client-ephemeral-private.key">private key</a>
+    selected is:
 
 <pre class="ind2"><tt class="longboi">202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f</tt></pre>
 
-	The <a href="files/client-ephemeral-public.key" download="client-ephemeral-public.key">public key</a>
-	is chosen as explained on <a href="https://x25519.ulfheim.net/">X25519 site</a>.
-	The public key calculated is:
+    The <a href="files/client-ephemeral-public.key" download="client-ephemeral-public.key">public key</a>
+    is chosen as explained on <a href="https://x25519.ulfheim.net/">X25519 site</a>.
+    The public key calculated is:
 
 <pre class="ind2"><tt class="longboi">358072d6365880d1aeea329adf9121383851ed21a28e3b75e965d0d2cd166254</tt></pre>
 
-	The public key calculation can be confirmed with command line tools:
-	<codesample>
+    The public key calculation can be confirmed with command line tools:
+    <codesample>
 <pre><code>### requires openssl 1.1.0 or higher
 $ openssl pkey -noout -text &lt; client-ephemeral-private.key
 
@@ -1004,7 +1004,7 @@ pub:
     38:38:51:ed:21:a2:8e:3b:75:e9:65:d0:d2:cd:16:
     62:54
 </code></pre>
-	</codesample>
+    </codesample>
 </div>
 </div>
 </div>
@@ -1014,66 +1014,66 @@ pub:
 <div class="rec-label">Client Key Exchange</div>
 <img class="illustration" src="images/key7.png" width="116" height="250"/>
 <div class="rec-explanation">
-	The client provides information for key exchange.  As part of the
-	key exchange process both the server and the client will have a
-	keypair of public and private keys, and will send the other party
-	their public key.  The shared encryption key will then be generated
-	using a combination of each party's private key and the other party's
-	public key.
-	<br/><br/>
-	The parties have agreed on a cipher suite using ECDHE, meaning the
-	keypairs will be based on a selected <b>E</b>lliptic <b>C</b>urve,
-	<b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs are
-	<b>E</b>phemeral (generated for each connection) rather
-	than using the public/private key from the certificate.
+    The client provides information for key exchange.  As part of the
+    key exchange process both the server and the client will have a
+    keypair of public and private keys, and will send the other party
+    their public key.  The shared encryption key will then be generated
+    using a combination of each party's private key and the other party's
+    public key.
+    <br/><br/>
+    The parties have agreed on a cipher suite using ECDHE, meaning the
+    keypairs will be based on a selected <b>E</b>lliptic <b>C</b>urve,
+    <b>D</b>iffie-<b>H</b>ellman will be used, and the keypairs are
+    <b>E</b>phemeral (generated for each connection) rather
+    than using the public/private key from the certificate.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  16 03 03 00 25
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 25</tt> - 0x25 (37) bytes of handshake message follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>16</tt> - type is 0x16 (handshake record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 25</tt> - 0x25 (37) bytes of handshake message follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Handshake Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Handshake Header</span>
+        <span class="bytes">
  10 00 00 21
-		</span>
-		<div class="explanation">
-			Each handshake message starts with a type and a length.
-			<ul>
-			<li><tt>10</tt> - handshake message type 0x10 (client key exchange)
-			<li><tt>00 00 21</tt> - 0x21 (33) bytes of client key exchange follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            Each handshake message starts with a type and a length.
+            <ul>
+            <li><tt>10</tt> - handshake message type 0x10 (client key exchange)
+            <li><tt>00 00 21</tt> - 0x21 (33) bytes of client key exchange follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Public Key</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Public Key</span>
+        <span class="bytes">
  20 35 80 72 d6 36 58 80 d1 ae ea 32 9a df 91 21 38 38 51 ed 21 a2 8e 3b 75 e9 65 d0 d2 cd 16 62
  54
-		</span>
-		<div class="explanation">
-			The client provides its public key from the step "Client Key Exchange Generation".
-			<ul>
-			<li><tt>20</tt> - length of 0x20 (32) bytes
-			<li><tt>35 80 ... 62 54</tt> - public key
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client provides its public key from the step "Client Key Exchange Generation".
+            <ul>
+            <li><tt>20</tt> - length of 0x20 (32) bytes
+            <li><tt>35 80 ... 62 54</tt> - public key
+            </ul>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -1083,23 +1083,23 @@ pub:
 <div class="rec-label">Client Encryption Keys Calculation</div>
 <img class="illustration" src="images/key8.png" width="97" height="250"/>
 <div class="rec-explanation">
-	The client now has the information to calculate the encryption
-	keys that will be used by each side.  It uses the following
-	information in this calculation:
-	<ul>
-	<li>server random (from Server Hello)
-	<li>client random (from Client Hello)
-	<li>server public key (from Server Key Exchange)
-	<li>client private key (from Client Key Generation)
-	</ul>
-	The client multiplies the server's public key with the
-	client's private key using the curve25519() algorithm.  The
-	32-byte result is called the PreMasterSecret, and is found
-	to be:
-	<pre class="ind2"><tt class="longboi">df4a291baa1eb7cfa6934b29b474baad2697e29f1f920dcc77c8a0a088447624</tt></pre>
+    The client now has the information to calculate the encryption
+    keys that will be used by each side.  It uses the following
+    information in this calculation:
+    <ul>
+    <li>server random (from Server Hello)
+    <li>client random (from Client Hello)
+    <li>server public key (from Server Key Exchange)
+    <li>client private key (from Client Key Generation)
+    </ul>
+    The client multiplies the server's public key by the
+    client's private key using the curve25519() algorithm.  The
+    32-byte result is called the PreMasterSecret, and is found
+    to be:
+    <pre class="ind2"><tt class="longboi">df4a291baa1eb7cfa6934b29b474baad2697e29f1f920dcc77c8a0a088447624</tt></pre>
 
-	I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
-	<codesample>
+    I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
+    <codesample>
 <pre><code>$ gcc -o curve25519-mult curve25519-mult.c
 $ ./curve25519-mult client-ephemeral-private.key \
                     server-ephemeral-public.key | hexdump
@@ -1107,12 +1107,12 @@ $ ./curve25519-mult client-ephemeral-private.key \
 0000000 df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
 0000010 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24
 </code></pre>
-	</codesample>
+    </codesample>
 
-	The client then calculates 48 bytes of the MasterSecret
-	from the PreMasterSecret using the following method:
+    The client then calculates 48 bytes of the MasterSecret
+    from the PreMasterSecret using the following method:
 
-	<pre class="ind1">seed = "master secret" + client_random + server_random
+    <pre class="ind1">seed = "master secret" + client_random + server_random
 a0 = seed
 a1 = HMAC-SHA256(key=PreMasterSecret, data=a0)
 a2 = HMAC-SHA256(key=PreMasterSecret, data=a1)
@@ -1120,8 +1120,8 @@ p1 = HMAC-SHA256(key=PreMasterSecret, data=a1 + seed)
 p2 = HMAC-SHA256(key=PreMasterSecret, data=a2 + seed)
 MasterSecret = p1[all 32 bytes] + p2[first 16 bytes]</pre>
 
-	Here we demonstrate on the command line:
-	<codesample>
+    Here we demonstrate on the command line:
+    <codesample>
 <pre><code>### set up our PreMasterSecret as a hex string
 $ pmshex=df4a291baa1eb7cfa6934b29b474baad
 $ pmshex=${pmshex}2697e29f1f920dcc77c8a0a088447624
@@ -1158,12 +1158,12 @@ $ hexdump /tmp/mastersecret
 0000010 b0 23 ba 12 9a ee 02 cc 91 34 33 81 27 cd 70 49
 0000020 78 1c 8e 19 fc 1e b2 a7 38 7a c0 6a e2 37 34 4c
 </code></pre>
-	</codesample>
+    </codesample>
 
-	This gives us a MasterSecret of:
+    This gives us a MasterSecret of:
 <pre class="ind1"><tt class="longboi">916abf9da55973e13614ae0a3f5d3f37b023ba129aee02cc9134338127cd7049781c8e19fc1eb2a7387ac06ae237344c</tt></pre>
 
-	We then generate the final encryption keys using a key expansion:
+    We then generate the final encryption keys using a key expansion:
 
 <pre class="ind1">
 seed = "key expansion" + server_random + client_random
@@ -1185,8 +1185,8 @@ client write IV = [next 16 bytes of p]
 server write IV = [next 16 bytes of p]
 </pre>
 
-	We can demonstrate this on the command line:
-	<codesample>
+    We can demonstrate this on the command line:
+    <codesample>
 <pre><code>### continued from above command line example
 ### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
@@ -1241,17 +1241,17 @@ $ hexdump /tmp/client_iv
 $ hexdump /tmp/server_iv
 0000000 43 45 28 db 49 37 d5 40 d3 93 13 5e 06 a1 1b b8
 </code></pre>
-	</codesample>
+    </codesample>
 
-	From this we get the following key data:
-	<ul>
-	<li>client MAC key: <tt class="longboi">1b7d117c7d5f690bc263cae8ef60af0f1878acc2</tt>
-	<li>server MAC key: <tt class="longboi">2ad8bdd8c601a617126f63540eb20906f781fad2</tt>
-	<li>client write key: <tt class="longboi">f656d037b173ef3e11169f27231a84b6</tt>
-	<li>server write key: <tt class="longboi">752a18e7a9fcb7cbcdd8f98dd8f769eb</tt>
-	<li>client write IV: <tt class="longboi">a0d2550c9238eebfef5c32251abb67d6</tt>
-	<li>server write IV: <tt class="longboi">434528db4937d540d393135e06a11bb8</tt>
-	</ul>
+    From this we get the following key data:
+    <ul>
+    <li>client MAC key: <tt class="longboi">1b7d117c7d5f690bc263cae8ef60af0f1878acc2</tt>
+    <li>server MAC key: <tt class="longboi">2ad8bdd8c601a617126f63540eb20906f781fad2</tt>
+    <li>client write key: <tt class="longboi">f656d037b173ef3e11169f27231a84b6</tt>
+    <li>server write key: <tt class="longboi">752a18e7a9fcb7cbcdd8f98dd8f769eb</tt>
+    <li>client write IV: <tt class="longboi">a0d2550c9238eebfef5c32251abb67d6</tt>
+    <li>server write IV: <tt class="longboi">434528db4937d540d393135e06a11bb8</tt>
+    </ul>
 </div>
 </div>
 </div>
@@ -1260,31 +1260,31 @@ $ hexdump /tmp/server_iv
 <div class="record client">
 <div class="rec-label">Client Change Cipher Spec</div>
 <div class="rec-explanation">
-	The client indicates that it has calculated the shared
-	encryption keys and that all following messages from the
-	client will be encrypted with the client write key.
-	<br/><br/>
-	In the next version of TLS this message type has been removed because it can be inferred.
+    The client indicates that it has calculated the shared
+    encryption keys and that all following messages from the
+    client will be encrypted with the client write key.
+    <br/><br/>
+    In the next version of TLS this message type has been removed because it can be inferred.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record</span>
+        <span class="bytes">
  14 03 03 00 01 01
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>14</tt> - type is 0x14 (ChangeCipherSpec record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 01</tt> - 0x1 (1) bytes of change cipher spec follows
-			<li><tt>01</tt> - the payload of this message is defined as the byte 0x01
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>14</tt> - type is 0x14 (ChangeCipherSpec record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 01</tt> - 0x1 (1) bytes of change cipher spec follows
+            <li><tt>01</tt> - the payload of this message is defined as the byte 0x01
+            </ul>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -1293,68 +1293,68 @@ $ hexdump /tmp/server_iv
 <div class="record client">
 <div class="rec-label">Client Handshake Finished</div>
 <div class="rec-explanation">
-	To verify that the handshake was successful and not tampered
-	with, the client calculates verification data and encrypts
-	it with the client write key.
-	<br/><br/>
-	The verification data is built from a hash of all handshake
-	messages and verifies the integrity of the handshake process.
+    To verify that the handshake was successful and not tampered
+    with, the client calculates verification data and encrypts
+    it with the client write key.
+    <br/><br/>
+    The verification data is built from a hash of all handshake
+    messages and verifies the integrity of the handshake process.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  16 03 03 00 40
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 40</tt> - 0x40 (64) bytes of handshake message follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>16</tt> - type is 0x16 (handshake record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 40</tt> - 0x40 (64) bytes of handshake message follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Encryption IV</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Encryption IV</span>
+        <span class="bytes">
  40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f
-		</span>
-		<div class="explanation">
-			The client has sent an initialization vector for decrypting this block.
-			Because we have overridden the rand function it
-			is a predictable sequence.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client has sent an initialization vector for decrypting this block.
+            Because we have overridden the rand function it
+            is a predictable sequence.
+        </div>
+    </span>
 
-	<span class="string encrypted">
-		<span class="label">Encrypted Data</span>
-		<span class="bytes">
+    <span class="string encrypted">
+        <span class="label">Encrypted Data</span>
+        <span class="bytes">
  22 7b c9 ba 81 ef 30 f2 a8 a7 8f f1 df 50 84 4d 58 04 b7 ee b2 e2 14 c3 2b 68 92 ac a3 db 7b 78
  07 7f dd 90 06 7c 51 6b ac b3 ba 90 de df 72 0f
-		</span>
-		<div class="explanation">
-			This data is encrypted with the client write
-			key.  Because it contains a message
-			authentication code (MAC) and padding it
-			is larger than the decrypted data.
-			<br/><br/>
-			See below for the decrypted data.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            This data is encrypted with the client write
+            key.  Because it contains a message
+            authentication code (MAC) and padding it
+            is larger than the decrypted data.
+            <br/><br/>
+            See below for the decrypted data.
+        </div>
+    </span>
 
-	<div class="decryption">
-		<div class="label">Decryption</div>
-		<div class="explanation">
-			This data can be decrypted using the encryption
-			IV and the client write key that was generated
-			in the step "Client Encryption Keys
-			Calculation".
-			<codesample>
+    <div class="decryption">
+        <div class="label">Decryption</div>
+        <div class="explanation">
+            This data can be decrypted using the encryption
+            IV and the client write key that was generated
+            in the step "Client Encryption Keys
+            Calculation".
+            <codesample>
 <pre><code>### client key
 $ hexkey=f656d037b173ef3e11169f27231a84b6
 ### IV for this record
@@ -1385,37 +1385,37 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 
 a5a03d233056e4ac6eba7fd9e5317fac2db5b70e
 </code></pre>
-			</codesample>
-		</div>
-	</div>
+            </codesample>
+        </div>
+    </div>
 
-	<span class="string decrypted">
-		<span class="label">Handshake Header</span>
-		<span class="bytes">
+    <span class="string decrypted">
+        <span class="label">Handshake Header</span>
+        <span class="bytes">
  14 00 00 0c
-		</span>
-		<div class="explanation">
-			Each handshake message starts with a type and a length.
-			<ul>
-			<li><tt>14</tt> - handshake message type 0x14 (finished)
-			<li><tt>00 00 0c</tt> - 0xC (12) bytes of handshake finished follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            Each handshake message starts with a type and a length.
+            <ul>
+            <li><tt>14</tt> - handshake message type 0x14 (finished)
+            <li><tt>00 00 0c</tt> - 0xC (12) bytes of handshake finished follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string decrypted">
-		<span class="label">Verify Data</span>
-		<span class="bytes">
+    <span class="string decrypted">
+        <span class="label">Verify Data</span>
+        <span class="bytes">
  cf 91 96 26 f1 36 0c 53 6a aa d7 3a
-		</span>
-		<div class="explanation">
-			The verify_data is built from the master secret and the
-			hash of the payload of all handshake records (type=0x16) previous to this one.
-			<br/><br/>
-			The SHA256 of all handshake messages before this one
-			is <tt class="longboi">061dda04b3c2217ff73bd79b9cf88a2bb6ec505404aac8722db03ef417b54cb4</tt>.
-			<br/><br/>
-			The calculation for verify_data is as follows:
+        </span>
+        <div class="explanation">
+            The verify_data is built from the master secret and the
+            hash of the payload of all handshake records (type=0x16) previous to this one.
+            <br/><br/>
+            The SHA256 of all handshake messages before this one
+            is <tt class="longboi">061dda04b3c2217ff73bd79b9cf88a2bb6ec505404aac8722db03ef417b54cb4</tt>.
+            <br/><br/>
+            The calculation for verify_data is as follows:
 <pre class="ind1">
 seed = "client finished" + SHA256(all handshake messages)
 a0 = seed
@@ -1423,9 +1423,9 @@ a1 = HMAC-SHA256(key=MasterSecret, data=a0)
 p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
 verify_data = p1[first 12 bytes]
 </pre>
-			The verify data calculated from this hash is <tt class="longboi">cf919626f1360c536aaad73a</tt>.
-			We can show this on the command line:
-			<codesample>
+            The verify data calculated from this hash is <tt class="longboi">cf919626f1360c536aaad73a</tt>.
+            We can show this on the command line:
+            <codesample>
 <pre><code>### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
 ### build the seed
@@ -1448,9 +1448,9 @@ $ hexdump /tmp/verify_data
 
 0000000 cf 91 96 26 f1 36 0c 53 6a aa d7 3a
 </code></pre>
-			</codesample>
-		</div>
-	</span>
+            </codesample>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -1460,23 +1460,23 @@ $ hexdump /tmp/verify_data
 <div class="rec-label">Server Encryption Keys Calculation</div>
 <img class="illustration" src="images/key9.png" width="97" height="250"/>
 <div class="rec-explanation">
-	The server now has the information to calculate the encryption
-	keys that will be used by each side.  It uses the following
-	information in this calculation:
-	<ul>
-	<li>server random (from Server Hello)
-	<li>client random (from Client Hello)
-	<li>client public key (from Client Key Exchange)
-	<li>server private key (from Server Key Generation)
-	</ul>
-	The server multiplies the client's public key with the
-	server's private key using the curve25519() algorithm.  The
-	32-byte result is called the PreMasterSecret, and is found
-	to be:
-	<pre class="ind2"><tt class="longboi">df4a291baa1eb7cfa6934b29b474baad2697e29f1f920dcc77c8a0a088447624</tt></pre>
+    The server now has the information to calculate the encryption
+    keys that will be used by each side.  It uses the following
+    information in this calculation:
+    <ul>
+    <li>server random (from Server Hello)
+    <li>client random (from Client Hello)
+    <li>client public key (from Client Key Exchange)
+    <li>server private key (from Server Key Generation)
+    </ul>
+    The server multiplies the client's public key by the
+    server's private key using the curve25519() algorithm.  The
+    32-byte result is called the PreMasterSecret, and is found
+    to be:
+    <pre class="ind2"><tt class="longboi">df4a291baa1eb7cfa6934b29b474baad2697e29f1f920dcc77c8a0a088447624</tt></pre>
 
-	I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
-	<codesample>
+    I've provided <a href="files/curve25519-mult.c">a tool</a> to perform this calculation:
+    <codesample>
 <pre><code>$ gcc -o curve25519-mult curve25519-mult.c
 $ ./curve25519-mult server-ephemeral-private.key \
                     client-ephemeral-public.key | hexdump
@@ -1484,14 +1484,14 @@ $ ./curve25519-mult server-ephemeral-private.key \
 0000000 df 4a 29 1b aa 1e b7 cf a6 93 4b 29 b4 74 ba ad
 0000010 26 97 e2 9f 1f 92 0d cc 77 c8 a0 a0 88 44 76 24
 </code></pre>
-	</codesample>
-	This is identical to the PreMasterSecret found by the client,
-	therefore the following calculations will be identical.
-	<br/><br/>
-	The server then calculates 48 bytes of the MasterSecret
-	from the PreMasterSecret using the following method:
+    </codesample>
+    This is identical to the PreMasterSecret found by the client,
+    therefore the following calculations will be identical.
+    <br/><br/>
+    The server then calculates 48 bytes of the MasterSecret
+    from the PreMasterSecret using the following method:
 
-	<pre class="ind1">seed = "master secret" + client_random + server_random
+    <pre class="ind1">seed = "master secret" + client_random + server_random
 a0 = seed
 a1 = HMAC-SHA256(key=PreMasterSecret, data=a0)
 a2 = HMAC-SHA256(key=PreMasterSecret, data=a1)
@@ -1499,8 +1499,8 @@ p1 = HMAC-SHA256(key=PreMasterSecret, data=a1 + seed)
 p2 = HMAC-SHA256(key=PreMasterSecret, data=a2 + seed)
 MasterSecret = p1[all 32 bytes] + p2[first 16 bytes]</pre>
 
-	Here we demonstrate on the command line:
-	<codesample>
+    Here we demonstrate on the command line:
+    <codesample>
 <pre><code>### set up our PreMasterSecret as a hex string
 $ pmshex=df4a291baa1eb7cfa6934b29b474baad
 $ pmshex=${pmshex}2697e29f1f920dcc77c8a0a088447624
@@ -1537,12 +1537,12 @@ $ hexdump /tmp/mastersecret
 0000010 b0 23 ba 12 9a ee 02 cc 91 34 33 81 27 cd 70 49
 0000020 78 1c 8e 19 fc 1e b2 a7 38 7a c0 6a e2 37 34 4c
 </code></pre>
-	</codesample>
+    </codesample>
 
-	This gives us a MasterSecret of:
+    This gives us a MasterSecret of:
 <pre class="ind1"><tt class="longboi">916abf9da55973e13614ae0a3f5d3f37b023ba129aee02cc9134338127cd7049781c8e19fc1eb2a7387ac06ae237344c</tt></pre>
 
-	We then generate the final encryption keys using a key expansion:
+    We then generate the final encryption keys using a key expansion:
 
 <pre class="ind1">
 seed = "key expansion" + server_random + client_random
@@ -1564,8 +1564,8 @@ client write IV = [next 16 bytes of p]
 server write IV = [next 16 bytes of p]
 </pre>
 
-	We can demonstrate this on the command line:
-	<codesample>
+    We can demonstrate this on the command line:
+    <codesample>
 <pre><code>### continued from above command line example
 ### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
@@ -1619,17 +1619,17 @@ $ hexdump /tmp/client_iv
 $ hexdump /tmp/server_iv
 0000000 43 45 28 db 49 37 d5 40 d3 93 13 5e 06 a1 1b b8
 </code></pre>
-	</codesample>
+    </codesample>
 
-	From this we get the following key data:
-	<ul>
-	<li>client MAC key: <tt class="longboi">1b7d117c7d5f690bc263cae8ef60af0f1878acc2</tt>
-	<li>server MAC key: <tt class="longboi">2ad8bdd8c601a617126f63540eb20906f781fad2</tt>
-	<li>client write key: <tt class="longboi">f656d037b173ef3e11169f27231a84b6</tt>
-	<li>server write key: <tt class="longboi">752a18e7a9fcb7cbcdd8f98dd8f769eb</tt>
-	<li>client write IV: <tt class="longboi">a0d2550c9238eebfef5c32251abb67d6</tt>
-	<li>server write IV: <tt class="longboi">434528db4937d540d393135e06a11bb8</tt>
-	</ul>
+    From this we get the following key data:
+    <ul>
+    <li>client MAC key: <tt class="longboi">1b7d117c7d5f690bc263cae8ef60af0f1878acc2</tt>
+    <li>server MAC key: <tt class="longboi">2ad8bdd8c601a617126f63540eb20906f781fad2</tt>
+    <li>client write key: <tt class="longboi">f656d037b173ef3e11169f27231a84b6</tt>
+    <li>server write key: <tt class="longboi">752a18e7a9fcb7cbcdd8f98dd8f769eb</tt>
+    <li>client write IV: <tt class="longboi">a0d2550c9238eebfef5c32251abb67d6</tt>
+    <li>server write IV: <tt class="longboi">434528db4937d540d393135e06a11bb8</tt>
+    </ul>
 </div>
 </div>
 </div>
@@ -1638,31 +1638,31 @@ $ hexdump /tmp/server_iv
 <div class="record server">
 <div class="rec-label">Server Change Cipher Spec</div>
 <div class="rec-explanation">
-	The server indicates that it has calculated the shared
-	encryption keys and that all following messages from the
-	server will be encrypted with the server write key.
-	<br/><br/>
-	In the next version of TLS this message type has been removed because it can be inferred.
+    The server indicates that it has calculated the shared
+    encryption keys and that all following messages from the
+    server will be encrypted with the server write key.
+    <br/><br/>
+    In the next version of TLS this message type has been removed because it can be inferred.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record</span>
+        <span class="bytes">
  14 03 03 00 01 01
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>14</tt> - type is 0x14 (ChangeCipherSpec record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 01</tt> - 0x1 (1) bytes of change cipher spec follows
-			<li><tt>01</tt> - the payload of this message is defined as the byte 0x01
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>14</tt> - type is 0x14 (ChangeCipherSpec record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 01</tt> - 0x1 (1) bytes of change cipher spec follows
+            <li><tt>01</tt> - the payload of this message is defined as the byte 0x01
+            </ul>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -1671,68 +1671,68 @@ $ hexdump /tmp/server_iv
 <div class="record server">
 <div class="rec-label">Server Handshake Finished</div>
 <div class="rec-explanation">
-	To verify that the handshake was successful and not tampered
-	with, the server calculates verification data and encrypts
-	it with the server write key.
-	<br/><br/>
-	The verification data is built from a hash of all handshake
-	messages and verifies the integrity of the handshake process.
+    To verify that the handshake was successful and not tampered
+    with, the server calculates verification data and encrypts
+    it with the server write key.
+    <br/><br/>
+    The verification data is built from a hash of all handshake
+    messages and verifies the integrity of the handshake process.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  16 03 03 00 40
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>16</tt> - type is 0x16 (handshake record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 40</tt> - 0x40 (64) bytes of handshake message follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>16</tt> - type is 0x16 (handshake record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 40</tt> - 0x40 (64) bytes of handshake message follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Encryption IV</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Encryption IV</span>
+        <span class="bytes">
  51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 60
-		</span>
-		<div class="explanation">
-			The server has sent an initialization vector for decrypting this block.
-			Because we have overridden the rand function it
-			is a predictable sequence.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server has sent an initialization vector for decrypting this block.
+            Because we have overridden the rand function it
+            is a predictable sequence.
+        </div>
+    </span>
 
-	<span class="string encrypted">
-		<span class="label">Encrypted Data</span>
-		<span class="bytes">
+    <span class="string encrypted">
+        <span class="label">Encrypted Data</span>
+        <span class="bytes">
  18 e0 75 31 7b 10 03 15 f6 08 1f cb f3 13 78 1a ac 73 ef e1 9f e2 5b a1 af 59 c2 0b e9 4f c0 1b
  da 2d 68 00 29 8b 73 a7 e8 49 d7 4b d4 94 cf 7d
-		</span>
-		<div class="explanation">
-			This data is encrypted with the server write
-			key.  Because it contains a message
-			authentication code (MAC) and padding it
-			is larger than the decrypted data.
-			<br/><br/>
-			See below for the decrypted data.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            This data is encrypted with the server write
+            key.  Because it contains a message
+            authentication code (MAC) and padding it
+            is larger than the decrypted data.
+            <br/><br/>
+            See below for the decrypted data.
+        </div>
+    </span>
 
-	<div class="decryption">
-		<div class="label">Decryption</div>
-		<div class="explanation">
-			This data can be decrypted using the encryption
-			IV and the server write key that was generated
-			in the step "Server Encryption Keys
-			Calculation".
-			<codesample>
+    <div class="decryption">
+        <div class="label">Decryption</div>
+        <div class="explanation">
+            This data can be decrypted using the encryption
+            IV and the server write key that was generated
+            in the step "Server Encryption Keys
+            Calculation".
+            <codesample>
 <pre><code>### server key
 $ hexkey=752a18e7a9fcb7cbcdd8f98dd8f769eb
 ### IV for this record
@@ -1763,37 +1763,37 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 
 20c49746d2a30f235739905807535243aff2bfe0
 </code></pre>
-			</codesample>
-		</div>
-	</div>
+            </codesample>
+        </div>
+    </div>
 
-	<span class="string decrypted">
-		<span class="label">Handshake Header</span>
-		<span class="bytes">
+    <span class="string decrypted">
+        <span class="label">Handshake Header</span>
+        <span class="bytes">
  14 00 00 0c
-		</span>
-		<div class="explanation">
-			Each handshake message starts with a type and a length.
-			<ul>
-			<li><tt>14</tt> - handshake message type 0x14 (finished)
-			<li><tt>00 00 0c</tt> - 0xC (12) bytes of handshake finished follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            Each handshake message starts with a type and a length.
+            <ul>
+            <li><tt>14</tt> - handshake message type 0x14 (finished)
+            <li><tt>00 00 0c</tt> - 0xC (12) bytes of handshake finished follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string decrypted">
-		<span class="label">Verify Data</span>
-		<span class="bytes">
+    <span class="string decrypted">
+        <span class="label">Verify Data</span>
+        <span class="bytes">
  84 4d 3c 10 74 6d d7 22 f9 2f 0c 7e
-		</span>
-		<div class="explanation">
-			The verify_data is built from the master secret and the
-			hash of the payload of all handshake records (type=0x16) previous to this one.
-			<br/><br/>
-			The SHA256 of all handshake messages before this one
-			is <tt class="longboi">b2017ba28d0e27f03ae327456b6ff00b4d5bbf0ef7cda83ce1029b521c3e7c35</tt>.
-			<br/><br/>
-			The calculation for verify_data is as follows:
+        </span>
+        <div class="explanation">
+            The verify_data is built from the master secret and the
+            hash of the payload of all handshake records (type=0x16) previous to this one.
+            <br/><br/>
+            The SHA256 of all handshake messages before this one
+            is <tt class="longboi">b2017ba28d0e27f03ae327456b6ff00b4d5bbf0ef7cda83ce1029b521c3e7c35</tt>.
+            <br/><br/>
+            The calculation for verify_data is as follows:
 <pre class="ind1">
 seed = "server finished" + SHA256(all handshake messages)
 a0 = seed
@@ -1801,10 +1801,10 @@ a1 = HMAC-SHA256(key=MasterSecret, data=a0)
 p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
 verify_data = p1[first 12 bytes]
 </pre>
-			The verify data calculated from this hash is <tt class="longboi">844d3c10746dd722f92f0c7e</tt>.
-			We can show this on the command line:
-			<codesample>
-			<pre><code>### set up our MasterSecret as a hex string
+            The verify data calculated from this hash is <tt class="longboi">844d3c10746dd722f92f0c7e</tt>.
+            We can show this on the command line:
+            <codesample>
+            <pre><code>### set up our MasterSecret as a hex string
 $ mshex=$(hexdump -ve '/1 "%02x"' /tmp/mastersecret)
 ### build the seed
 $ echo -en 'server finished' > /tmp/seed
@@ -1826,9 +1826,9 @@ $ hexdump /tmp/verify_data
 
 0000000 84 4d 3c 10 74 6d d7 22 f9 2f 0c 7e
 </code></pre>
-			</codesample>
-		</div>
-	</span>
+            </codesample>
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -1837,62 +1837,62 @@ $ hexdump /tmp/verify_data
 <div class="record client">
 <div class="rec-label">Client Application Data</div>
 <div class="rec-explanation">
-	The client sends the data "ping".
+    The client sends the data "ping".
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  17 03 03 00 30
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>17</tt> - type is 0x17 (application data)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 30</tt> - 0x30 (48) bytes of application data follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>17</tt> - type is 0x17 (application data)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 30</tt> - 0x30 (48) bytes of application data follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Encryption IV</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Encryption IV</span>
+        <span class="bytes">
  00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f
-		</span>
-		<div class="explanation">
-			The client has sent an initialization vector for decrypting this block.
-			Because we have overridden the rand function it
-			is a predictable sequence.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client has sent an initialization vector for decrypting this block.
+            Because we have overridden the rand function it
+            is a predictable sequence.
+        </div>
+    </span>
 
-	<span class="string encrypted">
-		<span class="label">Encrypted Data</span>
-		<span class="bytes">
+    <span class="string encrypted">
+        <span class="label">Encrypted Data</span>
+        <span class="bytes">
  6c 42 1c 71 c4 2b 18 3b fa 06 19 5d 13 3d 0a 09 d0 0f c7 cb 4e 0f 5d 1c da 59 d1 47 ec 79 0c 99
-		</span>
-		<div class="explanation">
-			This data is encrypted with the client write
-			key.  Because it contains a message
-			authentication code (MAC) and padding it
-			is larger than the decrypted data.
-			<br/><br/>
-			See below for the decrypted data.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            This data is encrypted with the client write
+            key.  Because it contains a message
+            authentication code (MAC) and padding it
+            is larger than the decrypted data.
+            <br/><br/>
+            See below for the decrypted data.
+        </div>
+    </span>
 
-	<div class="decryption">
-		<div class="label">Decryption</div>
-		<div class="explanation">
-			This data can be decrypted using the encryption
-			IV and the client write key that was generated
-			in the step "Client Encryption Keys
-			Calculation".
-			<codesample>
+    <div class="decryption">
+        <div class="label">Decryption</div>
+        <div class="explanation">
+            This data can be decrypted using the encryption
+            IV and the client write key that was generated
+            in the step "Client Encryption Keys
+            Calculation".
+            <codesample>
 <pre><code>### client key
 $ hexkey=f656d037b173ef3e11169f27231a84b6
 ### IV for this record
@@ -1921,19 +1921,19 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 
 60101249f74a0377c9cacf6309751370d80cfcaa
 </code></pre>
-			</codesample>
-		</div>
-	</div>
+            </codesample>
+        </div>
+    </div>
 
-	<span class="string decrypted">
-		<span class="label">Application Data</span>
-		<span class="bytes">
+    <span class="string decrypted">
+        <span class="label">Application Data</span>
+        <span class="bytes">
  70 69 6e 67
-		</span>
-		<div class="explanation">
-			The bytes "ping".
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The bytes "ping".
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -1942,62 +1942,62 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 <div class="record server">
 <div class="rec-label">Server Application Data</div>
 <div class="rec-explanation">
-	The server replies with the data "pong".
+    The server replies with the data "pong".
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  17 03 03 00 30
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>17</tt> - type is 0x17 (application data)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 30</tt> - 0x30 (48) bytes of application data follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>17</tt> - type is 0x17 (application data)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 30</tt> - 0x30 (48) bytes of application data follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Encryption IV</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Encryption IV</span>
+        <span class="bytes">
  61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70
-		</span>
-		<div class="explanation">
-			The server has sent an initialization vector for decrypting this block.
-			Because we have overridden the rand function it
-			is a predictable sequence.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The server has sent an initialization vector for decrypting this block.
+            Because we have overridden the rand function it
+            is a predictable sequence.
+        </div>
+    </span>
 
-	<span class="string encrypted">
-		<span class="label">Encrypted Data</span>
-		<span class="bytes">
+    <span class="string encrypted">
+        <span class="label">Encrypted Data</span>
+        <span class="bytes">
  97 83 48 8a f5 fa 20 bf 7a 2e f6 9d eb b5 34 db 9f b0 7a 8c 27 21 de e5 40 9f 77 af 0c 3d de 56
-		</span>
-		<div class="explanation">
-			This data is encrypted with the server write
-			key.  Because it contains a message
-			authentication code (MAC) and padding it
-			is larger than the decrypted data.
-			<br/><br/>
-			See below for the decrypted data.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            This data is encrypted with the server write
+            key.  Because it contains a message
+            authentication code (MAC) and padding it
+            is larger than the decrypted data.
+            <br/><br/>
+            See below for the decrypted data.
+        </div>
+    </span>
 
-	<div class="decryption">
-		<div class="label">Decryption</div>
-		<div class="explanation">
-			This data can be decrypted using the encryption
-			IV and the server write key that was generated
-			in the step "Server Encryption Keys
-			Calculation".
-			<codesample>
+    <div class="decryption">
+        <div class="label">Decryption</div>
+        <div class="explanation">
+            This data can be decrypted using the encryption
+            IV and the server write key that was generated
+            in the step "Server Encryption Keys
+            Calculation".
+            <codesample>
 <pre><code>### server key
 $ hexkey=752a18e7a9fcb7cbcdd8f98dd8f769eb
 ### IV for this record
@@ -2026,19 +2026,19 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 
 5ac799dccfdc0faf952bdc9118af200ee31c5105
 </code></pre>
-			</codesample>
-		</div>
-	</div>
+            </codesample>
+        </div>
+    </div>
 
-	<span class="string decrypted">
-		<span class="label">Application Data</span>
-		<span class="bytes">
+    <span class="string decrypted">
+        <span class="label">Application Data</span>
+        <span class="bytes">
  70 6f 6e 67
-		</span>
-		<div class="explanation">
-			The bytes "pong".
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The bytes "pong".
+        </div>
+    </span>
 </span>
 </div>
 </div>
@@ -2047,62 +2047,62 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 <div class="record client">
 <div class="rec-label">Client Close Notify</div>
 <div class="rec-explanation">
-	The client sends an alert that it is closing the connection.
+    The client sends an alert that it is closing the connection.
 </div>
 <span class="record-data">
-	<span class="string">
-		<span class="label">Record Header</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Record Header</span>
+        <span class="bytes">
  15 03 03 00 30
-		</span>
-		<div class="explanation">
-			TLS sessions are broken into the sending
-			and receiving of "records", which are blocks
-			of data with a type, a protocol version,
-			and a length.
-			<ul>
-			<li><tt>15</tt> - type is 0x15 (alert record)
-			<li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
-			<li><tt>00 30</tt> - 0x30 (48) bytes of alert data follows
-			</ul>
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            TLS sessions are broken into the sending
+            and receiving of "records", which are blocks
+            of data with a type, a protocol version,
+            and a length.
+            <ul>
+            <li><tt>15</tt> - type is 0x15 (alert record)
+            <li><tt>03 03</tt> - protocol version is "3,3" (TLS 1.2)
+            <li><tt>00 30</tt> - 0x30 (48) bytes of alert data follows
+            </ul>
+        </div>
+    </span>
 
-	<span class="string">
-		<span class="label">Encryption IV</span>
-		<span class="bytes">
+    <span class="string">
+        <span class="label">Encryption IV</span>
+        <span class="bytes">
  10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
-		</span>
-		<div class="explanation">
-			The client has sent an initialization vector for decrypting this block.
-			Because we have overridden the rand function it
-			is a predictable sequence.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            The client has sent an initialization vector for decrypting this block.
+            Because we have overridden the rand function it
+            is a predictable sequence.
+        </div>
+    </span>
 
-	<span class="string encrypted">
-		<span class="label">Encrypted Data</span>
-		<span class="bytes">
+    <span class="string encrypted">
+        <span class="label">Encrypted Data</span>
+        <span class="bytes">
  0d 83 f9 79 04 75 0d d8 fd 8a a1 30 21 86 32 63 4f d0 65 e4 62 83 79 b8 8b bf 9e fd 12 87 a6 2d
-		</span>
-		<div class="explanation">
-			This data is encrypted with the client write
-			key.  Because it contains a message
-			authentication code (MAC) and padding it
-			is larger than the decrypted data.
-			<br/><br/>
-			See below for the decrypted data.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            This data is encrypted with the client write
+            key.  Because it contains a message
+            authentication code (MAC) and padding it
+            is larger than the decrypted data.
+            <br/><br/>
+            See below for the decrypted data.
+        </div>
+    </span>
 
-	<div class="decryption">
-		<div class="label">Decryption</div>
-		<div class="explanation">
-			This data can be decrypted using the encryption
-			IV and the client write key that was generated
-			in the step "Client Encryption Keys
-			Calculation".
-			<codesample>
+    <div class="decryption">
+        <div class="label">Decryption</div>
+        <div class="explanation">
+            This data can be decrypted using the encryption
+            IV and the client write key that was generated
+            in the step "Client Encryption Keys
+            Calculation".
+            <codesample>
 <pre><code>### client key
 $ hexkey=f656d037b173ef3e11169f27231a84b6
 ### IV for this record
@@ -2131,70 +2131,70 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 
 92799cba819f310744c559622be42bce3d6a41fb
 </code></pre>
-			</codesample>
-		</div>
-	</div>
+            </codesample>
+        </div>
+    </div>
 
-	<span class="string decrypted">
-		<span class="label">Alert Level</span>
-		<span class="bytes">
+    <span class="string decrypted">
+        <span class="label">Alert Level</span>
+        <span class="bytes">
  01
-		</span>
-		<div class="explanation">
-			<ul>
-			<li><tt>01</tt> - assigned value for "Warning"
-			</ul>
-			A "Warning" alert is informational.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            <ul>
+            <li><tt>01</tt> - assigned value for "Warning"
+            </ul>
+            A "Warning" alert is informational.
+        </div>
+    </span>
 
-	<span class="string decrypted">
-		<span class="label">Alert Type</span>
-		<span class="bytes">
+    <span class="string decrypted">
+        <span class="label">Alert Type</span>
+        <span class="bytes">
  00
-		</span>
-		<div class="explanation">
-			<ul>
-			<li><tt>00</tt> - assigned value for "Close Notify"
-			</ul>
-			This message notifies the recipient that
-			the sender will not send any more messages on this connection.
-		</div>
-	</span>
+        </span>
+        <div class="explanation">
+            <ul>
+            <li><tt>00</tt> - assigned value for "Close Notify"
+            </ul>
+            This message notifies the recipient that
+            the sender will not send any more messages on this connection.
+        </div>
+    </span>
 </span>
 </div>
 </div>
 
-	<div class="outerblock">
-	<p>The code for this project can be found
-	<a href="https://github.com/syncsynchalt/illustrated-tls">on GitHub</a>.</p>
-	</div>
+    <div class="outerblock">
+    <p>The code for this project can be found
+    <a href="https://github.com/syncsynchalt/illustrated-tls">on GitHub</a>.</p>
+    </div>
 
-	<div class="outerblock">
-	<p>You may also be interested in the
-	<a href="https://tls13.ulfheim.net/">TLS 1.3</a> version of this document.</p>
-	</div>
+    <div class="outerblock">
+    <p>You may also be interested in the
+    <a href="https://tls13.ulfheim.net/">TLS 1.3</a> version of this document.</p>
+    </div>
 
-	<div class="outerblock">
-	<p>If you found this page useful or interesting let me know via Twitter
-	<a href="https://twitter.com/xargsnotbombs">@XargsNotBombs</a>.</p>
-	</div>
+    <div class="outerblock">
+    <p>If you found this page useful or interesting let me know via Twitter
+    <a href="https://twitter.com/xargsnotbombs">@XargsNotBombs</a>.</p>
+    </div>
 
 </div>
 
 <div id="templates" style="display: none">
-	<div id="closeBtnTmpl">
-		<span class="close" onclick="ill.unselectAllStrings()">×</span>
-	</div>
-	<div id="showCodeTmpl">
-		<button class="show-code" onclick="ill.showCode(this, event)">Show Code</button>
-	</div>
-	<button id="annotateTmpl" class="annotate-toggle"
-		onclick="ill.toggleAnnotate(this.parentElement, event)">Annotations</button>
+    <div id="closeBtnTmpl">
+        <span class="close" onclick="ill.unselectAllStrings()">×</span>
+    </div>
+    <div id="showCodeTmpl">
+        <button class="show-code" onclick="ill.showCode(this, event)">Show Code</button>
+    </div>
+    <button id="annotateTmpl" class="annotate-toggle"
+        onclick="ill.toggleAnnotate(this.parentElement, event)">Annotations</button>
 </div>
 
 <a class="print-mode" href="#print" onclick="ill.printMode()">
-	[print]
+    [print]
 </a>
 </body>
 </html>

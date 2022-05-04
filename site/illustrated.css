@@ -3,58 +3,58 @@ body:not(.user-is-tabbing) button:focus,
 body:not(.user-is-tabbing) input:focus,
 body:not(.user-is-tabbing) select:focus,
 body:not(.user-is-tabbing) textarea:focus {
-	outline: none;
+    outline: none;
 }
 
 body {
-	/* printmode */
-	position: relative;
+    /* printmode */
+    position: relative;
 }
 
 .container {
-	/* printmode */
-	overflow: auto;
+    /* printmode */
+    overflow: auto;
 }
 
 /* hide keys when there is no room for them */
 @media (max-width: 600px) {
-	.illustration {
-		display: none !important;
-	}
-	.print-mode {
-		display: none;
-	}
+    .illustration {
+        display: none !important;
+    }
+    .print-mode {
+        display: none;
+    }
 }
 
 h1:after {
-	content: "\00a0❧";
+    content: "\00a0❧";
 }
 h1:before {
-	content: "❧\00a0";
+    content: "❧\00a0";
 }
 h1, h3 {
-	text-align: center;
-	padding: 10px;
-	max-width: 800px;
-	margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 pre {
-	margin: 1em 0;
-	overflow: scroll;
-	-ms-overflow-style: scrollbar;
+    margin: 1em 0;
+    overflow: scroll;
+    -ms-overflow-style: scrollbar;
 }
 
 pre code {
-	font-size: inherit;
-	word-break: normal;
-	display: block;
-	color: white;
-	background-color: black;
-	padding: 0.5em;
-	border-radius: 5px;
-	overflow: scroll;
-	-ms-overflow-style: scrollbar;
+    font-size: inherit;
+    word-break: normal;
+    display: block;
+    color: white;
+    background-color: black;
+    padding: 0.5em;
+    border-radius: 5px;
+    overflow: scroll;
+    -ms-overflow-style: scrollbar;
 }
 
 ol, ul, dl {
@@ -62,374 +62,374 @@ ol, ul, dl {
 }
 
 tt.longboi {
-	word-break: break-all;
+    word-break: break-all;
 }
 
 .ind1 {
-	padding-left: 1em;
+    padding-left: 1em;
 }
 .ind2 {
-	padding-left: 2em;
+    padding-left: 2em;
 }
 
 .outerblock {
-	max-width: 600px;
-	margin: 1em auto;
+    max-width: 600px;
+    margin: 1em auto;
 }
 .outerblock p {
-	text-align: center;
+    text-align: center;
 }
 
 .server {
-	background-color: #D0E8F5;
+    background-color: #D0E8F5;
 }
 
 .client {
-	background-color: #D8EDCF;
+    background-color: #D8EDCF;
 }
 
 /***** .record and .calculation *****/
 
 .rec-outer {
-	max-width: 800px;
-	margin: 0.8em auto;
+    max-width: 800px;
+    margin: 0.8em auto;
 }
 
 .record, .calculation {
-	cursor: pointer;
-	max-width: 800px;
-	padding: 1em;
-	border-radius: 1em;
-	border: 2px solid transparent;
+    cursor: pointer;
+    max-width: 800px;
+    padding: 1em;
+    border-radius: 1em;
+    border: 2px solid transparent;
 }
 
 .illustrated .server.record .rec-label:before {
-	content: "❰ ";
-	color: #888;
+    content: "❰ ";
+    color: #888;
 }
 .illustrated .client.record .rec-label:before {
-	content: "❱ ";
-	color: #888;
+    content: "❱ ";
+    color: #888;
 }
 .illustrated .calculation .rec-label:before {
-	content: "± ";
-	font-weight: bold;
-	color: #888;
+    content: "± ";
+    font-weight: bold;
+    color: #888;
 }
 
 .rec-label {
-	cursor: pointer;
-	font-size: 1.3em;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    cursor: pointer;
+    font-size: 1.3em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
-	white-space: nowrap;
-	text-align: center;
-	width: 100%;
-	transition: all 0.3s;
+    white-space: nowrap;
+    text-align: center;
+    width: 100%;
+    transition: all 0.3s;
 }
 
 .record.selected,
 .calculation.selected {
-	cursor: inherit;
-	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    cursor: inherit;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 
 .record.selected .rec-label,
 .calculation.selected .rec-label {
-	padding: 0 0 10px 0;
-	width: 0;
+    padding: 0 0 10px 0;
+    width: 0;
 }
 .illustrated .record.selected .rec-label:after,
 .illustrated .calculation.selected .rec-label:after {
-	color: #888;
-	content: " ×";
-	font-weight: bold;
-	cursor: pointer;
+    color: #888;
+    content: " ×";
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .record .record-data {
-	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-	display: none;
-	position: relative;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    display: none;
+    position: relative;
 }
 
 .record.selected .record-data {
-	display: block;
+    display: block;
 }
 
 .record:hover,
 .calculation:hover {
-	border: 2px solid #666;
+    border: 2px solid #666;
 }
 .record.selected:hover,
 .calculation.selected:hover {
-	border: 2px solid transparent;
+    border: 2px solid transparent;
 }
 
 .rec-explanation {
-	display: none;
-	margin-bottom: 1em;
+    display: none;
+    margin-bottom: 1em;
 }
 .selected .rec-explanation {
-	display: block;
+    display: block;
 }
 
 .record .illustration,
 .calculation .illustration {
-	margin: -40px 0 0 0;
-	display: none;
-	float: right;
+    margin: -40px 0 0 0;
+    display: none;
+    float: right;
 }
 .record.selected .illustration,
 .calculation.selected .illustration {
-	display: block;
+    display: block;
 }
 
 .record > button.annotate-toggle {
-	display: none;
+    display: none;
 }
 .record.selected > button.annotate-toggle {
-	display: block;
+    display: block;
 }
 
 /***** .record-data *****/
 
 .client .record-data .string .bytes:hover {
-	background-color: #FFEFD5;
+    background-color: #FFEFD5;
 }
 .server .record-data .string .bytes:hover {
-	background-color: #FFEFD5;
+    background-color: #FFEFD5;
 }
 .record.annotate .record-data .string:hover {
-	color: inherit;
+    color: inherit;
 }
 
 .record-data .string {
-	position: relative;
+    position: relative;
 }
 
 .record-data .string .label {
-	display: none;
-	position: absolute;
-	background-color: #FAF7DC;
-	border-radius: 5px;
-	margin: 2px 0;
-	padding: 2px 7px;
-	line-height: 1.2;
-	white-space: nowrap;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	top: -28px;
-	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    display: none;
+    position: absolute;
+    background-color: #FAF7DC;
+    border-radius: 5px;
+    margin: 2px 0;
+    padding: 2px 7px;
+    line-height: 1.2;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    top: -28px;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 .record-data .string:hover > .label {
-	display: inline;
+    display: inline;
 }
 
 .record-data .string .label:after {
-	content: "";
-	position: absolute;
-	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
-	-webkit-transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
-	transform: rotate 45deg;
-	bottom: -3px;
-	left: 10px;
-	border-width: 3px;
-	border-style: solid;
-	border-color: transparent #FAF7DC #FAF7DC transparent;
+    content: "";
+    position: absolute;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate 45deg;
+    bottom: -3px;
+    left: 10px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: transparent #FAF7DC #FAF7DC transparent;
 }
 
 .record.annotate .string > .explanation,
 .record.annotate .decryption > .explanation {
-	position: relative;
-	display: block;
-	font-size: 0.9em;
-	color: black;
-	margin: 1em 0;
-	padding: 1em;
-	background-color: #FAF7DC;
-	border: 2px solid #e0d998;
-	border-radius: 1em;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    position: relative;
+    display: block;
+    font-size: 0.9em;
+    color: black;
+    margin: 1em 0;
+    padding: 1em;
+    background-color: #FAF7DC;
+    border: 2px solid #e0d998;
+    border-radius: 1em;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 
 .record.annotate .string > .explanation:before {
-	content: " ";
-	position: absolute;
-	padding: 5px;
-	-webkit-transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
-	transform: rotate 45deg;
-	top: -7px;
-	left: 20px;
-	border: 2px solid;
-	background-color: #FAF7DC;
-	border-color: #e0d998 transparent transparent #e0d998;
+    content: " ";
+    position: absolute;
+    padding: 5px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate 45deg;
+    top: -7px;
+    left: 20px;
+    border: 2px solid;
+    background-color: #FAF7DC;
+    border-color: #e0d998 transparent transparent #e0d998;
 }
 
 .record.annotate .string > .label {
-	display: none;
+    display: none;
 }
 
 .record .string > .explanation,
 .record .decryption > .explanation {
-	display: none;
+    display: none;
 }
 
 .record .decryption > .label:before {
-	content: "⬇ ";
-	font-weight: bold;
-	color: #888;
+    content: "⬇ ";
+    font-weight: bold;
+    color: #888;
 }
 .record .decryption > .label:after {
-	content: " ⬇";
-	font-weight: bold;
-	color: #888;
+    content: " ⬇";
+    font-weight: bold;
+    color: #888;
 }
 
 .string .bytes {
-	padding: 0.2em 0;
+    padding: 0.2em 0;
 }
 
 .string.encrypted .bytes {
-	text-shadow: 1px 1px 0px red;
+    text-shadow: 1px 1px 0px red;
 }
 
 .string.decrypted .bytes {
-	text-shadow: 1px 1px 0px green;
+    text-shadow: 1px 1px 0px green;
 }
 
 .record-data .decryption {
-	margin: 1em 0;
+    margin: 1em 0;
 }
 
 .record-data .decryption .label {
-	text-align: center;
+    text-align: center;
 }
 
 /***** codesample *****/
 
 codesample {
-	display: block;
-	margin: 1em 0;
+    display: block;
+    margin: 1em 0;
 }
 
 codesample pre {
-	margin: 0;
-	height: 0;
+    margin: 0;
+    height: 0;
 }
 
 codesample button.show-code {
-	display: block;
-	clear: both;
-	box-shadow: inset 0px 1px 3px 0px #91b8b3;
-	background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-	background-color: #768d87;
-	border-radius:5px;
-	border: 1px solid #566963;
-	cursor: pointer;
-	color: #ffffff;
-	font-family: Arial;
-	font-size: 15px;
-	font-weight: bold;
-	padding: 11px 23px;
-	text-decoration: none;
-	text-shadow: 0px -1px 0px #2b665e;
+    display: block;
+    clear: both;
+    box-shadow: inset 0px 1px 3px 0px #91b8b3;
+    background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+    background-color: #768d87;
+    border-radius:5px;
+    border: 1px solid #566963;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 11px 23px;
+    text-decoration: none;
+    text-shadow: 0px -1px 0px #2b665e;
 }
 
 codesample button.show-code:hover:hover {
-	background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-	background-color: #6c7c7c;
+    background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+    background-color: #6c7c7c;
 }
 codesample button.show-code:active {
-	position: relative;
-	top: 1px;
+    position: relative;
+    top: 1px;
 }
 codesample.show button.show-code {
-	display: none;
+    display: none;
 }
 codesample.show pre {
-	height: auto;
+    height: auto;
 }
 
 /***** annotation toggle button *****/
 
 button.annotate-toggle {
-	margin-bottom: 1em;
+    margin-bottom: 1em;
 
-	display: inline-block;
-	outline: none;
-	cursor: pointer;
-	text-align: center;
-	text-decoration: none;
-	font: Arial, Helvetica, sans-serif;
-	font-size: 1em;
-	padding: .4em 1.7em .45em;
-	text-shadow: 0 1px 1px rgba(0,0,0,.4);
-	border-radius: .5em;
-	box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    padding: .4em 1.7em .45em;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    border-radius: .5em;
+    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
 
-	color: #fff;
-	border: solid 1px #da7c0c;
-	background: #f78d1d;
-	background: linear-gradient(180deg, #faa51a 1%, #f47a20 100%);
+    color: #fff;
+    border: solid 1px #da7c0c;
+    background: #f78d1d;
+    background: linear-gradient(180deg, #faa51a 1%, #f47a20 100%);
 }
 button.annotate-toggle:hover {
-	text-decoration: none;
+    text-decoration: none;
 
-	background: #f47c20;
-	background: linear-gradient(180deg, #f88e11 1%, #f06015 100%);
+    background: #f47c20;
+    background: linear-gradient(180deg, #f88e11 1%, #f06015 100%);
 }
 button.annotate-toggle:active {
-	position: relative;
-	top: 1px;
+    position: relative;
+    top: 1px;
 }
 
 /***** print mode *****/
 .print-mode {
-	cursor: pointer;
-	position: absolute;
-	padding: 5px;
-	bottom: 0;
-	right: 0;
+    cursor: pointer;
+    position: absolute;
+    padding: 5px;
+    bottom: 0;
+    right: 0;
 }
 
 /***** header ******/
 
 .header {
-	width: 100%;
-	margin: 0;
-	padding: 2px;
-	border-bottom: 1px solid grey;
-	background-color: #FFEFD5;
-	color: #555;
-	line-height: 20px;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 14px;
-	text-align: right;
+    width: 100%;
+    margin: 0;
+    padding: 2px;
+    border-bottom: 1px solid grey;
+    background-color: #FFEFD5;
+    color: #555;
+    line-height: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    text-align: right;
 }
 .header a, .header a:visited, .header a:hover {
-	text-decoration: none;
-	color: #555;
+    text-decoration: none;
+    color: #555;
 }
 .header a.this-page:before {
-	content: "❧\00a0";
-	/* content: "•\00a0"; */
+    content: "❧\00a0";
+    /* content: "•\00a0"; */
 }
 .header a, .header span {
-	margin-right: 0.5em;
+    margin-right: 0.5em;
 }
 .header a.this-page {
-	font-weight: bold;
+    font-weight: bold;
 }

@@ -3,114 +3,114 @@
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-	line-height: 1.15;
-	-webkit-text-size-adjust: 100%;
-	-ms-text-size-adjust: 100%;
-	-ms-overflow-style: scrollbar;
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -ms-overflow-style: scrollbar;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
-		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	font-size: 1rem;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #212529;
-	text-align: left;
-	background-color: #fff;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
 }
 
 p {
-	margin-top: 0;
-	margin-bottom: 1rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
 }
 
 a {
-	color: #007bff;
-	text-decoration: none;
-	background-color: transparent;
-	-webkit-text-decoration-skip: objects;
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
 }
 a:hover {
-	color: #0056b3;
-	text-decoration: underline;
+    color: #0056b3;
+    text-decoration: underline;
 }
 
 pre,
 code,
 kbd,
 samp {
-	font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-	font-size: 1em;
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1em;
 }
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-	margin-top: 0;
-	margin-bottom: 0.5rem;
-	font-weight: 500;
-	line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
 }
 h1, .h1 {
-	font-size: 2.5rem;
+    font-size: 2.5rem;
 }
 h2, .h2 {
-	font-size: 2rem;
+    font-size: 2rem;
 }
 h3, .h3 {
-	font-size: 1.75rem;
+    font-size: 1.75rem;
 }
 h4, .h4 {
-	font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 h5, .h5 {
-	font-size: 1.25rem;
+    font-size: 1.25rem;
 }
 h6, .h6 {
-	font-size: 1rem;
+    font-size: 1rem;
 }
 
 pre {
-	display: block;
-	font-size: 87.5%;
-	color: #212529;
+    display: block;
+    font-size: 87.5%;
+    color: #212529;
 }
 
 .container {
-	width: 100%;
-	padding-right: 15px;
-	padding-left: 15px;
-	margin-right: auto;
-	margin-left: auto;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 @media (min-width: 400px) {
-	.container {
-		padding-left: 5px;
-		padding-right: 5px;
-	}
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
 
 @media (min-width: 768px) {
-	.container {
-		max-width: 720px;
-	}
+    .container {
+        max-width: 720px;
+    }
 }
 
 @media (min-width: 992px) {
-	.container {
-		max-width: 960px;
-	}
+    .container {
+        max-width: 960px;
+    }
 }
 
 @media (min-width: 1200px) {
-	.container {
-		max-width: 1140px;
-	}
+    .container {
+        max-width: 1140px;
+    }
 }
