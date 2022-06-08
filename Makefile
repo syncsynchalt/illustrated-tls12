@@ -29,4 +29,8 @@ vet:
 fmt:
 	go fmt ./...
 
+dist:
+	@if [[ -z "${DISTROOT}" ]]; then echo "Must set \$$DISTROOT variable"; exit 1; fi
+	rsync -avh site/ ${DISTROOT}/tls12/
+
 .PHONY: client server all clean realclean test fmt vet site
