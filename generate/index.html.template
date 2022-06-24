@@ -13,19 +13,19 @@
     <script src="illustrated.js?bustin"></script>
 
     <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://tls12.ulfheim.net/">
+    <meta property="og:url" content="https://tls12.xargs.org/">
     <meta property="og:type" content="website">
     <meta property="og:title" content="The Illustrated TLS 1.2 Connection">
     <meta property="og:description" content="Every byte of a TLS connection explained and reproduced">
-    <meta property="og:image" content="https://tls12.ulfheim.net/images/og.png?bustin">
+    <meta property="og:image" content="https://tls12.xargs.org/images/og.png?bustin">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="tls12.ulfheim.net">
-    <meta property="twitter:url" content="https://tls12.ulfheim.net/">
+    <meta property="twitter:domain" content="tls12.xargs.org">
+    <meta property="twitter:url" content="https://tls12.xargs.org/">
     <meta name="twitter:title" content="The Illustrated TLS 1.2 Connection">
     <meta name="twitter:description" content="Every byte of a TLS connection explained and reproduced">
-    <meta name="twitter:image" content="https://tls12.ulfheim.net/images/og.png?bustin">
+    <meta name="twitter:image" content="https://tls12.xargs.org/images/og.png?bustin">
 
     <!-- favicons -->
     <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-touch-icon.png">
@@ -41,10 +41,10 @@
 
 <body class="illustrated">
 <div class="header">
-    <a href="https://quic.ulfheim.net">QUIC</a>
-    <a href="https://x25519.ulfheim.net">X25519</a>
-    <a href="https://tls13.ulfheim.net">TLS 1.3</a>
-    <a class="this-page" href="https://tls12.ulfheim.net">TLS 1.2</a>
+    <a href="https://quic.xargs.org">QUIC</a>
+    <a href="https://x25519.xargs.org">X25519</a>
+    <a href="https://tls13.xargs.org">TLS 1.3</a>
+    <a class="this-page" href="https://tls12.xargs.org">TLS 1.2</a>
 </div>
 <div class="container">
     <h1>The Illustrated TLS 1.2 Connection</h1>
@@ -744,7 +744,7 @@
     an eavesdropper being able to tell what it is.
     <p>
     An explanation of the key exchange can be found on my
-    <a href="https://x25519.ulfheim.net/">X25519 site</a>,
+    <a href="https://x25519.xargs.org/">X25519 site</a>,
     but doesn't need to be understood in depth for the rest
     of this page.
     <p>
@@ -757,7 +757,7 @@
 <pre class="ind2"><tt class="longboi">909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeaf</tt></pre>
 
     The <a href="files/server-ephemeral-public.key" download="server-ephemeral-public.key">public key</a>
-    is chosen as explained on <a href="https://x25519.ulfheim.net/">X25519 site</a>.
+    is chosen as explained on <a href="https://x25519.xargs.org/">X25519 site</a>.
     The public key calculated is:
 
 <pre class="ind2"><tt class="longboi">9fd7ad6dcff4298dd3f96d5b1b2af910a0535b1488d7f8fabb349a982880b615</tt></pre>
@@ -982,7 +982,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
     an eavesdropper being able to tell what it is.
     <p>
     An explanation of the key exchange can be found on my
-    <a href="https://x25519.ulfheim.net/">X25519 site</a>,
+    <a href="https://x25519.xargs.org/">X25519 site</a>,
     but doesn't need to be understood in depth for the rest
     of this page.
     <p>
@@ -995,7 +995,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
 <pre class="ind2"><tt class="longboi">202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f</tt></pre>
 
     The <a href="files/client-ephemeral-public.key" download="client-ephemeral-public.key">public key</a>
-    is chosen as explained on <a href="https://x25519.ulfheim.net/">X25519 site</a>.
+    is chosen as explained on <a href="https://x25519.xargs.org/">X25519 site</a>.
     The public key calculated is:
 
 <pre class="ind2"><tt class="longboi">358072d6365880d1aeea329adf9121383851ed21a28e3b75e965d0d2cd166254</tt></pre>
@@ -2229,7 +2229,7 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
 
     <div class="outerblock">
     <p>You may also be interested in the
-    <a href="https://tls13.ulfheim.net/">TLS 1.3</a> version of this document.</p>
+    <a href="https://tls13.xargs.org/">TLS 1.3</a> version of this document.</p>
     </div>
 
     <div class="outerblock">
