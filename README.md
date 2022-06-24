@@ -1,6 +1,6 @@
 # The Illustrated TLS Connection
 
-Published at https://tls.ulfheim.net
+Published at https://tls.xargs.org
 
 - `site/`: page source for the finished product
 - `server/main.go`: server code
