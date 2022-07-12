@@ -17,7 +17,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="The Illustrated TLS 1.2 Connection">
     <meta property="og:description" content="Every byte of a TLS connection explained and reproduced">
-    <meta property="og:image" content="https://tls12.xargs.org/images/og.png#b">
+    <meta property="og:image" content="https://tls12.xargs.org/images/og.png?bustin">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
@@ -25,7 +25,7 @@
     <meta property="twitter:url" content="https://tls12.xargs.org/">
     <meta name="twitter:title" content="The Illustrated TLS 1.2 Connection">
     <meta name="twitter:description" content="Every byte of a TLS connection explained and reproduced">
-    <meta name="twitter:image" content="https://tls12.xargs.org/images/og.png#b">
+    <meta name="twitter:image" content="https://tls12.xargs.org/images/og.png?bustin">
 
     <!-- favicons -->
     <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-touch-icon.png">
@@ -741,20 +741,22 @@
     of this page.
     <p>
     The private key is chosen by selecting an integer between
-    0 and 2<sup>256</sup>-1.  It does this by generating 32
+    0 and 2<sup>256</sup>-1.  The server does this by generating 32
     bytes (256 bits) of random data.  The
     <a href="files/server-ephemeral-private.key" download="server-ephemeral-private.key">private key</a>
     selected is:
 
-<pre class="ind2"><tt class="longboi">909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeaf</tt></pre>
+    <pre class="ind2"><tt class="longboi"
+    >909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeaf</tt></pre>
 
     The <a href="files/server-ephemeral-public.key" download="server-ephemeral-public.key">public key</a>
-    is chosen as explained on <a href="https://x25519.xargs.org/">X25519 site</a>.
+    is created from the private key as explained on the <a href="https://x25519.xargs.org/">X25519 site</a>.
     The public key calculated is:
 
-<pre class="ind2"><tt class="longboi">9fd7ad6dcff4298dd3f96d5b1b2af910a0535b1488d7f8fabb349a982880b615</tt></pre>
+    <pre class="ind2"><tt class="longboi"
+    >9fd7ad6dcff4298dd3f96d5b1b2af910a0535b1488d7f8fabb349a982880b615</tt></pre>
 
-    The public key calculation can be confirmed with command line tools:
+    The public key calculation can be confirmed at the command line:
     <codesample>
 <pre><code>### requires openssl 1.1.0 or higher
 $ openssl pkey -noout -text &lt; server-ephemeral-private.key
@@ -968,7 +970,7 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
     <p>The client calculates a private/public keypair
     for key exchange.  Key exchange is a technique
     where two parties can agree on the same number without
-    an eavesdropper being able to tell what it is.
+    an eavesdropper being able to tell what the number is.
     <p>
     An explanation of the key exchange can be found on my
     <a href="https://x25519.xargs.org/">X25519 site</a>,
@@ -976,20 +978,22 @@ $ openssl dgst -sign server.key -sha256 /tmp/compute | hexdump
     of this page.
     <p>
     The private key is chosen by selecting an integer between
-    0 and 2<sup>256</sup>-1.  It does this by generating 32
+    0 and 2<sup>256</sup>-1.  The client does this by generating 32
     bytes (256 bits) of random data.  The
     <a href="files/client-ephemeral-private.key" download="client-ephemeral-private.key">private key</a>
     selected is:
 
-<pre class="ind2"><tt class="longboi">202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f</tt></pre>
+    <pre class="ind2"><tt class="longboi"
+    >202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f</tt></pre>
 
     The <a href="files/client-ephemeral-public.key" download="client-ephemeral-public.key">public key</a>
-    is chosen as explained on <a href="https://x25519.xargs.org/">X25519 site</a>.
+    is created from the private key as explained on the <a href="https://x25519.xargs.org/">X25519 site</a>.
     The public key calculated is:
 
-<pre class="ind2"><tt class="longboi">358072d6365880d1aeea329adf9121383851ed21a28e3b75e965d0d2cd166254</tt></pre>
+    <pre class="ind2"><tt class="longboi"
+    >358072d6365880d1aeea329adf9121383851ed21a28e3b75e965d0d2cd166254</tt></pre>
 
-    The public key calculation can be confirmed with command line tools:
+    The public key calculation can be confirmed at the command line:
     <codesample>
 <pre><code>### requires openssl 1.1.0 or higher
 $ openssl pkey -noout -text &lt; client-ephemeral-private.key
