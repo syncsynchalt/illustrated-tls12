@@ -1,6 +1,7 @@
 {
-	"esversion": 6,
+	"esversion": 11,
 	"bitwise": true,
+	"browser": true,
 	"curly": true,
 	"eqeqeq": true,
 	"eqnull": true,
@@ -14,11 +15,9 @@
 	"nonew": true,
 	"quotmark": true,
 	"singleGroups": true,
-	"strict": "global",
+	"strict": true,
 	"undef": true,
 	"unused": true,
 	"varstmt": true,
-
-	"predef": [ "window", "document" ],
 	"globals": { "ill": true }
 }

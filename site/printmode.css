@@ -53,6 +53,10 @@ a:after {
     content: " [link]";
 }
 
+a.no-show:after {
+    content: "";
+}
+
 .print-mode {
     display: none;
 }

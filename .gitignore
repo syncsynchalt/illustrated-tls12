@@ -2,3 +2,4 @@
 /server/server
 .*.swp
 /generate/generator
+.idea
