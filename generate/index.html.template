@@ -8,16 +8,16 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="The Illustrated TLS 1.2 Connection"/>
     <meta name="description" content="Every byte of a TLS connection explained and reproduced"/>
-    <link rel="stylesheet" href="frombootstrap.css?bustin"/>
-    <link rel="stylesheet" href="illustrated.css?bustin"/>
-    <script src="illustrated.js?bustin"></script>
+    <link rel="stylesheet" href="frombootstrap.css?b2"/>
+    <link rel="stylesheet" href="illustrated.css?b2"/>
+    <script src="illustrated.js?b2"></script>
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://tls12.xargs.org/">
     <meta property="og:type" content="website">
     <meta property="og:title" content="The Illustrated TLS 1.2 Connection">
     <meta property="og:description" content="Every byte of a TLS connection explained and reproduced">
-    <meta property="og:image" content="https://tls12.xargs.org/images/og.png?bustin">
+    <meta property="og:image" content="https://tls12.xargs.org/images/og.png?b2">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
@@ -25,7 +25,7 @@
     <meta property="twitter:url" content="https://tls12.xargs.org/">
     <meta name="twitter:title" content="The Illustrated TLS 1.2 Connection">
     <meta name="twitter:description" content="Every byte of a TLS connection explained and reproduced">
-    <meta name="twitter:image" content="https://tls12.xargs.org/images/og.png?bustin">
+    <meta name="twitter:image" content="https://tls12.xargs.org/images/og.png?b2">
 
     <!-- favicons -->
     <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-touch-icon.png">
