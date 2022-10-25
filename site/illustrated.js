@@ -96,7 +96,7 @@
     ill.addAnchors = (record) => {
         let label = record.getElementsByClassName("rec-label");
         label = label && label[0].textContent;
-        let count = 0;
+        let count = 1;
         if (label) {
             label = label.toLowerCase().replaceAll(/[^a-z\d]/g, "-");
             while (ill.anchors[label]) {
