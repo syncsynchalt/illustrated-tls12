@@ -100,7 +100,7 @@
         if (label) {
             label = label.toLowerCase().replaceAll(/[^a-z\d]/g, "-");
             while (ill.anchors[label]) {
-                label.replaceAll(/-\d+$/g, "");
+                label = label.replaceAll(/-\d+$/g, "");
                 label = `${label}-${++count}`;
             }
             record.dataset.anchor = label;
