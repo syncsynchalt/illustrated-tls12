@@ -876,15 +876,15 @@ pub:
 %bytes
         </span>
         <div class="explanation">
-            Because the server is generating ephemeral keys
-            it is not using the public key provided in
-            the server certificate.  To prove that the
-            server owns the server certificate (giving the certificate
-            validity in this TLS session), it signs the
-            ephemeral public key with the certificate's
-            private key.  This signature can be
-            validated with the certificate's public
-            key.
+            Because the server and client have agreed to perform
+            key exchange with ephemeral keys, they are not using
+            the public and private keys associated with the server
+            certificate. To prove that the server owns the
+            certificate (giving the certificate validity in
+            this TLS session), it signs the ephemeral public
+            key with the private key associated with the server's
+            certificate.  This signature can be validated with
+            the public key included in the server's certificate.
             <ul>
             <li><tt>04 01</tt> - reserved value for RSA signature with SHA256 hash
             <li><tt>%2 %3</tt> - length of signature (%xx2 or %dd2 bytes)
