@@ -29,19 +29,17 @@
     };
 
     ill.toggleRecord = (element, event) => {
-        let selected = element.classList.contains("selected");
-        ill.unselectAllRecords();
-        if (!selected) {
+        ill.cancel(event);
+        if (!element.classList.contains('selected')) {
             ill.setOpenCloseButton('close');
             element.classList.add("selected");
             if (event) { ill.changeHash(element.dataset.anchor); }
+            ill.ensureElementInView(element);
         } else {
-            ill.setOpenCloseButton('open');
+            element.classList.remove("selected");
             ill.closeAllCode();
             if (event) { ill.changeHash(""); }
         }
-        ill.cancel(event);
-        ill.ensureElementInView(element);
     };
 
     ill.selectRecord = (element, event) => {
