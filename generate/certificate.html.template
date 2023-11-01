@@ -426,7 +426,7 @@
 
 <div id="templates" style="display: none">
     <div id="closeBtnTmpl">
-        <span class="close" onclick="ill.unselectAllStrings()">&times;</span>
+        <span class="close">&times;</span>
     </div>
     <button id="annotateTmpl" class="annotate-toggle"
         onclick="ill.toggleAnnotate(this.parentElement, event)">Annotations</button>
