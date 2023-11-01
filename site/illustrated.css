@@ -101,6 +101,7 @@ tt.longboi {
     padding: 1em;
     border-radius: 1em;
     border: 2px solid transparent;
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
 }
 
 .illustrated .server.record .rec-label:before {
@@ -378,7 +379,7 @@ button.annotate-toggle {
     padding: .4em 1.7em .45em;
     text-shadow: 0 1px 1px rgba(0,0,0,.4);
     border-radius: .5em;
-    box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+    box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 1px;
 
     color: #fff;
     border: solid 1px #da7c0c;
@@ -394,6 +395,10 @@ button.annotate-toggle:hover {
 button.annotate-toggle:active {
     position: relative;
     top: 1px;
+}
+
+button#openCloseAll {
+    margin-bottom: 0;
 }
 
 /***** print mode *****/

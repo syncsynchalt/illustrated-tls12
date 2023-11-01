@@ -58,6 +58,12 @@
     exploring.</p>
     </div>
 
+<div class="open-close-all rec-outer">
+    <button id="openCloseAll" class="annotate-toggle"
+        data-lbl-state="open" data-lbl-toggle="Close All"
+        onclick="ill.openCloseAll(this, event)">Open All</button>
+</div>
+
 <div class="rec-outer">
 <div class="record client">
 <div class="rec-label">Client Hello</div>

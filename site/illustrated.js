@@ -32,9 +32,11 @@
         let selected = element.classList.contains("selected");
         ill.unselectAllRecords();
         if (!selected) {
+            ill.setOpenCloseButton('close');
             element.classList.add("selected");
             if (event) { ill.changeHash(element.dataset.anchor); }
         } else {
+            ill.setOpenCloseButton('open');
             ill.closeAllCode();
             if (event) { ill.changeHash(""); }
         }
@@ -115,6 +117,10 @@
 
     ill.resolveHash = () => {
         let hash = window.location.hash.replace(/^#/, "");
+        if (hash === 'open-all') {
+            let btn = document.getElementById('openCloseAll');
+            if (btn) btn.click();
+        }
         const rec = ill.anchors[hash];
         if (!rec) {
             return;
@@ -145,20 +151,51 @@
         });
     };
 
+    /**
+     * Open or close all elements on the page
+     * @param {string} openOrClose - "open" or "close"
+     */
+    let actionAll = (openOrClose) => {
+        let classOperation = openOrClose === 'open' ? document.body.classList.add : document.body.classList.remove;
+        [].forEach.call(document.querySelectorAll(".record, .calculation"), (el) => {
+            classOperation.call(el.classList, "selected", "annotate");
+        });
+        [].forEach.call(document.querySelectorAll("codesample"), (el) => {
+            classOperation.call(el.classList, "show");
+        });
+        if (openOrClose !== 'open') {
+            ill.closeAllCode();
+        };
+    };
+
+    ill.openCloseAll = (btn, event) => {
+        ill.cancel(event);
+
+        let action = btn.dataset['lblState'];
+        actionAll(action);
+        let nextState = action === 'open' ? 'close' : 'open';
+        ill.setOpenCloseButton(nextState);
+        ill.changeHash(action === 'open' ? 'open-all' : '');
+    };
+
+    ill.setOpenCloseButton = (openOrClose) => {
+        let btn = document.getElementById('openCloseAll');
+        if (btn && btn.dataset['lblState'] !== openOrClose) {
+            // swap text w/ lbl-toggle, then swap state
+            let tmp = btn.textContent;
+            btn.textContent = btn.dataset['lblToggle'];
+            btn.dataset['lblToggle'] = tmp;
+            btn.dataset['lblState'] = openOrClose === 'open' ? 'open' : 'close';
+        }
+    };
+
     ill.printMode = () => {
         // add printmode css
         let inject = document.createElement("link");
         inject.setAttribute("rel", "stylesheet");
         inject.setAttribute("href", "printmode.css");
         document.head.appendChild(inject);
-        // open everything up
-        [].forEach.call(document.querySelectorAll(".record, .calculation"), (el) => {
-            el.classList.add("selected");
-            el.classList.add("annotate");
-        });
-        [].forEach.call(document.querySelectorAll("codesample"), (el) => {
-            el.classList.add("show");
-        });
+        actionAll('open');
         [].forEach.call(document.querySelectorAll("*"), (el) => {
             el.onclick = null;
         });
