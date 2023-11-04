@@ -101,7 +101,7 @@ tt.longboi {
     padding: 1em;
     border-radius: 1em;
     border: 2px solid transparent;
-    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
 }
 
 .illustrated .server.record .rec-label:before {
@@ -135,7 +135,7 @@ tt.longboi {
 .record.selected,
 .calculation.selected {
     cursor: inherit;
-    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
 }
 
 .record.selected .rec-label,
@@ -226,7 +226,7 @@ tt.longboi {
     -ms-user-select: none;
     user-select: none;
     top: -28px;
-    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
 }
 .record-data .string:hover > .label {
     display: inline;
@@ -235,7 +235,7 @@ tt.longboi {
 .record-data .string .label:after {
     content: "";
     position: absolute;
-    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
@@ -260,7 +260,7 @@ tt.longboi {
     border: 2px solid #e0d998;
     border-radius: 1em;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
 }
 
 .record.annotate .string > .explanation:before {
@@ -377,9 +377,9 @@ button.annotate-toggle {
     font: Arial, Helvetica, sans-serif;
     font-size: 1em;
     padding: .4em 1.7em .45em;
-    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.4);
     border-radius: .5em;
-    box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 1px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 
     color: #fff;
     border: solid 1px #da7c0c;
