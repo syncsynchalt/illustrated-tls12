@@ -399,6 +399,7 @@ button.annotate-toggle:active {
 
 button#openCloseAll {
     margin-bottom: 0;
+    min-width: 8em;
 }
 
 /***** print mode *****/

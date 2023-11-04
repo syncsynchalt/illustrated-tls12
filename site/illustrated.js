@@ -26,12 +26,12 @@
         (el) => {
             el.classList.remove("selected");
         });
+        ill.normalizeOpenCloseAll();
     };
 
     ill.toggleRecord = (element, event) => {
         ill.cancel(event);
         if (!element.classList.contains('selected')) {
-            ill.setOpenCloseButton('close');
             element.classList.add("selected");
             if (event) { ill.changeHash(element.dataset.anchor); }
             ill.ensureElementInView(element);
@@ -40,6 +40,7 @@
             ill.closeAllCode();
             if (event) { ill.changeHash(""); }
         }
+        ill.normalizeOpenCloseAll();
     };
 
     ill.selectRecord = (element, event) => {
@@ -168,22 +169,33 @@
 
     ill.openCloseAll = (btn, event) => {
         ill.cancel(event);
+        btn = btn || document.getElementById('openCloseAll');
+        if (!btn) return;
 
         let action = btn.dataset['lblState'];
         actionAll(action);
         let nextState = action === 'open' ? 'close' : 'open';
-        ill.setOpenCloseButton(nextState);
         ill.changeHash(action === 'open' ? 'open-all' : '');
+        ill.normalizeOpenCloseAll();
     };
 
-    ill.setOpenCloseButton = (openOrClose) => {
+    ill.normalizeOpenCloseAll = () => {
+        let allCount = document.querySelectorAll('.record, .calculation').length;
+        let openCount = document.querySelectorAll('.record.selected, .calculation.selected').length;
+        let closedCount = allCount - openCount;
+
+        let newButtonState = 'open';
+        if (closedCount === 0) {
+            newButtonState = 'close';
+        }
+
         let btn = document.getElementById('openCloseAll');
-        if (btn && btn.dataset['lblState'] !== openOrClose) {
+        if (btn && btn.dataset['lblState'] !== newButtonState) {
             // swap text w/ lbl-toggle, then swap state
             let tmp = btn.textContent;
             btn.textContent = btn.dataset['lblToggle'];
             btn.dataset['lblToggle'] = tmp;
-            btn.dataset['lblState'] = openOrClose === 'open' ? 'open' : 'close';
+            btn.dataset['lblState'] = newButtonState;
         }
     };
 
@@ -212,11 +224,7 @@
         [].forEach.call(document.querySelectorAll(".record, .calculation"), (el) => {
             ill.addAnchors(el);
             el.onclick = (event) => {
-                if (el === event.target && event.offsetY < 60) {
-                    ill.toggleRecord(el, event);
-                } else {
-                    ill.selectRecord(el, event);
-                }
+                ill.toggleRecord(el, event);
             };
         });
         [].forEach.call(document.querySelectorAll(".rec-label"), (el) => {
