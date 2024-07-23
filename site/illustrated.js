@@ -164,7 +164,7 @@
         });
         if (openOrClose !== 'open') {
             ill.closeAllCode();
-        };
+        }
     };
 
     ill.openCloseAll = (btn, event) => {
@@ -223,9 +223,6 @@
     window.onload = () => {
         [].forEach.call(document.querySelectorAll(".record, .calculation"), (el) => {
             ill.addAnchors(el);
-            el.onclick = (event) => {
-                ill.toggleRecord(el, event);
-            };
         });
         [].forEach.call(document.querySelectorAll(".rec-label"), (el) => {
             el.onclick = (event) => {
