@@ -1449,7 +1449,21 @@ a5a03d233056e4ac6eba7fd9e5317fac2db5b70e
             <br/><br/>
             The SHA256 of all handshake messages before this one
             is <tt class="longboi">061dda04b3c2217ff73bd79b9cf88a2bb6ec505404aac8722db03ef417b54cb4</tt>.
-            <br/><br/>
+            It can be reproduced as follows:
+            <codesample>
+<pre><code>### combine the payload (without the 5-byte header) of each handshake message, in order
+$ tail -c +6 clienthello > test.bin
+$ tail -c +6 serverhello >> test.bin
+$ tail -c +6 servercert >> test.bin
+$ tail -c +6 serverkeyexchange >> test.bin
+$ tail -c +6 serverhellodone >> test.bin
+$ tail -c +6 clientkeyexchange >> test.bin
+$ openssl sha256 test.bin
+
+061dda04b3c2217ff73bd79b9cf88a2bb6ec505404aac8722db03ef417b54cb4
+</code></pre>
+            </codesample>
+
             The calculation for verify_data is as follows:
 <pre class="ind1">
 seed = "client finished" + SHA256(all handshake messages)
@@ -1837,7 +1851,24 @@ $ echo $sequence $rechdr $datalen $data | xxd -r -p \
             <br/><br/>
             The SHA256 of all handshake messages before this one
             is <tt class="longboi">b2017ba28d0e27f03ae327456b6ff00b4d5bbf0ef7cda83ce1029b521c3e7c35</tt>.
-            <br/><br/>
+            It can be reproduced as follows:
+            <codesample>
+<pre><code>### combine the payload (without the 5-byte header) of each
+### plaintext handshake message, in order
+$ tail -c +6 clienthello > test.bin
+$ tail -c +6 serverhello >> test.bin
+$ tail -c +6 servercert >> test.bin
+$ tail -c +6 serverkeyexchange >> test.bin
+$ tail -c +6 serverhellodone >> test.bin
+$ tail -c +6 clientkeyexchange >> test.bin
+### add the decrypted payload of the client finished message
+$ cat clientfinishedplain >> test.bin
+$ openssl sha256 test.bin
+
+b2017ba28d0e27f03ae327456b6ff00b4d5bbf0ef7cda83ce1029b521c3e7c35
+</code></pre>
+            </codesample>
+
             The calculation for verify_data is as follows:
 <pre class="ind1">
 seed = "server finished" + SHA256(all handshake messages)
