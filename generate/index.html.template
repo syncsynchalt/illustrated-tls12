@@ -8,9 +8,9 @@
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="The Illustrated TLS 1.2 Connection"/>
     <meta name="description" content="Every byte of a TLS connection explained and reproduced"/>
-    <link rel="stylesheet" href="frombootstrap.css?b3"/>
-    <link rel="stylesheet" href="illustrated.css?b3"/>
-    <script src="illustrated.js?b3"></script>
+    <link rel="stylesheet" href="frombootstrap.css?b4"/>
+    <link rel="stylesheet" href="illustrated.css?b4"/>
+    <script src="illustrated.js?b4"></script>
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://tls12.xargs.org/">
